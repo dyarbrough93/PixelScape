@@ -5,23 +5,7 @@ const config = require('../config.js')
 const actionDelay = {}
 const sockUNames = {}
 
-const chatTimer = {}
-
-const adjs = ["Really", "Salty", "Ugly", "Dumb", "Smart", "Klepto", "Weird", "Churlish", "Dead", "Tasty", "Ignorant", "Slutty", "Shady"]
-const nouns = ["Hitler", "Lemon", "Jelly", "Potato", "Trump", "Loser", "Kenny", "Pancake", "Politician", "Jock", "Nerd", "Pie", "Sock", "Derp"]
-
 var worldData
-
-function setRandomUName(socket) {
-    const randAdj = adjs[Math.floor(Math.random() * adjs.length)]
-    const randNoun = nounds[Math.floor(Math.random() * nouns.length)]
-    sockUNames[socket.id] = randAdj + ' ' + randNoun
-}
-
-function validateChatMessage(msg) {
-    return msg.length <= 100 &&
-        msg.length > 0
-}
 
 function handleBlockOperations(socket) {
 
@@ -157,11 +141,6 @@ function IOHandler(io, _worldData) {
     // new connection
     io.on('connection', function(socket) {
 
-        // give the user a random name
-        // then send it to their client
-        setRandomUName(socket)
-        socket.emit('username', socknames[socket.id])
-
         // disconnect when too many users
         if (io.engine.clientsCount > config.maxClients) {
             socket.emit('max clients')
@@ -174,18 +153,6 @@ function IOHandler(io, _worldData) {
 
         // tell the clients there is a new connection
         io.sockets.emit('update clients', io.engine.clientsCount)
-
-        // handle chat messages
-        socket.on('chat message', function(message) {
-            const secondsPassed = (new Date() - chatTimer[socket.id]) / 1000
-
-            if ((!chatTimer[socket.id] || secondsPassed >= config.chatDelay) && validateChatMessage(message)) {
-                var senderName = socknames[socket.id]
-                io.sockets.emit('chat message', senderName + ': ' + message)
-                chatTimer[socket.id] = new Date()
-            }
-
-        })
 
         handleBlockOperations(socket)
 

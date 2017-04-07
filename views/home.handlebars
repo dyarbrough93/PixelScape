@@ -3,128 +3,33 @@
 <html lang="en">
 
 <head>
+
     <title>PixelScape</title>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-        body {
-            font-family: Monospace;
-            background-color: #f0f0f0;
-            margin: 0px;
-            overflow: hidden;
-        }
 
-        #oldie {
-            background-color: #ddd !important
-        }
-    </style>
-
-    <style>
-        #progress {
-            color: red;
-            top: 7em;
-            width: 100%;
-            font-size: 3em;
-            font-variant: small-caps;
-            font-weight: bold;
-            position: absolute;
-            z-index: 100;
-            text-align: center;
-            text-shadow: #000 0px 0px 10px;
-        }
-
-        .shadow {
-            -moz-box-shadow: 0px 0px 5px #000;
-            -webkit-box-shadow: 0px 0px 5px #000;
-            box-shadow: 0px 0px 5px #000;
-        }
-
-        #progressbar {
-            text-align: center;
-            background: white;
-            width: 250px;
-            height: 10px;
-        }
-
-        #bar {
-            background: #d00;
-            width: 50px;
-            height: 10px;
-        }
-    </style>
-
-    <!-- modal styling -->
-    <style>
-        #basic-modal-content {
-            display: none;
-        }
-        /* Overlay */
-
-        #simplemodal-overlay {
-            background-color: #000;
-        }
-        /* Container */
-
-        #simplemodal-container {
-            height: 360px;
-            width: 600px;
-            color: #bbb;
-            background-color: #333;
-            border: 4px solid #444;
-            padding: 12px;
-        }
-
-        #simplemodal-container .simplemodal-data {
-            padding: 8px;
-        }
-
-        #simplemodal-container code {
-            background: #141414;
-            border-left: 3px solid #65B43D;
-            color: #bbb;
-            display: block;
-            font-size: 12px;
-            margin-bottom: 12px;
-            padding: 4px 6px 6px;
-        }
-
-        #simplemodal-container a {
-            color: #ddd;
-        }
-
-        #simplemodal-container a.modalCloseImg {
-            background: url(/images/x.png) no-repeat;
-            width: 25px;
-            height: 29px;
-            display: inline;
-            z-index: 3200;
-            position: absolute;
-            top: -15px;
-            right: -16px;
-            cursor: pointer;
-        }
-
-        #simplemodal-container h2 {
-            color: #84b8d9;
-        }
-    </style>
+    <style href="css/modal.css"></style>
 
     <link rel="icon" type="image/png" href="/images/favicon.png">
 
-    <script src="/js/jquery-1.11.1.js"></script>
-    <script src="/js/threeR83.js"></script>
-    <script src="/js/Detector.js"></script>
-    <script src="/js/socket.io-1.4.5.js"></script>
-    <script src="/myjs/ParticleSystems.min.js"></script>
+    <script src="/js/lib/jquery-1.11.1.js"></script>
+    <script src="/js/lib/threejsR83.min.js"></script>
+    <script src="/js/lib/Detector.js"></script>
+    <script src="/js/lib/socket.io-1.4.5.js"></script>
+    <!--<script src="/myjs/ParticleSystems.min.js"></script>
     <script src="/js/MapControls.min.js"></script>
     <script src="/myjs/BufMeshObj.min.js"></script>
     <script src="/myjs/VoxelUtils.min.js"></script>
-    <script src="/js/dat.gui.min.js"></script>
-    <script src="/js/jquery.simplemodal.1.4.4.min.js"></script>
+    <script src="/js/dat.gui.min.js"></script>-->
+    <script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
+
+    <script src="/js/gameScene.js"></script>
+    <script src="/js/main.js"></script>
 
 </head>
 
-<body>
+<body style="margin: 0px">
 
     <!-- modal content -->
     <div id="basic-modal-content">
@@ -152,138 +57,29 @@
         <p><code>Cooldown Timer</code>This shows how much time you have left before you can perform another action.</p>
         <p><code>View Only</code>Raycasting a large number of blocks is performance heavy, so you are only allowed to convert a certain number of blocks for editing. Selecting this option will disable raycasting in edit mode, allowing you to convert more
             pixels to voxels; however, you will not be able to add or remove voxels.</p>
-
     </div>
-
-    <style>
-        #chatBox {
-            position: fixed;
-            left: 0px;
-            bottom: 0px;
-            height: 150px;
-            width: 400px;
-            background: #ffffff
-        }
-
-        #chatBox #textField {
-            display: inline-block;
-            width: 80%;
-            margin-right: 5px;
-        }
-
-        #chatBox submitButton {
-            display: inline-block;
-        }
-
-        #chatBox p {
-            margin: 0 0 0 0;
-            word-wrap: break-word;
-        }
-    </style>
+    <!-- end modal -->
 
     <script>
+        // conect to socket
         var socket = io.connect();
 
         socket.on('redirect', function(dest) {
 
             window.location.href = dest;
 
-        });
-
-        function sendChatMessage() {
-            var message = $('#textField').val()
-            socket.emit('chat message', message)
-        }
-
-        socket.on('chat message', function(message) {
-          $('#textField').val('')
-          var chatBoxMsgs = $('#cbMsgs')
-          if ($('#cbMsgs p').length > 8) {
-            $('#cbMsgs p').last().remove()
-          }
-          chatBoxMsgs.prepend('<p>' + message + '</p>')
         })
-
-        socket.on('username', function(un) {
-          $('#textField').attr('placeholder', un + ':')
-        })
-
     </script>
 
-    <div id="chatBox">
-        <form onsubmit="sendChatMessage()" action="javascript:void(0)">
-            <input placeholder="Chat" id="textField" type="text" maxlength="100"></input>
-            <input id="submitButton" type="submit" value="Submit">
-        </form>
-        <div id="cbMsgs">
-        </div>
-    </div>
-
-    <style>
-        .dg.main.taller-than-window .close-button {
-            border-top: 1px solid #ddd;
-        }
-
-        .dg.main .close-button {
-            background-color: #ccc;
-        }
-
-        .dg.main .close-button:hover {
-            background-color: #ddd;
-        }
-
-        .dg {
-            color: #555;
-            text-shadow: none !important;
-        }
-
-        .dg.main::-webkit-scrollbar {
-            background: #fafafa;
-        }
-
-        .dg.main::-webkit-scrollbar-thumb {
-            background: #bbb;
-        }
-
-        .dg li:not(.folder) {
-            background: #fafafa;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .dg li.save-row .button {
-            text-shadow: none !important;
-        }
-
-        .dg li.title {
-            background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
-        }
-
-        .dg .cr.function:hover,
-        .dg .cr.boolean:hover {
-            background: #fff;
-        }
-
-        .dg .c input[type=text] {
-            background: #e9e9e9;
-        }
-
-        .dg .c input[type=text]:hover {
-            background: #eee;
-        }
-
-        .dg .c input[type=text]:focus {
-            background: #eee;
-            color: #555;
-        }
-
-        .dg .c .slider {
-            background: #e9e9e9;
-        }
-
-        .dg .c .slider:hover {
-            background: #eee;
-        }
-    </style>
+    <script>
+        // open the modal on page load
+        /*$('#basic-modal-content').modal({
+            onClose: function() {
+                modalClosed()
+                $.modal.impl.close()
+            }
+        })*/
+    </script>
 
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -299,18 +95,10 @@
         })();
     </script>
 
+    <!-- game container -->
     <div id="container"></div>
 
-    <script>
-        $('#basic-modal-content').modal({
-            onClose: function() {
-                modalClosed()
-                $.modal.impl.close()
-            }
-        })
-    </script>
-
-    <script src="/VoxelWorld.min.js"></script>
+    <!-- <script src="/VoxelWorld.min.js"></script> -->
 
 </body>
 
