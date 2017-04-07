@@ -4,7 +4,7 @@
  * The game scene.
  * @namespace Scene
  */
-var Scene = function(window, undefined) {
+var GameScene = function(window, undefined) {
 
     if (!Detector.webgl) Detector.addGetWebGLMessage()
 
@@ -245,17 +245,12 @@ var Scene = function(window, undefined) {
 
         })()
 
-        animate()
-
     }
 
-    function animate() {
+    function render() {
 
-        requestAnimationFrame(animate)
         renderer.render(scene, camera)
 
-        /*if (!mouseMiddleDown)
-            renderer.render(scene, camera)*/
     }
 
     /******************Getters *************/
@@ -304,6 +299,10 @@ var Scene = function(window, undefined) {
         return gridConfig.sqPerSideOfGrid
     }
 
+    function getSectionsPerSide() {
+        return gridConfig.sectionsPerSide
+    }
+
     function getPSystem() {
         return particleSystem
     }
@@ -328,8 +327,10 @@ var Scene = function(window, undefined) {
         getSqPerSideOfSelectPlane: getSqPerSideOfSelectPlane,
         getSqPerSideOfSection: getSqPerSideOfSection,
         getSqPerSideOfGrid: getSqPerSideOfGrid,
+        getSectionsPerSide: getSectionsPerSide,
         getPSystem: getPSystem,
-        getPSystemExpo: getPSystemExpo
+        getPSystemExpo: getPSystemExpo,
+        render: render
 
     }
 

@@ -82,6 +82,8 @@ function handleChunking(socket) {
     // data, so send it
     socket.on('start chunking', function() {
 
+        console.log('chunking')
+
         // prep for chunking by adding all
         // keys to an array
         var keys = []

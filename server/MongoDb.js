@@ -17,12 +17,12 @@ function init(done) {
         console.log('Connected to mongodb')
 
         // get the ops collection
-        db.collection('ops', function(err, opsCol) {
+        db.collection('testops', function(err, opsCol) {
 
             handleErr(err)
 
             // get the worldData collection
-            db.collection('worldData', function(err, dataCol) {
+            db.collection('testworldData', function(err, dataCol) {
 
                 handleErr(err)
                 done(opsCol, dataCol)

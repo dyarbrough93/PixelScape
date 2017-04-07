@@ -7,25 +7,7 @@ var mongoDataCol
 
 var numVoxels = 0
 
-function WorldData(opsCol, dataCol, cb) {
-    mongoOpsCol = opsCol
-    mongoDataCol = dataCol
-
-    dataCol.find({}, function(err, cursorData) {
-
-        if (dbErr(err)) {
-            console.log(err)
-            process.exit()
-        }
-
-        WorldData.load(cursorData, function() {
-            cb()
-        })
-
-    })
-}
-
-
+var WorldData = {}
 module.exports = WorldData
 
 WorldData.voxels = {} // worldData
@@ -146,11 +128,30 @@ WorldData.remove = function(pos, cb) {
 
 }
 
+WorldData.init = function(opsCol, dataCol, done) {
+
+    mongoOpsCol = opsCol
+    mongoDataCol = dataCol
+
+    dataCol.find({}, function(err, cursorData) {
+
+        if (dbErr(err)) {
+            console.log(err)
+            process.exit()
+        }
+
+        loadData(cursorData, function() {
+            done()
+        })
+
+    })
+}
+
 /*
  * Loads data at the specified path into coords
  * @param path The file's path, including file name
  */
-WorldData.load = function(cursorData, cb) {
+function loadData(cursorData, done) {
 
     console.log('loading world data from mongodb.worldData...')
 
@@ -165,7 +166,7 @@ WorldData.load = function(cursorData, cb) {
             WorldData.numVoxels = WorldData.count()
             console.log('loaded worldData from mongodb')
 
-            cb()
+            done()
 
         }
 
