@@ -4,6 +4,7 @@ var UserState = function(window, undefined) {
     var state
     var modes
     var mode
+    var selectedRegion
 
     function init() {
 
@@ -12,7 +13,7 @@ var UserState = function(window, undefined) {
             PICKCOLOR: 1
         }
 
-        mode = {
+        modes = {
             SELECT: 0,
             EDIT: 1
         }
@@ -38,11 +39,35 @@ var UserState = function(window, undefined) {
         return mode === modes.EDIT
     }
 
+    function setSelectedRegion(intxGPos) {
+
+        var spssp = Config.getGrid().sqPerSideOfSelectPlane
+
+        var x1 = intxGPos.x - spssp
+        var x2 = intxGPos.x + spssp
+        var z1 = intxGPos.z - spssp
+        var z2 = intxGpos.z + spssp
+
+        var c1 = new THREE.Vector3(x1, p.y, z1).initGridPos()
+        var c2 = new THREE.Vector3(x2, p.y, z2).initGridPos()
+
+        selectedRegion = {
+            corner1: c1,
+            corner2: c2
+        }
+    }
+
+    function getSelectedRegion() {
+        return selectedRegion
+    }
+
     return {
+        init: init,
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
         setDefaultState: setDefaultState,
-        setPickState: setPickState
+        setPickState: setPickState,
+        getSelectedRegion: getSelectedRegion
     }
 
 }(window)

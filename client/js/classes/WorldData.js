@@ -4,7 +4,7 @@ var WorldData = function(window, undefined) {
 
     function init() {
 
-        var secPerSide = GameScene.getSectionsPerSide()
+        var secPerSide = Config.getGrid().sectionsPerSide
 
         worldData = []
         for (var i = 0, len1 = secPerSide; i < len1; i++) {
@@ -50,7 +50,6 @@ var WorldData = function(window, undefined) {
         particleSystem.addToScene()
 
         console.log('done loading pixels')
-        GameScene.render()
 
     }
 

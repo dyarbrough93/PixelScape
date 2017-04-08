@@ -33,27 +33,6 @@ var GameScene = function(window, undefined) {
     var particleSystem
     var pSystemExpansion
 
-    // config
-    var sqPerSideOfSelectPlane = 351 // odd
-
-    var gridConfig = {
-
-        sqPerSideOfSection: 151, // odd
-        sectionsPerSide: 17,
-        init: function() {
-
-            // must be odd
-            this.sqPerSideOfGrid = this.sqPerSideOfSection *
-                this.sectionsPerSide - 1
-
-            // scene size of the grid; must be even
-            this.size = this.sqPerSideOfGrid * 25
-
-            return this
-        }
-
-    }.init()
-
     /******************************************\
     | Functions                                |
     \******************************************/
@@ -109,7 +88,9 @@ var GameScene = function(window, undefined) {
         ;
         (function _initMeshes() {
 
-            var geometry = new THREE.PlaneGeometry(gridConfig.size * 2 + 50, gridConfig.size * 2 + 50)
+            var gridSize = Config.getGrid().size
+
+            var geometry = new THREE.PlaneGeometry(gridSize * 2 + 50, gridSize * 2 + 50)
             geometry.rotateX(-Math.PI / 2)
 
             // this is the plane the voxels are actually placed on.
@@ -125,7 +106,7 @@ var GameScene = function(window, undefined) {
                 voxelPlane.name = "plane"
 
                 scene.add(voxelPlane)
-                Raycaster.add(voxelPlane)
+                Raycast.add(voxelPlane)
 
             })()
 
@@ -134,7 +115,7 @@ var GameScene = function(window, undefined) {
             ;
             (function _floorPlane() {
 
-                var floorGeo = new THREE.PlaneGeometry(gridConfig.size * 2 + 50, gridConfig.size * 2 + 50)
+                var floorGeo = new THREE.PlaneGeometry(gridSize * 2 + 50, gridSize * 2 + 50)
                 floorGeo.rotateX(-Math.PI / 2)
                 floorGeo.translate(0, -25, 0)
 
@@ -154,7 +135,7 @@ var GameScene = function(window, undefined) {
             ;
             (function _initControlsPlane() {
 
-                var controlGeo = new THREE.PlaneGeometry(gridConfig.size * 40, gridConfig.size * 40)
+                var controlGeo = new THREE.PlaneGeometry(gridSize * 40, gridSize * 40)
                 controlGeo.rotateX(-Math.PI / 2)
 
                 mapControlsPlane = new THREE.Mesh(controlGeo, new THREE.MeshBasicMaterial({
@@ -173,7 +154,9 @@ var GameScene = function(window, undefined) {
             ;
             (function _initRegionSelectPlane() {
 
-                var geo = new THREE.PlaneGeometry(50 * sqPerSideOfSelectPlane, 50 * sqPerSideOfSelectPlane),
+                var spssp = Config.getGrid().sqPerSideOfSelectPlane
+
+                var geo = new THREE.PlaneGeometry(50 * spssp, 50 * spssp),
                     mat = new THREE.MeshBasicMaterial({
                         color: "#008cff",
                         opacity: 0.10,
@@ -240,10 +223,23 @@ var GameScene = function(window, undefined) {
         ;
         (function _initParticleSystems() {
 
-            particleSystem = new ParticleSystems.ParticleSystem(gridConfig.sectionsPerSide, scene)
+            var sps = Config.getGrid().sectionsPerSide
+
+            particleSystem = new ParticleSystems.ParticleSystem(sps, scene)
             pSystemExpansion = new ParticleSystems.PSystemExpansion(100000, scene)
 
         })()
+
+        window.addEventListener('resize', onWindowResize)
+
+    }
+
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+
+        renderer.setSize(window.innerWidth, window.innerHeight)
 
     }
 
@@ -287,22 +283,6 @@ var GameScene = function(window, undefined) {
         return deleteMesh
     }
 
-    function getSqPerSideOfSelectPlane() {
-        return sqPerSideOfSelectPlane
-    }
-
-    function getSqPerSideOfSection() {
-        return gridConfig.sqPerSideOfSection
-    }
-
-    function getSqPerSideOfGrid() {
-        return gridConfig.sqPerSideOfGrid
-    }
-
-    function getSectionsPerSide() {
-        return gridConfig.sectionsPerSide
-    }
-
     function getPSystem() {
         return particleSystem
     }
@@ -324,10 +304,6 @@ var GameScene = function(window, undefined) {
         getRegionSelectPlane: getRegionSelectPlane,
         getGhostMesh: getGhostMesh,
         getDeleteMesh: getDeleteMesh,
-        getSqPerSideOfSelectPlane: getSqPerSideOfSelectPlane,
-        getSqPerSideOfSection: getSqPerSideOfSection,
-        getSqPerSideOfGrid: getSqPerSideOfGrid,
-        getSectionsPerSide: getSectionsPerSide,
         getPSystem: getPSystem,
         getPSystemExpo: getPSystemExpo,
         render: render

@@ -6,6 +6,22 @@ var Mouse = function(window, undefined) {
 
         pos = new THREE.Vector2()
 
+        addEventListeners()
+
+    }
+
+    function addEventListeners() {
+        document.addEventListener('mousemove', mouseMove)
+        document.addEventListener('mousedown', mouseDown)
+    }
+
+    function removeEventListenerers() {
+        document.removeEventListener('mousemove', mouseMove)
+        document.removeEventListener('mousedown', mouseDown)
+    }
+
+    function mouseDown(e) {
+        if (e.which === 1) leftDown(e)
     }
 
     function validHeight(pos) {
@@ -36,22 +52,25 @@ var Mouse = function(window, undefined) {
      */
     function withinSelectionBounds(gPos) {
 
-        /*return (gPos.x >= currentSelection.c1.x &&
-        gPos.z >= currentSelection.c1.z &&
-        gPos.x <= currentSelection.c2.x &&
-        gPos.z <= currentSelection.c2.z &&
-        gPos.y < maxVoxelHeight)*/
-        
+        var selectedRegion = UserState.getSelectedRegion()
+
+        return (gPos.x >= selectedRegion.corner1.x &&
+            gPos.z >= selectedRegion.corner1.z &&
+            gPos.x <= selectedRegion.corner2.x &&
+            gPos.z <= selectedRegion.corner2.z)
+
     }
 
-    handleEdit(intxGPos) {
+    function validEdit(intxGPos) {
 
-        if (!validHeight(intxGPos)) return
-        if (!withinSelectionBounds(intxGPos)) return
+        return validHeight(intxGPos) &&
+            withinSelectionBounds(intxGPos)
 
     }
 
     function leftDown(e) {
+
+        e.preventDefault()
 
         var intersect = getIntersect(e)
 
@@ -64,21 +83,59 @@ var Mouse = function(window, undefined) {
 
             } else if (UserState.modeIsEdit()) {
 
+                if (validEdit(intxGPos)) {
+
+                    if (UserState.stateIsPick())
+                        GUI.setPickColor(intersect)
+                    else if (Keys.shiftDown())
+                        GameScene.deleteVoxel(intersect)
+                    else GameScene.createVoxel(intersect)
+
+                }
+
+            } else if (UserState.modeIsSelect()) {
+
+                UserState.setSelectedRegion(intxGPos)
+                var region = UserState.getSelectedRegion()
+                PixVoxConversion.convertToVoxels(region)
+
             }
 
         }
 
     }
 
-    function leftUp(e) {
+    function mouseMove(e) {
 
-    }
+        e.preventDefault()
 
-    function rightDown(e) {
+        pos.clientX = e.clientX
+        pos.clientY = e.clientY
 
-    }
+        var intersect = getIntersect(e)
 
-    function rightUp(e) {
+        if (intersect) {
+
+            if (UserState.modeIsEdit()) {
+
+                if (intersect.object.name === 'plane')
+                    GameScene.setDeleteMeshVis(false)
+
+                else if (Keys.shiftDown()) {
+
+                    GameScene.setDeleteMeshVis(true)
+                    GameScene.setDeleteMeshPos(intersect)
+
+                } else {
+
+                    GameScene.setGhostMeshVis(false)
+
+
+                }
+
+            }
+
+        }
 
     }
 
@@ -111,7 +168,9 @@ var Mouse = function(window, undefined) {
 
     return {
         init: init,
-        getPos: getPos
+        getPos: getPos,
+        mouseMove: mouseMove,
+        leftDown: leftDown
     }
 
-}()
+}(window)
