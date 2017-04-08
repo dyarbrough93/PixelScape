@@ -9,6 +9,8 @@ var Main = function() {
         Mouse.init()
         Keys.init()
         UserState.init()
+        MapControls.init()
+        PixVoxConversion.init()
 
         retrieveData(function() {
 

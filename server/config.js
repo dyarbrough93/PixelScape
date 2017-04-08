@@ -28,6 +28,7 @@ me.client = {
         chatDelay: me.server.chatDelay
     },
     grid: {
+        blockSize: 50, // even
         sqPerSideOfSelectPlane: 351, // must be odd
         sqPerSideOfSection: 151, // must be odd
         sectionsPerSide: 17,
@@ -37,7 +38,7 @@ me.client = {
                 this.sectionsPerSide - 1
 
             // scene size of the grid; must be even
-            this.size = this.sqPerSideOfGrid * 25
+            this.size = this.sqPerSideOfGrid * (this.blockSize / 2)
 
             return this
         }

@@ -48,7 +48,7 @@ var VoxelUtils = (function(window, undefined) {
      * (multiples of 50) + 25 for y).
      * @memberOf! VoxelUtils
      */
-    THREE.Vector3.prototype.setWorldPosition = function() {
+    THREE.Vector3.prototype.snapToGrid = function() {
 
         this.worldToGrid()
         this.gridToWorld()
@@ -62,14 +62,11 @@ var VoxelUtils = (function(window, undefined) {
      */
     THREE.Vector3.prototype.worldToGrid = function() {
 
-        if (!this.isWorldPos)
-            throw new Validation.IllegalUsageException('This method can only be called on a WorldVector3')
-
         this.divideScalar(50)
 
-        Math.round(this.setComponent(0, Math.round(this.x)))
-        Math.round(this.setComponent(1, Math.floor(this.y)))
-        Math.round(this.setComponent(2, Math.round(this.z)))
+        this.setComponent(0, Math.round(this.x))
+        this.setComponent(1, Math.floor(this.y))
+        this.setComponent(2, Math.round(this.z))
 
         this.isGridPos = true
         this.isWorldPos = false
@@ -84,9 +81,6 @@ var VoxelUtils = (function(window, undefined) {
      * @memberOf! VoxelUtils
      */
     THREE.Vector3.prototype.gridToWorld = function() {
-
-        if (!this.isGridPos)
-            throw new Validation.IllegalUsageException('This method can only be called on a GridVector3')
 
         this.multiplyScalar(50)
         this.setComponent(1, this.y + 25)
@@ -155,9 +149,6 @@ var VoxelUtils = (function(window, undefined) {
      */
     function coordStrParse(coordStr) {
 
-        if (!coordStr.isCoordStr())
-            throw new Validation.IllegalArgumentException("Argument must be in the format 'x0y0z0")
-
         var xreg = /x[-]*\d+/,
             yreg = /y[-]*\d+/,
             zreg = /z[-]*\d+/
@@ -181,11 +172,6 @@ var VoxelUtils = (function(window, undefined) {
      * @returns {VoxelUtils.coordStr} Grid coordinate string
      */
     function getCoordStr(gPos) {
-
-        if (!gPos.hasOwnProperty("x") ||
-            !gPos.hasOwnProperty("y") ||
-            !gPos.hasOwnProperty("z"))
-            throw new Validation.IllegalArgumentException("Argument must have attributes x, y, and z defined")
 
         return "x" + gPos.x + "y" + gPos.y + "z" + gPos.z
     }
@@ -217,9 +203,6 @@ var VoxelUtils = (function(window, undefined) {
      * @return {THREE.Mesh} The threejs voxel mesh
      */
     function initVoxel(args) {
-
-        if (!args || !args.hasOwnProperty("gPos") || !args.gPos.isGridPos)
-            throw new Validation.IllegalArgumentException("args.gPos must be defined and a THREE.Vector3 grid position")
 
         var wPos = args.gPos.clone()
         wPos.gridToWorld()
@@ -264,6 +247,7 @@ var VoxelUtils = (function(window, undefined) {
     /**************************************/
 
     return {
+
         coordStrParse: coordStrParse,
         getCoordStr: getCoordStr,
         initVoxel: initVoxel,

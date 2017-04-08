@@ -75,6 +75,10 @@ var Keys = function(window, undefined) {
 
     }
 
+    function ctrlUp() {
+        
+    }
+
     function shiftUp() {
 
     }

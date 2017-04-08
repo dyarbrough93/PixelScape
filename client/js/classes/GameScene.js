@@ -42,6 +42,8 @@ var GameScene = function(window, undefined) {
         scene = new THREE.Scene()
         container = document.getElementById('container')
 
+        var gridConfig = Config.getGrid()
+
         ;
         (function _initCamera() {
 
@@ -68,7 +70,7 @@ var GameScene = function(window, undefined) {
             }
 
             renderer = new THREE.WebGLRenderer({
-                antialias: true
+                antialias: false
             })
             renderer.setClearColor(config.clearColor)
             renderer.sortObjects = false
@@ -88,22 +90,24 @@ var GameScene = function(window, undefined) {
         ;
         (function _initMeshes() {
 
-            var gridSize = Config.getGrid().size
+            var gridSize = gridConfig.size
+            var blockSize = gridConfig.blockSize
 
-            var geometry = new THREE.PlaneGeometry(gridSize * 2 + 50, gridSize * 2 + 50)
-            geometry.rotateX(-Math.PI / 2)
+            var stdSideLen = gridSize * 2 + blockSize
+
+            var nullMat = new THREE.MeshBasicMaterial({
+                visible: false
+            })
 
             // this is the plane the voxels are actually placed on.
             ;
             (function _initVoxelPlane() {
 
-                var voxelPlane = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
-                    color: "#ffffff",
-                    visible: false,
-                    opacity: 1
-                }))
+                var voxGeom = new THREE.PlaneGeometry(stdSideLen, stdSideLen)
+                voxGeom.rotateX(-Math.PI / 2)
 
-                voxelPlane.name = "plane"
+                var voxelPlane = new THREE.Mesh(voxGeom, nullMat)
+                voxelPlane.name = 'plane'
 
                 scene.add(voxelPlane)
                 Raycast.add(voxelPlane)
@@ -115,16 +119,15 @@ var GameScene = function(window, undefined) {
             ;
             (function _floorPlane() {
 
-                var floorGeo = new THREE.PlaneGeometry(gridSize * 2 + 50, gridSize * 2 + 50)
-                floorGeo.rotateX(-Math.PI / 2)
-                floorGeo.translate(0, -25, 0)
+                var floorGeom = new THREE.PlaneGeometry(stdSideLen, stdSideLen)
+                floorGeom.rotateX(-Math.PI / 2)
+                floorGeom.translate(0, -25, 0)
 
-                var floorPlane = new THREE.Mesh(floorGeo, new THREE.MeshBasicMaterial({
-                    color: "#000000",
-                    visible: true,
-                    transparent: true,
-                    opacity: 0.045
-                }))
+                var floorMat = new THREE.MeshBasicMaterial({
+                    color: '#f5f5f5'
+                })
+
+                var floorPlane = new THREE.Mesh(floorGeom, floorMat)
 
                 scene.add(floorPlane)
 
@@ -135,15 +138,12 @@ var GameScene = function(window, undefined) {
             ;
             (function _initControlsPlane() {
 
-                var controlGeo = new THREE.PlaneGeometry(gridSize * 40, gridSize * 40)
-                controlGeo.rotateX(-Math.PI / 2)
+                var ctrlGeom = new THREE.PlaneGeometry(gridSize * 40, gridSize * 40)
+                ctrlGeom.rotateX(-Math.PI / 2)
 
-                mapControlsPlane = new THREE.Mesh(controlGeo, new THREE.MeshBasicMaterial({
-                    color: '#ffff00',
-                    visible: false
-                }))
+                mapControlsPlane = new THREE.Mesh(ctrlGeom, nullMat)
 
-                mapControlsPlane.name = "plane"
+                mapControlsPlane.name = 'plane'
 
                 scene.add(mapControlsPlane)
 
@@ -154,20 +154,18 @@ var GameScene = function(window, undefined) {
             ;
             (function _initRegionSelectPlane() {
 
-                var spssp = Config.getGrid().sqPerSideOfSelectPlane
+                var spssp = gridConfig.sqPerSideOfSelectPlane
 
-                var geo = new THREE.PlaneGeometry(50 * spssp, 50 * spssp),
-                    mat = new THREE.MeshBasicMaterial({
-                        color: "#008cff",
-                        opacity: 0.10,
-                        transparent: true,
-                        visible: true
-                    })
+                var selGeom = new THREE.PlaneGeometry(blockSize * spssp, blockSize * spssp)
+                selGeom.rotateX(-Math.PI / 2)
 
-                geo.rotateX(-Math.PI / 2)
-                geo.translate(0, -25, 0)
+                var selMat = new THREE.MeshBasicMaterial({
+                    color: '#008cff',
+                    transparent: true,
+                    opacity: 0.10
+                })
 
-                regionSelectPlane = new THREE.Mesh(geo, mat)
+                regionSelectPlane = new THREE.Mesh(selGeom, selMat)
 
                 scene.add(regionSelectPlane)
 
@@ -182,7 +180,9 @@ var GameScene = function(window, undefined) {
             ;
             (function _initGhostVoxel() {
 
-                var ghostGeo = new THREE.CubeGeometry(50, 50, 50)
+                var blockSize = Config.getGrid().blockSize
+
+                var ghostGeo = new THREE.CubeGeometry(blockSize, blockSize, blockSize)
 
                 var ghostMaterial = new THREE.MeshBasicMaterial({
                     color: GUI.getBlockColor(),
@@ -200,7 +200,7 @@ var GameScene = function(window, undefined) {
             // cube rendered over voxel when hovered and shift is held
             (function _initDeleteVoxel() {
 
-                var redXTexture = new THREE.ImageUtils.loadTexture("img/redx.png")
+                var redXTexture = new THREE.ImageUtils.loadTexture('img/redx.png')
 
                 var deleteGeo = new THREE.CubeGeometry(51, 51, 51)
                 var deleteMat = new THREE.MeshPhongMaterial({
@@ -238,7 +238,7 @@ var GameScene = function(window, undefined) {
 
         camera.aspect = window.innerWidth / window.innerHeight
         camera.updateProjectionMatrix()
-
+        
         renderer.setSize(window.innerWidth, window.innerHeight)
 
     }
@@ -246,6 +246,15 @@ var GameScene = function(window, undefined) {
     function render() {
 
         renderer.render(scene, camera)
+
+    }
+
+    function moveRegionSelectPlane(planeIntx) {
+
+        regionSelectPlane.position.copy(planeIntx.point).add(planeIntx.face.normal).initWorldPos()
+        regionSelectPlane.position.snapToGrid()
+
+        render()
 
     }
 
@@ -302,6 +311,7 @@ var GameScene = function(window, undefined) {
         getMapControlsPlane: getMapControlsPlane,
         getVoxelPlane: getVoxelPlane,
         getRegionSelectPlane: getRegionSelectPlane,
+        moveRegionSelectPlane: moveRegionSelectPlane,
         getGhostMesh: getGhostMesh,
         getDeleteMesh: getDeleteMesh,
         getPSystem: getPSystem,

@@ -7,6 +7,7 @@ var Config = function(window, undefined) {
             "chatDelay": 3
         },
         "grid": {
+            "blockSize": 50,
             "sqPerSideOfSelectPlane": 351,
             "sqPerSideOfSection": 151,
             "sectionsPerSide": 17,

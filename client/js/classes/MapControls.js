@@ -23,7 +23,6 @@
      }
 
     // internals
-    var scope = this
     var EPS = 0.000001
     var rotateStart = new THREE.Vector2()
     var rotateEnd = new THREE.Vector2()
@@ -49,11 +48,11 @@
         camMiny = 100,
         camMaxy = 200000
 
-    this.update = function() {
+    function update() {
 
         if (lastPosition.distanceTo(camera.position) > 0) {
 
-            render()
+            GameScene.render()
             lastPosition.copy(camera.position)
 
         }
@@ -67,10 +66,9 @@
 
     function onMouseDown(event) {
 
-        if (enabled === false) {
+        if (!enabled) {
             return
         }
-        //event.preventDefault()
 
         if (event.button === 1) {
 
@@ -148,7 +146,7 @@
 
                 camera.position.addVectors(camera.position, delta)
 
-                scope.update()
+                update()
 
             }
 
@@ -157,8 +155,8 @@
             rotateEnd.set(event.clientX, event.clientY)
             rotateDelta.subVectors(rotateEnd, rotateStart)
 
-            thetaDelta -= 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed
-            phiDelta -= 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed
+            thetaDelta -= 2 * Math.PI * rotateDelta.x / element.clientWidth * config.rotateSpeed
+            phiDelta -= 2 * Math.PI * rotateDelta.y / element.clientHeight * config.rotateSpeed
 
             var position = camera.position
             var offset = position.clone().sub(target)
@@ -173,7 +171,7 @@
             phi += phiDelta
 
             // restrict phi to be between desired limits
-            phi = Math.max(scope.minPolarAngle, Math.min(scope.maxPolarAngle, phi))
+            phi = Math.max(config.minPolarAngle, Math.min(config.maxPolarAngle, phi))
 
             // restrict phi to be betwee EPS and PI-EPS
             phi = Math.max(EPS, Math.min(Math.PI - EPS, phi))
@@ -181,7 +179,7 @@
             var radius = offset.length()
 
             // restrict radius to be between desired limits
-            radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, radius))
+            radius = Math.max(config.minDistance, Math.min(config.maxDistance, radius))
 
             offset.x = radius * Math.sin(phi) * Math.sin(theta)
             offset.y = radius * Math.cos(phi)
@@ -195,6 +193,8 @@
             phiDelta = 0
 
             rotateStart.copy(rotateEnd)
+
+            update()
 
         }
 
@@ -230,7 +230,7 @@
         var zoomOffset = new THREE.Vector3()
         var te = camera.matrix.elements
         zoomOffset.set(te[8], te[9], te[10])
-        zoomOffset.multiplyScalar(delta * -scope.zoomSpeed * camera.position.y / 1000)
+        zoomOffset.multiplyScalar(delta * -config.zoomSpeed * camera.position.y / 1000)
 
         var pos = camera.position.clone()
         pos.addVectors(pos, zoomOffset)
@@ -243,25 +243,18 @@
             (pos.z > camMaxxz && pos.z > camera.position.z)) return
 
         camera.position.addVectors(camera.position, zoomOffset)
+        update()
 
     }
 
-    $(document).on('modalOpened', function() {
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault()
+    }, false)
+    document.addEventListener('mousedown', onMouseDown, false)
+    document.addEventListener('wheel', onMouseWheel, false)
 
-      document.removeEventListener('contextmenu', function(event) {
-          event.preventDefault()
-      }, false)
-      document.removeEventListener('mousedown', onMouseDown, false)
-      document.removeEventListener('wheel', onMouseWheel, false)
-
-    })
-
-    $(document).on('modalClosed', function() {
-        document.addEventListener('contextmenu', function(event) {
-            event.preventDefault()
-        }, false)
-        document.addEventListener('mousedown', onMouseDown, false)
-        document.addEventListener('wheel', onMouseWheel, false)
-    })
+    return {
+        init: init
+    }
 
 }()

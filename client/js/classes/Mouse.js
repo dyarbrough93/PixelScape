@@ -72,11 +72,11 @@ var Mouse = function(window, undefined) {
 
         e.preventDefault()
 
-        var intersect = getIntersect(e)
+        var intersect = getMouseIntersects(e).closestIntx
 
         if (intersect) {
 
-            var intxGPos = intersect.point().clone().initWorldPos()
+            var intxGPos = intersect.point.clone().initWorldPos()
             intxGPos = intxGPos.add(intersect.face.normal).worldToGrid()
 
             if (UserState.modeIsEdit()) {
@@ -109,10 +109,8 @@ var Mouse = function(window, undefined) {
 
         e.preventDefault()
 
-        pos.clientX = e.clientX
-        pos.clientY = e.clientY
-
-        var intersect = getIntersect(e)
+        var intersects = getMouseIntersects(e)
+        var intersect = intersects.closestIntx
 
         if (intersect) {
 
@@ -133,32 +131,48 @@ var Mouse = function(window, undefined) {
 
                 }
 
+            } else if (UserState.modeIsSelect()) {
+
+                var planeIntx = intersects.planeIntx
+
+                if (planeIntx) {
+
+                    GameScene.moveRegionSelectPlane(planeIntx)
+
+                }
+
             }
 
         }
 
     }
 
-    function getIntersect(e) {
+    function getMouseIntersects(e) {
 
         var camera = GameScene.getCamera()
 
-        pos.x = (e.clientX / window.innerWidth) * 2
-        pos.y = (e.clientY / window.innerHeight) * 2
+        pos.x = (e.clientX / window.innerWidth) * 2 - 1
+        pos.y = -(e.clientY / window.innerHeight) * 2 + 1
 
         var intersects = Raycast.getIntersects(pos, camera)
 
         var minDist = Number.MAX_VALUE
-        var intersect
+        var closestIntx
+        var planeIntx
 
         intersects.forEach(function(intx) {
             if (intx.distance < minDist) {
-                intersect = intx
+                closestIntx = intx
                 minDist = intx.distance
             }
+            if (intx.object.name === 'plane')
+                planeIntx = intx
         })
 
-        return intersect
+        return {
+            closestIntx: closestIntx,
+            planeIntx: planeIntx
+        }
 
     }
 

@@ -46,10 +46,10 @@ var UserState = function(window, undefined) {
         var x1 = intxGPos.x - spssp
         var x2 = intxGPos.x + spssp
         var z1 = intxGPos.z - spssp
-        var z2 = intxGpos.z + spssp
+        var z2 = intxGPos.z + spssp
 
-        var c1 = new THREE.Vector3(x1, p.y, z1).initGridPos()
-        var c2 = new THREE.Vector3(x2, p.y, z2).initGridPos()
+        var c1 = new THREE.Vector3(x1, 0, z1).initGridPos()
+        var c2 = new THREE.Vector3(x2, 0, z2).initGridPos()
 
         selectedRegion = {
             corner1: c1,
@@ -67,7 +67,8 @@ var UserState = function(window, undefined) {
         modeIsEdit: modeIsEdit,
         setDefaultState: setDefaultState,
         setPickState: setPickState,
-        getSelectedRegion: getSelectedRegion
+        getSelectedRegion: getSelectedRegion,
+        setSelectedRegion: setSelectedRegion
     }
 
 }(window)
