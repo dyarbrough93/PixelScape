@@ -3,7 +3,7 @@ var Main = function() {
   $(document).ready(function() {
 
     // initialize classes
-    Raycaster.init()
+    Raycast.init()
     GameScene.init()
     WorldData.init()
     EventRouting.init()

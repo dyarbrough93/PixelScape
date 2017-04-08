@@ -1,4 +1,4 @@
-var Raycaster = function(window, undefined) {
+var Raycast = function(window, undefined) {
 
     var raycastArr // array of THREE.js meshes to raycast against
     var raycaster
@@ -32,10 +32,16 @@ var Raycaster = function(window, undefined) {
 
     }
 
+    function getIntersects(pos, camera) {
+        raycaster.setFromCamera(pos, camera)
+        return raycaster.intersectObjects(raycastArr)
+    }
+
     return {
         init: init,
         add: add,
-        remove: remove
+        remove: remove,
+        getIntersects: getIntersects
     }
 
 }(window)

@@ -22,17 +22,27 @@ var UserState = function(window, undefined) {
 
     }
 
-    function getState() {
-        return state
+    function setDefaultState() {
+        state = states.DEFAULT
     }
 
-    function getMode() {
-        return mode
+    function setPickState() {
+        state = states.PICKCOLOR
+    }
+
+    function modeIsSelect() {
+        return mode === modes.SELECT
+    }
+
+    function modeIsEdit() {
+        return mode === modes.EDIT
     }
 
     return {
-        getState: getState,
-        getMode: getMode
+        modeIsSelect: modeIsSelect,
+        modeIsEdit: modeIsEdit,
+        setDefaultState: setDefaultState,
+        setPickState: setPickState
     }
 
 }(window)
