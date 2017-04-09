@@ -184,13 +184,52 @@ var VoxelUtils = (function(window, undefined) {
      */
     function getSectionIndices(gPos) {
 
-        var sqPerSGrid = GameScene.getSqPerSideOfGrid()
-        var sqPerSSect = GameScene.getSqPerSideOfSection()
+        var gridConfig = Config.getGrid()
+
+        var sqPerSGrid = gridConfig.sqPerSideOfGrid
+        var sqPerSSect = gridConfig.sqPerSideOfSection
 
         return new VoxelUtils.Tuple(
             Math.floor((gPos.x + sqPerSGrid / 2) / sqPerSSect),
             Math.floor((gPos.z + sqPerSGrid / 2) / sqPerSSect)
         )
+
+    }
+
+    /**
+     * Checks to see if a coordinate is within the bounds of the
+     * currently selected region.
+     * @memberOf! VoxelWorld
+     * @param {VoxelUtils.GridVector3} gPos Grid position to check
+     * @returns {boolean}
+     */
+    function withinSelectionBounds(gPos) {
+
+        var selectedRegion = UserState.getSelectedRegion()
+
+        return (gPos.x >= selectedRegion.corner1.x &&
+            gPos.z >= selectedRegion.corner1.z &&
+            gPos.x <= selectedRegion.corner2.x &&
+            gPos.z <= selectedRegion.corner2.z)
+
+    }
+
+    function validHeight(gPos) {
+
+        // too high?
+        if (gPos.y >= Config.get().maxVoxelHeight) {
+
+            if (!Keys.shiftDown() && !UserState.stateIsPick()) {
+                alert('Max height reached.')
+                return false
+            }
+
+        }
+
+        // too low?
+        if (gPos.y < 0) return false
+
+        return true
 
     }
 
@@ -248,6 +287,7 @@ var VoxelUtils = (function(window, undefined) {
 
     return {
 
+        withinSelectionBounds: withinSelectionBounds,
         coordStrParse: coordStrParse,
         getCoordStr: getCoordStr,
         initVoxel: initVoxel,

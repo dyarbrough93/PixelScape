@@ -11,9 +11,11 @@ var Main = function() {
         UserState.init()
         MapControls.init()
         PixVoxConversion.init()
+        BufMeshMgr.init()
 
-        retrieveData(function() {
+        retrieveData(function(data) {
 
+            WorldData.load(data)
             GameScene.render()
 
         })
@@ -55,7 +57,7 @@ var Main = function() {
             chunkData += '}'
             chunkData = JSON.parse(chunkData)
             console.log('done retrieving data')
-            cb()
+            cb(chunkData)
         })
     }
 

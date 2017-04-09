@@ -238,7 +238,7 @@ var GameScene = function(window, undefined) {
 
         camera.aspect = window.innerWidth / window.innerHeight
         camera.updateProjectionMatrix()
-        
+
         renderer.setSize(window.innerWidth, window.innerHeight)
 
     }
@@ -256,6 +256,14 @@ var GameScene = function(window, undefined) {
 
         render()
 
+    }
+
+    function setDeleteMeshVis(visible) {
+        deleteMesh.material.visible = visible
+    }
+
+    function addToScene(obj) {
+        scene.add(obj)
     }
 
     /******************Getters *************/
@@ -305,6 +313,8 @@ var GameScene = function(window, undefined) {
     return {
 
         init: init,
+        addToScene: addToScene,
+        setDeleteMeshVis: setDeleteMeshVis,
         getScene: getScene,
         getCamera: getCamera,
         getRenderer: getRenderer,

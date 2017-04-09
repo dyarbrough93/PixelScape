@@ -24,47 +24,10 @@ var Mouse = function(window, undefined) {
         if (e.which === 1) leftDown(e)
     }
 
-    function validHeight(pos) {
-
-        // too high?
-        if (pos.y >= Config.get().maxVoxelHeight) {
-
-            if (!Keys.shiftDown() && !UserState.stateIsPick()) {
-                alert('Max height reached.')
-                return false
-            }
-
-        }
-
-        // too low?
-        if (pos.y < 0) return false
-
-        return true
-
-    }
-
-    /**
-     * Checks to see if a coordinate is within the bounds of the
-     * currently selected region.
-     * @memberOf! VoxelWorld
-     * @param {VoxelUtils.GridVector3} gPos Grid position to check
-     * @returns {boolean}
-     */
-    function withinSelectionBounds(gPos) {
-
-        var selectedRegion = UserState.getSelectedRegion()
-
-        return (gPos.x >= selectedRegion.corner1.x &&
-            gPos.z >= selectedRegion.corner1.z &&
-            gPos.x <= selectedRegion.corner2.x &&
-            gPos.z <= selectedRegion.corner2.z)
-
-    }
-
     function validEdit(intxGPos) {
 
-        return validHeight(intxGPos) &&
-            withinSelectionBounds(intxGPos)
+        return VoxelUtils.validHeight(intxGPos) &&
+            VoxelUtils.withinSelectionBounds(intxGPos)
 
     }
 
@@ -98,6 +61,7 @@ var Mouse = function(window, undefined) {
                 UserState.setSelectedRegion(intxGPos)
                 var region = UserState.getSelectedRegion()
                 PixVoxConversion.convertToVoxels(region)
+                UserState.setEditMode()
 
             }
 

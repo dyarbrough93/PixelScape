@@ -6,6 +6,10 @@ var Config = function(window, undefined) {
             "actionDelay": 0.4,
             "chatDelay": 3
         },
+        "convert": {
+            "warnThreshold": 15000,
+            "errorThreshold": 30000
+        },
         "grid": {
             "blockSize": 50,
             "sqPerSideOfSelectPlane": 351,
@@ -32,6 +36,10 @@ var Config = function(window, undefined) {
         return settings.general
     }
 
+    function getConvert() {
+        return settings.convert
+    }
+
     function getGrid() {
         return settings.grid
     }
@@ -43,6 +51,7 @@ var Config = function(window, undefined) {
     return {
         get: get,
         getGeneral: getGeneral,
+        getConvert: getConvert,
         getGrid: getGrid,
         getMapControls: getMapControls
     }

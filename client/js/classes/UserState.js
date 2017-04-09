@@ -31,6 +31,14 @@ var UserState = function(window, undefined) {
         state = states.PICKCOLOR
     }
 
+    function setEditMode() {
+        mode = modes.EDIT
+    }
+
+    function setSelectMode() {
+        mode = modes.SELECT
+    }
+
     function modeIsSelect() {
         return mode === modes.SELECT
     }
@@ -66,6 +74,8 @@ var UserState = function(window, undefined) {
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
         setDefaultState: setDefaultState,
+        setEditMode: setEditMode,
+        setSelectMode: setSelectMode,
         setPickState: setPickState,
         getSelectedRegion: getSelectedRegion,
         setSelectedRegion: setSelectedRegion

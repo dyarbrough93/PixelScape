@@ -27,6 +27,10 @@ me.client = {
         actionDelay: me.server.actionDelay,
         chatDelay: me.server.chatDelay
     },
+    convert: {
+        warnThreshold: 15000,
+        errorThreshold: 30000
+    },
     grid: {
         blockSize: 50, // even
         sqPerSideOfSelectPlane: 351, // must be odd
