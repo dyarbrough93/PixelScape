@@ -62,12 +62,17 @@ var Keys = function(window, undefined) {
         }
 
     }
+    
+    function escDown(e) {
 
-    function shiftDown() {
-        return keyStates.shiftDown
-    }
+      if (UserState.modeIsEdit()) {
 
-    function escDown() {
+        UserState.setSelectMode()
+        UserState.resetSelectedRegion()
+        PixVoxConversion.convertToPixels()
+        GameScene.setGhostMeshVis(false)
+
+      }
 
     }
 
@@ -76,7 +81,7 @@ var Keys = function(window, undefined) {
     }
 
     function ctrlUp() {
-        
+
     }
 
     function shiftUp() {

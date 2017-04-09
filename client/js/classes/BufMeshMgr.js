@@ -137,13 +137,11 @@ var BufMeshMgr = function(window, undefined) {
      * Object used to manage the game's buffer mesh
      * @constructor
      * @param {number} size Number of spaces to initialize the bufferattributes with
-     * @param {THREE.Scene} scene Scene this mesh is attached to
      */
-    function createBufMesh(size, scene) {
+    function createBufMesh(size) {
 
         bufObj = {
             size: size,
-            scene: scene,
             geom: new THREE.BufferGeometry(),
             mat: new THREE.MeshPhongMaterial({
                 vertexColors: THREE.VertexColors
@@ -153,9 +151,9 @@ var BufMeshMgr = function(window, undefined) {
                 this.mesh = new THREE.Mesh(this.geom, this.mat)
                 this.mesh.name = 'BufferMesh'
 
-                this.geom.addAttribute('position', new THREE.BufferAttribute(new Float32Array(this._size * bufVerts.length), 3))
-                this.geom.addAttribute('color', new THREE.BufferAttribute(new Float32Array(this._size * bufVerts.length), 3))
-                this.geom.addAttribute('normal', new THREE.BufferAttribute(new Float32Array(this._size * bufVerts.length), 3))
+                this.geom.addAttribute('position', new THREE.BufferAttribute(new Float32Array(this.size * bufVerts.length), 3))
+                this.geom.addAttribute('color', new THREE.BufferAttribute(new Float32Array(this.size * bufVerts.length), 3))
+                this.geom.addAttribute('normal', new THREE.BufferAttribute(new Float32Array(this.size * bufVerts.length), 3))
 
                 return this
             }
@@ -216,22 +214,6 @@ var BufMeshMgr = function(window, undefined) {
         bufAttrs.normal.needsUpdate = true
         bufAttrs.color.needsUpdate = true
 
-    }
-
-    /**
-     * Adds the buffer mesh to the scene.
-     * @memberOf BufMeshObj
-     */
-    function addToScene() {
-        bufMesh.scene.add(bufMesh.mesh)
-    }
-
-    /**
-     * Removes the buffer mesh from the scene.
-     * @memberOf BufMeshObj
-     */
-    function removeFromScene() {
-        bufMesh.scene.remove(bufMesh.mesh)
     }
 
     /**

@@ -56,7 +56,7 @@ var PixVoxConversion = function(window, undefined) {
         var warnThresh = convConfig.warnThreshold
         var errThresh = convConfig.errorThreshold
 
-        if (numConverting > warnThresh) {
+        if (numConverting >= warnThresh && numConverting < errThresh) {
 
             alert("warning: converting " + numConverting + " voxels could cause performance issues")
 
@@ -94,7 +94,7 @@ var PixVoxConversion = function(window, undefined) {
 
         var worldData = WorldData.getWorldData()
 
-        var i
+        var i = 0
         var bufVertsLen = BufMeshMgr.getBufVertsLen()
         convertedVoxels.forEach(function(voxPos) {
 
@@ -108,10 +108,11 @@ var PixVoxConversion = function(window, undefined) {
 
             // vvv black magic, don't touch
             if (i === 0) console.log(wPos)
+            // ^^^ somehow fixes raycast lag
 
             BufMeshMgr.addVoxel(i, wPos, tColor)
 
-            //hidePixel(currVox, sid)
+            hidePixel(currVox, sid)
 
             currVox.bIdx = i
 
@@ -131,7 +132,7 @@ var PixVoxConversion = function(window, undefined) {
         constrainRegion(region)
         addToConvertedVoxels(region)
 
-        var numCubes
+        var numCubes = convertedVoxels.length
         if (validNumConverting(numCubes)) {
 
             BufMeshMgr.createBufMesh(numCubes, GameScene.getScene())
@@ -142,9 +143,14 @@ var PixVoxConversion = function(window, undefined) {
 
     }
 
+    function convertToPixels() {
+
+    }
+
     return {
         init: init,
-        convertToVoxels: convertToVoxels
+        convertToVoxels: convertToVoxels,
+        convertToPixels: convertToPixels
     }
 
 }()

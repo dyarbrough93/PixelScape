@@ -50,7 +50,7 @@ var Mouse = function(window, undefined) {
 
                     if (UserState.stateIsPick())
                         GUI.setPickColor(intersect)
-                    else if (Keys.shiftDown())
+                    else if (Keys.isShiftDown())
                         GameScene.deleteVoxel(intersect)
                     else GameScene.createVoxel(intersect)
 
@@ -58,7 +58,7 @@ var Mouse = function(window, undefined) {
 
             } else if (UserState.modeIsSelect()) {
 
-                UserState.setSelectedRegion(intxGPos)
+                UserState.setSelectedRegion(intersect)
                 var region = UserState.getSelectedRegion()
                 PixVoxConversion.convertToVoxels(region)
                 UserState.setEditMode()
@@ -83,7 +83,7 @@ var Mouse = function(window, undefined) {
                 if (intersect.object.name === 'plane')
                     GameScene.setDeleteMeshVis(false)
 
-                else if (Keys.shiftDown()) {
+                else if (Keys.isShiftDown()) {
 
                     GameScene.setDeleteMeshVis(true)
                     GameScene.setDeleteMeshPos(intersect)

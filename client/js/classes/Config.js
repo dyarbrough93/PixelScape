@@ -12,7 +12,7 @@ var Config = function(window, undefined) {
         },
         "grid": {
             "blockSize": 50,
-            "sqPerSideOfSelectPlane": 351,
+            "sqPerSideOfSelectPlane": 151,
             "sqPerSideOfSection": 151,
             "sectionsPerSide": 17,
             "sqPerSideOfGrid": 2566,

@@ -189,7 +189,7 @@ var VoxelUtils = (function(window, undefined) {
         var sqPerSGrid = gridConfig.sqPerSideOfGrid
         var sqPerSSect = gridConfig.sqPerSideOfSection
 
-        return new VoxelUtils.Tuple(
+        return new Tuple(
             Math.floor((gPos.x + sqPerSGrid / 2) / sqPerSSect),
             Math.floor((gPos.z + sqPerSGrid / 2) / sqPerSSect)
         )

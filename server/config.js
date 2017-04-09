@@ -33,7 +33,7 @@ me.client = {
     },
     grid: {
         blockSize: 50, // even
-        sqPerSideOfSelectPlane: 351, // must be odd
+        sqPerSideOfSelectPlane: 151, // must be odd
         sqPerSideOfSection: 151, // must be odd
         sectionsPerSide: 17,
         init: function() {

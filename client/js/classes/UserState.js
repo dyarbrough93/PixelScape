@@ -47,14 +47,17 @@ var UserState = function(window, undefined) {
         return mode === modes.EDIT
     }
 
-    function setSelectedRegion(intxGPos) {
+    function setSelectedRegion(intersect) {
 
-        var spssp = Config.getGrid().sqPerSideOfSelectPlane
+        var gPos = intersect.point.clone().initWorldPos()
+        gPos.add(intersect.face.normal).worldToGrid()
 
-        var x1 = intxGPos.x - spssp
-        var x2 = intxGPos.x + spssp
-        var z1 = intxGPos.z - spssp
-        var z2 = intxGPos.z + spssp
+        var halfSpssp = (Config.getGrid().sqPerSideOfSelectPlane - 1) / 2
+
+        var x1 = gPos.x - halfSpssp
+        var x2 = gPos.x + halfSpssp
+        var z1 = gPos.z - halfSpssp
+        var z2 = gPos.z + halfSpssp
 
         var c1 = new THREE.Vector3(x1, 0, z1).initGridPos()
         var c2 = new THREE.Vector3(x2, 0, z2).initGridPos()
@@ -69,6 +72,10 @@ var UserState = function(window, undefined) {
         return selectedRegion
     }
 
+    function resetSelectedRegion() {
+      selectedRegion = undefined
+    }
+
     return {
         init: init,
         modeIsSelect: modeIsSelect,
@@ -78,7 +85,8 @@ var UserState = function(window, undefined) {
         setSelectMode: setSelectMode,
         setPickState: setPickState,
         getSelectedRegion: getSelectedRegion,
-        setSelectedRegion: setSelectedRegion
+        setSelectedRegion: setSelectedRegion,
+        resetSelectedRegion: resetSelectedRegion
     }
 
 }(window)

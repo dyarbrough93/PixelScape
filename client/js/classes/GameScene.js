@@ -70,7 +70,7 @@ var GameScene = function(window, undefined) {
             }
 
             renderer = new THREE.WebGLRenderer({
-                antialias: false
+                antialias: true
             })
             renderer.setClearColor(config.clearColor)
             renderer.sortObjects = false
@@ -84,6 +84,10 @@ var GameScene = function(window, undefined) {
 
             var ambientLight = new THREE.AmbientLight(0x606060)
             scene.add(ambientLight)
+
+            var directionalLight = new THREE.DirectionalLight(0xffffff)
+            directionalLight.position.set(1, 0.75, 0.5).normalize()
+            scene.add(directionalLight)
 
         })()
 
@@ -262,6 +266,10 @@ var GameScene = function(window, undefined) {
         deleteMesh.material.visible = visible
     }
 
+    function setGhostMeshVis(visible) {
+        ghostMesh.material.visible = visible
+    }
+
     function addToScene(obj) {
         scene.add(obj)
     }
@@ -315,6 +323,7 @@ var GameScene = function(window, undefined) {
         init: init,
         addToScene: addToScene,
         setDeleteMeshVis: setDeleteMeshVis,
+        setGhostMeshVis: setGhostMeshVis,
         getScene: getScene,
         getCamera: getCamera,
         getRenderer: getRenderer,
