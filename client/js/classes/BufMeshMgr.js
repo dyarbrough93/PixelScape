@@ -220,17 +220,17 @@ var BufMeshMgr = function(window, undefined) {
      * De-initializes all properties and frees associated memory.
      * @memberOf BufMeshObj
      */
-    function destroy() {
+    function destroyBufMesh() {
 
-        bufMesh.geom.removeAttribute('position')
-        bufMesh.geom.removeAttribute('normal')
-        bufMesh.geom.removeAttribute('color')
-        bufMesh.geom.attributes = undefined
+        bufObj.geom.removeAttribute('position')
+        bufObj.geom.removeAttribute('normal')
+        bufObj.geom.removeAttribute('color')
+        bufObj.geom.attributes = undefined
 
-        bufMesh.geom.dispose()
-        bufMesh.mat.dispose()
+        bufObj.geom.dispose()
+        bufObj.mat.dispose()
 
-        bufMesh.mesh = undefined
+        bufObj.mesh = undefined
 
     }
 
@@ -244,6 +244,7 @@ var BufMeshMgr = function(window, undefined) {
 
     return {
         init: init,
+        destroyBufMesh: destroyBufMesh,
         createBufMesh: createBufMesh,
         getBufVertsLen: getBufVertsLen,
         getBufMesh: getBufMesh,

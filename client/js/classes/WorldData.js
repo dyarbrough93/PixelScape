@@ -81,8 +81,12 @@ var WorldData = function(window, undefined) {
      */
     function removeVoxel(sid, coord) {
 
-        delete voxels[sid.a][sid.b][coord]
+        delete worldData[sid.a][sid.b][coord]
 
+    }
+
+    function getVoxel(sid, coord) {
+        return worldData[sid.a][sid.b][coord]
     }
 
     function getWorldData() {
@@ -92,6 +96,8 @@ var WorldData = function(window, undefined) {
     return {
         init: init,
         load: load,
+        getVoxel: getVoxel,
+        addVoxel: addVoxel,
         getWorldData: getWorldData
     }
 

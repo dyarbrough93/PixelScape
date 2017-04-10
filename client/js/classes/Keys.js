@@ -62,7 +62,7 @@ var Keys = function(window, undefined) {
         }
 
     }
-    
+
     function escDown(e) {
 
       if (UserState.modeIsEdit()) {
@@ -74,6 +74,10 @@ var Keys = function(window, undefined) {
 
       }
 
+    }
+
+    function shiftDown() {
+        
     }
 
     function ctrlDown() {

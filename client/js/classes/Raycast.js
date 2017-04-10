@@ -23,7 +23,7 @@ var Raycast = function(window, undefined) {
      */
     function remove(mesh) {
 
-        for (var i = 0, len = raycastArr.len; i < len; i++) {
+        for (var i = 0, len = raycastArr.length; i < len; i++) {
             if (raycastArr[i] === mesh) {
                 raycastArr.splice(i, 1)
                 break

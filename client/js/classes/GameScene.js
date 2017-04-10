@@ -274,6 +274,10 @@ var GameScene = function(window, undefined) {
         scene.add(obj)
     }
 
+    function removeFromScene(obj) {
+        scene.remove(obj)
+    }
+
     /******************Getters *************/
 
     function getScene() {
@@ -322,6 +326,7 @@ var GameScene = function(window, undefined) {
 
         init: init,
         addToScene: addToScene,
+        removeFromScene: removeFromScene,
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
         getScene: getScene,

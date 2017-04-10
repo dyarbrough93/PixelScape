@@ -4,7 +4,7 @@ var PixVoxConversion = function(window, undefined) {
 
     function init() {
 
-        convertedVoxels = []
+        convertedVoxels = {}
 
     }
 
@@ -39,15 +39,21 @@ var PixVoxConversion = function(window, undefined) {
         var c1Sid = VoxelUtils.getSectionIndices(c1)
         var c2Sid = VoxelUtils.getSectionIndices(c2)
 
+        var numConverted = 0
+
         for (var x = c1Sid.a; x <= c2Sid.a; x++) {
             for (var z = c1Sid.b; z <= c2Sid.b; z++) {
                 for (var voxPos in worldData[x][z]) {
                     var gPos = VoxelUtils.coordStrParse(voxPos)
-                    if (VoxelUtils.withinSelectionBounds(gPos))
-                        convertedVoxels.push(voxPos)
+                    if (VoxelUtils.withinSelectionBounds(gPos)) {
+                        convertedVoxels[voxPos] = worldData[x][z][voxPos]
+                        numConverted++
+                    }
                 }
             }
         }
+
+        return numConverted
     }
 
     function validNumConverting(numConverting) {
@@ -64,7 +70,7 @@ var PixVoxConversion = function(window, undefined) {
 
             alert("error: converting " + numConverting + " voxels would cause performance issues")
             UserState.setSelectMode()
-            convertedVoxels = []
+            convertedVoxels = {}
             return false
 
         }
@@ -96,12 +102,13 @@ var PixVoxConversion = function(window, undefined) {
 
         var i = 0
         var bufVertsLen = BufMeshMgr.getBufVertsLen()
-        convertedVoxels.forEach(function(voxPos) {
+
+        for (var voxPos in convertedVoxels) {
 
             gPos = VoxelUtils.coordStrParse(voxPos).initGridPos()
             wPos = gPos.clone().gridToWorld()
             sid = VoxelUtils.getSectionIndices(gPos)
-            currVox = worldData[sid.a][sid.b][voxPos]
+            currVox = convertedVoxels[voxPos]
 
             var hColor = currVox.c
             var tColor = new THREE.Color(hColor)
@@ -111,14 +118,12 @@ var PixVoxConversion = function(window, undefined) {
             // ^^^ somehow fixes raycast lag
 
             BufMeshMgr.addVoxel(i, wPos, tColor)
-
             hidePixel(currVox, sid)
-
             currVox.bIdx = i
 
             i += bufVertsLen
 
-        })
+        }
 
         var bufMesh = BufMeshMgr.getBufMesh()
 
@@ -130,9 +135,8 @@ var PixVoxConversion = function(window, undefined) {
     function convertToVoxels(region) {
 
         constrainRegion(region)
-        addToConvertedVoxels(region)
+        var numCubes = addToConvertedVoxels(region)
 
-        var numCubes = convertedVoxels.length
         if (validNumConverting(numCubes)) {
 
             BufMeshMgr.createBufMesh(numCubes, GameScene.getScene())
@@ -143,7 +147,72 @@ var PixVoxConversion = function(window, undefined) {
 
     }
 
+    function addNewPixel(vox, gPos) {
+
+    }
+
     function convertToPixels() {
+
+        var i = 0
+        var worldData = WorldData.getWorldData()
+
+        var pSystemExpo = GameScene.getPSystemExpo()
+        var pSystem = GameScene.getPSystem()
+
+        for (var voxPos in convertedVoxels) {
+
+            // get basic info we need
+            var gPos = VoxelUtils.coordStrParse(voxPos)
+            gPos = new THREE.Vector3(gPos.x, gPos.y, gPos.z).initGridPos()
+            var wPos = gPos.clone().gridToWorld()
+
+            var sid = VoxelUtils.getSectionIndices(gPos)
+            var vox = WorldData.getVoxel(sid, voxPos)
+
+            if (vox) {
+
+                if (vox.isMesh) { // newly added in selected region
+
+                    var tColor = vox.material.color
+
+                    // add to particle system expo
+                    var pIdx = pSystemExpo.addPixel(gPos, tColor)
+                    var sid = VoxelUtils.getSectionIndices(gPos)
+                    var coordStr = VoxelUtils.getCoordStr()
+                    WorldData.addVoxel(sid, tColor.getHex(), pIdx, true, coordStr)
+
+                    // remove from scene and stop
+                    // raycasting against it
+                    GameScene.removeFromScene(vox)
+                    Raycast.remove(vox)
+
+                } else {
+
+                    if (vox.exp) { // part of particleSystemExpo
+                        pSystemExpo.showPixel(vox.pIdx)
+                    } else { // part of regular particleSystem
+                        pSystem.showPixel(sid, vox.pIdx)
+                    }
+
+                }
+
+            } else { // not defined
+                console.warn('convertedVoxels entry has no associated WorldData entry')
+                convertedVoxels.splice(i, 1)
+            }
+
+            i++
+
+        }
+
+        var bufMesh = BufMeshMgr.getBufMesh()
+        Raycast.remove(bufMesh)
+        GameScene.removeFromScene(bufMesh)
+        BufMeshMgr.destroyBufMesh()
+
+        convertedVoxels = {}
+
+        GameScene.render()
 
     }
 
