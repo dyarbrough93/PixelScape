@@ -29,7 +29,7 @@ var PixVoxConversion = function(window, undefined) {
 
     }
 
-    function addToConvertedVoxels(region) {
+    function addRegionToConvertedVoxels(region) {
 
         var worldData = WorldData.getWorldData()
 
@@ -135,7 +135,7 @@ var PixVoxConversion = function(window, undefined) {
     function convertToVoxels(region) {
 
         constrainRegion(region)
-        var numCubes = addToConvertedVoxels(region)
+        var numCubes = addRegionToConvertedVoxels(region)
 
         if (validNumConverting(numCubes)) {
 
@@ -173,12 +173,12 @@ var PixVoxConversion = function(window, undefined) {
 
                 if (vox.isMesh) { // newly added in selected region
 
-                    var tColor = vox.material.color
+                    var tColor = vox.geometry.faces[0].color
 
                     // add to particle system expo
                     var pIdx = pSystemExpo.addPixel(gPos, tColor)
                     var sid = VoxelUtils.getSectionIndices(gPos)
-                    var coordStr = VoxelUtils.getCoordStr()
+                    var coordStr = VoxelUtils.getCoordStr(gPos)
                     WorldData.addVoxel(sid, tColor.getHex(), pIdx, true, coordStr)
 
                     // remove from scene and stop
@@ -216,10 +216,16 @@ var PixVoxConversion = function(window, undefined) {
 
     }
 
+    function addToConvertedVoxels(sid, coord) {
+        var worldData = WorldData.getWorldData()
+        convertedVoxels[coord] = worldData[sid.a][sid.b][coord]
+    }
+
     return {
         init: init,
         convertToVoxels: convertToVoxels,
-        convertToPixels: convertToPixels
+        convertToPixels: convertToPixels,
+        addToConvertedVoxels: addToConvertedVoxels
     }
 
 }()

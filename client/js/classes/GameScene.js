@@ -70,7 +70,7 @@ var GameScene = function(window, undefined) {
             }
 
             renderer = new THREE.WebGLRenderer({
-                antialias: true
+                antialias: false
             })
             renderer.setClearColor(config.clearColor)
             renderer.sortObjects = false
@@ -92,7 +92,7 @@ var GameScene = function(window, undefined) {
         })()
 
         ;
-        (function _initMeshes() {
+        (function _initPlanes() {
 
             var gridSize = gridConfig.size
             var blockSize = gridConfig.blockSize
@@ -279,12 +279,12 @@ var GameScene = function(window, undefined) {
 
             setGhostMeshVis(true)
 
-            var gmp = ghostMesh.position
+            // var gmp = ghostMesh.position
 
-            gmp.copy(intersect.point)
-            gmp.add(intersect.face.normal)
-            gmp.initWorldPos()
-            gmp.snapToGrid()
+            ghostMesh.position.copy(intersect.point)
+            ghostMesh.position.add(intersect.face.normal)
+            ghostMesh.position.initWorldPos()
+            ghostMesh.position.snapToGrid()
 
         } else setGhostMeshVis(false)
 
@@ -296,6 +296,59 @@ var GameScene = function(window, undefined) {
 
     function removeFromScene(obj) {
         scene.remove(obj)
+    }
+
+    function createNewVoxel(gPos, hColor, emit) {
+
+        var voxelMesh = VoxelUtils.initVoxel({
+            color: hColor,
+            gPos: gPos
+        })
+
+        function addVoxelMesh() {
+
+            var sid = VoxelUtils.getSectionIndices(gPos)
+
+            var coordStr = VoxelUtils.getCoordStr(gPos)
+            console.log(coordStr)
+            WorldData.addMesh(sid, coordStr, voxelMesh)
+
+            Raycast.add(voxelMesh)
+            PixVoxConversion.addToConvertedVoxels(sid, coordStr)
+
+            scene.add(voxelMesh)
+            render()
+
+        }
+
+        if (emit) {
+            socket.emit('block added', {
+                color: hColor,
+                position: {
+                    x: gPos.x,
+                    y: gPos.y,
+                    z: gPos.z
+                }
+            }, function(response) {
+
+                if (response === 'success')
+                    addVoxelMesh()
+                else if (response === 'max')
+                    alert('maximum voxel limit reached.')
+
+            })
+        } else addVoxelMesh()
+    }
+
+    function createVoxel(intersect) {
+
+        var gPos = intersect.point
+        gPos.add(intersect.face.normal)
+        gPos.initWorldPos()
+        gPos.worldToGrid()
+
+        createNewVoxel(gPos, GUI.getBlockColor(), true)
+
     }
 
     /******************Getters *************/
@@ -350,6 +403,7 @@ var GameScene = function(window, undefined) {
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
         updateGhostMesh: updateGhostMesh,
+        createVoxel: createVoxel,
         getScene: getScene,
         getCamera: getCamera,
         getRenderer: getRenderer,

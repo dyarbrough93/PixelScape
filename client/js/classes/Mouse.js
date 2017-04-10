@@ -44,8 +44,6 @@ var Mouse = function(window, undefined) {
 
             if (UserState.modeIsEdit()) {
 
-            } else if (UserState.modeIsEdit()) {
-
                 if (validEdit(intxGPos)) {
 
                     if (UserState.stateIsPick())

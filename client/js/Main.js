@@ -3,6 +3,7 @@ var Main = function() {
     $(document).ready(function() {
 
         // initialize classes
+        GUI.init()
         Raycast.init()
         GameScene.init()
         WorldData.init()

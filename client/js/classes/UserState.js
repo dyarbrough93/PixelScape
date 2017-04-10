@@ -47,6 +47,10 @@ var UserState = function(window, undefined) {
         return mode === modes.EDIT
     }
 
+    function stateIsPick() {
+        return state === states.PICKCOLOR
+    }
+
     function setSelectedRegion(intersect) {
 
         var gPos = intersect.point.clone().initWorldPos()
@@ -80,6 +84,7 @@ var UserState = function(window, undefined) {
         init: init,
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
+        stateIsPick: stateIsPick,
         setDefaultState: setDefaultState,
         setEditMode: setEditMode,
         setSelectMode: setSelectMode,

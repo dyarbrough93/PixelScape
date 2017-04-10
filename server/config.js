@@ -33,9 +33,9 @@ me.client = {
     },
     grid: {
         blockSize: 50, // even
-        sqPerSideOfSelectPlane: 151, // must be odd
+        sqPerSideOfSelectPlane: 51, // must be odd
         sqPerSideOfSection: 151, // must be odd
-        sectionsPerSide: 17,
+        sectionsPerSide: 15,
         init: function() {
             // must be odd
             this.sqPerSideOfGrid = this.sqPerSideOfSection *
@@ -52,6 +52,10 @@ me.client = {
         zoomSpeed: 1.0,
         minDistance: 0,
         maxDistance: Number.MAX_VALUE,
+        camMinxz: -100000,
+        camMaxxz: 100000,
+        camMiny: 100,
+        camMaxy: 75000,
         rotateSpeed: 0.5,
         // How far you can orbit vertically, upper and lower limits.
         minPolarAngle: 0.05, // radians

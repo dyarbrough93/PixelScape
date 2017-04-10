@@ -243,10 +243,12 @@ var VoxelUtils = (function(window, undefined) {
      */
     function initVoxel(args) {
 
+        var blockSize = Config.getGrid().blockSize
+
         var wPos = args.gPos.clone()
         wPos.gridToWorld()
 
-        var geom = new THREE.BoxGeometry(50, 50, 50),
+        var geom = new THREE.BoxGeometry(blockSize, blockSize, blockSize),
             material = new THREE.MeshLambertMaterial({
                 vertexColors: THREE.VertexColors
             })
@@ -259,7 +261,7 @@ var VoxelUtils = (function(window, undefined) {
 
         var mesh = new THREE.Mesh(geom, material)
 
-        mesh.name = "Voxel"
+        mesh.name = "voxel"
         mesh.position.set(wPos.x, wPos.y, wPos.z)
         mesh.updateMatrix()
 
@@ -293,7 +295,8 @@ var VoxelUtils = (function(window, undefined) {
         initVoxel: initVoxel,
         countObjAttrs: countObjAttrs,
         Tuple: Tuple,
-        getSectionIndices: getSectionIndices
+        getSectionIndices: getSectionIndices,
+        validHeight: validHeight
 
     }
 

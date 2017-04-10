@@ -22,7 +22,7 @@ function init(done) {
             handleErr(err)
 
             // get the worldData collection
-            db.collection('worldData', function(err, dataCol) {
+            db.collection('testworldData', function(err, dataCol) {
 
                 handleErr(err)
                 done(opsCol, dataCol)

@@ -73,6 +73,10 @@ var WorldData = function(window, undefined) {
 
     }
 
+    function addMesh(sid, coord, mesh) {
+        worldData[sid.a][sid.b][coord] = mesh
+    }
+
     /**
      * Remove a voxel from worldData
      *
@@ -98,6 +102,7 @@ var WorldData = function(window, undefined) {
         load: load,
         getVoxel: getVoxel,
         addVoxel: addVoxel,
+        addMesh: addMesh,
         getWorldData: getWorldData
     }
 

@@ -63,7 +63,7 @@ WorldData.add = function(info, cb) {
             position: info.position
         }
     }, function(err) {
-        if (debErr(err)) return cb(false)
+        if (dbErr(err)) return cb(false)
 
         // insert into the data collection
         mongoDataCol.insertOne({

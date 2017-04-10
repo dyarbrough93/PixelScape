@@ -12,6 +12,12 @@
      var camera
      var config
 
+     // constraints
+     var camMinxz
+     var camMaxxz
+     var camMiny
+     var camMaxy
+
      function init() {
 
          enabled = true
@@ -19,6 +25,11 @@
          raycastPlane = GameScene.getMapControlsPlane()
          camera = GameScene.getCamera()
          config = Config.getMapControls()
+
+         camMinxz = config.camMinxz
+         camMaxxz = config.camMaxxz
+         camMiny  = config.camMiny
+         camMaxy  = config.camMaxy
 
      }
 
@@ -41,12 +52,6 @@
     var state = STATE.NONE
     var vector, projector, intersects,
         raycaster = new THREE.Raycaster()
-
-    // constraints
-    var camMinxz = -100000,
-        camMaxxz = 100000,
-        camMiny = 100,
-        camMaxy = 200000
 
     function update() {
 
