@@ -270,6 +270,26 @@ var GameScene = function(window, undefined) {
         ghostMesh.material.visible = visible
     }
 
+    function updateGhostMesh(intersect) {
+
+        var gPos = intersect.point.clone().initWorldPos()
+        gPos.add(intersect.face.normal).worldToGrid()
+
+        if (VoxelUtils.withinSelectionBounds(gPos)) {
+
+            setGhostMeshVis(true)
+
+            var gmp = ghostMesh.position
+
+            gmp.copy(intersect.point)
+            gmp.add(intersect.face.normal)
+            gmp.initWorldPos()
+            gmp.snapToGrid()
+
+        } else setGhostMeshVis(false)
+
+    }
+
     function addToScene(obj) {
         scene.add(obj)
     }
@@ -329,6 +349,7 @@ var GameScene = function(window, undefined) {
         removeFromScene: removeFromScene,
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
+        updateGhostMesh: updateGhostMesh,
         getScene: getScene,
         getCamera: getCamera,
         getRenderer: getRenderer,

@@ -80,6 +80,8 @@ var Mouse = function(window, undefined) {
 
             if (UserState.modeIsEdit()) {
 
+                GameScene.updateGhostMesh(intersect)
+
                 if (intersect.object.name === 'plane')
                     GameScene.setDeleteMeshVis(false)
 
@@ -91,7 +93,6 @@ var Mouse = function(window, undefined) {
                 } else {
 
                     GameScene.setGhostMeshVis(false)
-
 
                 }
 
@@ -108,6 +109,8 @@ var Mouse = function(window, undefined) {
             }
 
         }
+
+        GameScene.render()
 
     }
 
