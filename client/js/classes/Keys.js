@@ -77,19 +77,19 @@ var Keys = function(window, undefined) {
     }
 
     function shiftDown() {
-        
+        keyStates.shiftDown = true
     }
 
     function ctrlDown() {
-
+        keyStates.ctrlDown = true
     }
 
     function ctrlUp() {
-
+        keyStates.ctrlDown = false
     }
 
     function shiftUp() {
-
+        keyStates.shiftDown = false
     }
 
     function isShiftDown() {

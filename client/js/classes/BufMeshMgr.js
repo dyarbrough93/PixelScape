@@ -203,7 +203,7 @@ var BufMeshMgr = function(window, undefined) {
      */
     function removeVoxel(bIdx) {
 
-        var bufAttrs = bufMesh.geom.attributes
+        var bufAttrs = bufObj.geom.attributes
 
         for (var i = 0; i < 108; i++) {
             bufAttrs.color.array[bIdx + i] = 0
@@ -247,6 +247,7 @@ var BufMeshMgr = function(window, undefined) {
         destroyBufMesh: destroyBufMesh,
         createBufMesh: createBufMesh,
         getBufVertsLen: getBufVertsLen,
+        removeVoxel: removeVoxel,
         getBufMesh: getBufMesh,
         addVoxel: addVoxel
     }

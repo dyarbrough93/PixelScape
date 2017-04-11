@@ -261,7 +261,7 @@ var VoxelUtils = (function(window, undefined) {
 
         var mesh = new THREE.Mesh(geom, material)
 
-        mesh.name = "voxel"
+        mesh.name = 'voxel'
         mesh.position.set(wPos.x, wPos.y, wPos.z)
         mesh.updateMatrix()
 

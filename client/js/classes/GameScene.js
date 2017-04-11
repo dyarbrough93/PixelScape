@@ -65,14 +65,14 @@ var GameScene = function(window, undefined) {
         ;
         (function _initRenderer() {
 
-            var config = {
-                clearColor: 0xffffff
-            }
+            var {
+                clearColor
+            } = Config.getGeneral()
 
             renderer = new THREE.WebGLRenderer({
                 antialias: false
             })
-            renderer.setClearColor(config.clearColor)
+            renderer.setClearColor(clearColor)
             renderer.sortObjects = false
             renderer.setSize(window.innerWidth, window.innerHeight)
             container.appendChild(renderer.domElement)
@@ -162,6 +162,7 @@ var GameScene = function(window, undefined) {
 
                 var selGeom = new THREE.PlaneGeometry(blockSize * spssp, blockSize * spssp)
                 selGeom.rotateX(-Math.PI / 2)
+                selGeom.translate(0, -25, 0)
 
                 var selMat = new THREE.MeshBasicMaterial({
                     color: '#008cff',
@@ -279,14 +280,25 @@ var GameScene = function(window, undefined) {
 
             setGhostMeshVis(true)
 
-            // var gmp = ghostMesh.position
+            var gmp = ghostMesh.position
 
-            ghostMesh.position.copy(intersect.point)
-            ghostMesh.position.add(intersect.face.normal)
-            ghostMesh.position.initWorldPos()
-            ghostMesh.position.snapToGrid()
+            gmp.copy(intersect.point)
+            gmp.add(intersect.face.normal)
+            gmp.initWorldPos()
+            gmp.snapToGrid()
 
         } else setGhostMeshVis(false)
+
+    }
+
+    function updateDeleteMesh(intersect) {
+
+        var dmp = deleteMesh.position
+
+        dmp.copy(intersect.point)
+        dmp.sub(intersect.face.normal)
+        dmp.initWorldPos()
+        dmp.snapToGrid()
 
     }
 
@@ -296,59 +308,6 @@ var GameScene = function(window, undefined) {
 
     function removeFromScene(obj) {
         scene.remove(obj)
-    }
-
-    function createNewVoxel(gPos, hColor, emit) {
-
-        var voxelMesh = VoxelUtils.initVoxel({
-            color: hColor,
-            gPos: gPos
-        })
-
-        function addVoxelMesh() {
-
-            var sid = VoxelUtils.getSectionIndices(gPos)
-
-            var coordStr = VoxelUtils.getCoordStr(gPos)
-            console.log(coordStr)
-            WorldData.addMesh(sid, coordStr, voxelMesh)
-
-            Raycast.add(voxelMesh)
-            PixVoxConversion.addToConvertedVoxels(sid, coordStr)
-
-            scene.add(voxelMesh)
-            render()
-
-        }
-
-        if (emit) {
-            socket.emit('block added', {
-                color: hColor,
-                position: {
-                    x: gPos.x,
-                    y: gPos.y,
-                    z: gPos.z
-                }
-            }, function(response) {
-
-                if (response === 'success')
-                    addVoxelMesh()
-                else if (response === 'max')
-                    alert('maximum voxel limit reached.')
-
-            })
-        } else addVoxelMesh()
-    }
-
-    function createVoxel(intersect) {
-
-        var gPos = intersect.point
-        gPos.add(intersect.face.normal)
-        gPos.initWorldPos()
-        gPos.worldToGrid()
-
-        createNewVoxel(gPos, GUI.getBlockColor(), true)
-
     }
 
     /******************Getters *************/
@@ -403,7 +362,7 @@ var GameScene = function(window, undefined) {
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
         updateGhostMesh: updateGhostMesh,
-        createVoxel: createVoxel,
+        updateDeleteMesh: updateDeleteMesh,
         getScene: getScene,
         getCamera: getCamera,
         getRenderer: getRenderer,

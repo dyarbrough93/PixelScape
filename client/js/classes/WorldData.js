@@ -84,9 +84,7 @@ var WorldData = function(window, undefined) {
      * @param {VoxelUtils.coordStr} coord Coordinate string (grid coords)
      */
     function removeVoxel(sid, coord) {
-
         delete worldData[sid.a][sid.b][coord]
-
     }
 
     function getVoxel(sid, coord) {
@@ -103,7 +101,8 @@ var WorldData = function(window, undefined) {
         getVoxel: getVoxel,
         addVoxel: addVoxel,
         addMesh: addMesh,
-        getWorldData: getWorldData
+        getWorldData: getWorldData,
+        removeVoxel: removeVoxel
     }
 
 }()

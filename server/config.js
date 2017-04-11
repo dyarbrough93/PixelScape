@@ -25,7 +25,8 @@ me.client = {
     general: {
         maxVoxelHeight: me.server.maxVoxelHeight,
         actionDelay: me.server.actionDelay,
-        chatDelay: me.server.chatDelay
+        chatDelay: me.server.chatDelay,
+        clearColor: 0xffffff
     },
     convert: {
         warnThreshold: 15000,

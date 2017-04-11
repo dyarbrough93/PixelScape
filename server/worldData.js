@@ -107,7 +107,7 @@ WorldData.remove = function(pos, cb) {
                 position: pos
             }
         }, function(err) {
-            if (ebErr(err)) return cb(false)
+            if (dbErr(err)) return cb(false)
 
             // remove from the
             // data collection

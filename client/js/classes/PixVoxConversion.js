@@ -221,11 +221,16 @@ var PixVoxConversion = function(window, undefined) {
         convertedVoxels[coord] = worldData[sid.a][sid.b][coord]
     }
 
+    function removeFromConvertedVoxels(coord) {
+        delete convertedVoxels[coord]
+    }
+
     return {
         init: init,
         convertToVoxels: convertToVoxels,
         convertToPixels: convertToPixels,
-        addToConvertedVoxels: addToConvertedVoxels
+        addToConvertedVoxels: addToConvertedVoxels,
+        removeFromConvertedVoxels: removeFromConvertedVoxels
     }
 
 }()

@@ -49,8 +49,8 @@ var Mouse = function(window, undefined) {
                     if (UserState.stateIsPick())
                         GUI.setPickColor(intersect)
                     else if (Keys.isShiftDown())
-                        GameScene.deleteVoxel(intersect)
-                    else GameScene.createVoxel(intersect)
+                        ActionMgr.deleteVoxel(intersect)
+                    else ActionMgr.createVoxel(intersect)
 
                 }
 
@@ -64,6 +64,8 @@ var Mouse = function(window, undefined) {
             }
 
         }
+
+        GameScene.render()
 
     }
 
@@ -86,11 +88,7 @@ var Mouse = function(window, undefined) {
                 else if (Keys.isShiftDown()) {
 
                     GameScene.setDeleteMeshVis(true)
-                    GameScene.setDeleteMeshPos(intersect)
-
-                } else {
-
-                    GameScene.setGhostMeshVis(false)
+                    GameScene.updateDeleteMesh(intersect)
 
                 }
 
