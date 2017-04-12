@@ -276,22 +276,32 @@ var GameScene = function(window, undefined) {
         var gPos = intersect.point.clone().initWorldPos()
         gPos.add(intersect.face.normal).worldToGrid()
 
-        if (VoxelUtils.withinSelectionBounds(gPos)) {
+        if (!VoxelUtils.withinSelectionBounds(gPos) ||
+            Keys.isShiftDown()) {
+            setGhostMeshVis(false)
+            return
+        }
 
-            setGhostMeshVis(true)
+        setGhostMeshVis(true)
 
-            var gmp = ghostMesh.position
+        var gmp = ghostMesh.position
 
-            gmp.copy(intersect.point)
-            gmp.add(intersect.face.normal)
-            gmp.initWorldPos()
-            gmp.snapToGrid()
-
-        } else setGhostMeshVis(false)
+        gmp.copy(intersect.point)
+        gmp.add(intersect.face.normal)
+        gmp.initWorldPos()
+        gmp.snapToGrid()
 
     }
 
     function updateDeleteMesh(intersect) {
+
+        if (intersect.object.name === 'plane' ||
+            !Keys.isShiftDown()) {
+            setDeleteMeshVis(false)
+            return
+        }
+
+        setDeleteMeshVis(true)
 
         var dmp = deleteMesh.position
 

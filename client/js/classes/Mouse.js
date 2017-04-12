@@ -4,19 +4,22 @@ var Mouse = function(window, undefined) {
 
     function init() {
 
-        pos = new THREE.Vector2()
+        pos = {}
 
         addEventListeners()
 
     }
 
     function addEventListeners() {
-        document.addEventListener('mousemove', mouseMove)
+
+        // we are using a jQuery bind here so we can force
+        // trigger a mouseMove event from mouseDown
+        $(document).mousemove(mouseMove)
         document.addEventListener('mousedown', mouseDown)
     }
 
     function removeEventListenerers() {
-        document.removeEventListener('mousemove', mouseMove)
+        $(document).unbind('mousemove')
         document.removeEventListener('mousedown', mouseDown)
     }
 
@@ -28,6 +31,16 @@ var Mouse = function(window, undefined) {
 
         return VoxelUtils.validHeight(intxGPos) &&
             VoxelUtils.withinSelectionBounds(intxGPos)
+
+    }
+
+    function forceTriggerMouseMove() {
+
+        var e = $.Event('mousemove')
+        e.clientX = pos.clientX
+        e.clientY = pos.clientY
+
+        mouseMove(e)
 
     }
 
@@ -48,9 +61,15 @@ var Mouse = function(window, undefined) {
 
                     if (UserState.stateIsPick())
                         GUI.setPickColor(intersect)
-                    else if (Keys.isShiftDown())
-                        ActionMgr.deleteVoxel(intersect)
-                    else ActionMgr.createVoxel(intersect)
+                    else if (Keys.isShiftDown()) {
+                        ActionMgr.deleteVoxel(intersect, function() {
+                            forceTriggerMouseMove()
+                        })
+                    } else {
+                        ActionMgr.createVoxel(intersect, function() {
+                            forceTriggerMouseMove()
+                        })
+                    }
 
                 }
 
@@ -65,13 +84,14 @@ var Mouse = function(window, undefined) {
 
         }
 
-        GameScene.render()
-
     }
 
     function mouseMove(e) {
 
         e.preventDefault()
+
+        pos.clientX = e.clientX
+        pos.clientY = e.clientY
 
         var intersects = getMouseIntersects(e)
         var intersect = intersects.closestIntx
@@ -81,16 +101,7 @@ var Mouse = function(window, undefined) {
             if (UserState.modeIsEdit()) {
 
                 GameScene.updateGhostMesh(intersect)
-
-                if (intersect.object.name === 'plane')
-                    GameScene.setDeleteMeshVis(false)
-
-                else if (Keys.isShiftDown()) {
-
-                    GameScene.setDeleteMeshVis(true)
-                    GameScene.updateDeleteMesh(intersect)
-
-                }
+                GameScene.updateDeleteMesh(intersect)
 
             } else if (UserState.modeIsSelect()) {
 
@@ -146,7 +157,7 @@ var Mouse = function(window, undefined) {
     return {
         init: init,
         getPos: getPos,
-        mouseMove: mouseMove,
+        forceTriggerMouseMove: forceTriggerMouseMove,
         leftDown: leftDown
     }
 

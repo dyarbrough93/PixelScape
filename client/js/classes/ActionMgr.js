@@ -1,6 +1,6 @@
 var ActionMgr = function(window, undefined) {
 
-    function createNewVoxel(gPos, hColor, emit) {
+    function createNewVoxel(gPos, hColor, emit, done) {
 
         var voxelMesh = VoxelUtils.initVoxel({
             color: hColor,
@@ -12,7 +12,6 @@ var ActionMgr = function(window, undefined) {
             var sid = VoxelUtils.getSectionIndices(gPos)
 
             var coordStr = VoxelUtils.getCoordStr(gPos)
-            console.log(coordStr)
             WorldData.addMesh(sid, coordStr, voxelMesh)
 
             Raycast.add(voxelMesh)
@@ -20,6 +19,8 @@ var ActionMgr = function(window, undefined) {
 
             GameScene.addToScene(voxelMesh)
             GameScene.render()
+
+            done()
 
         }
 
@@ -42,14 +43,14 @@ var ActionMgr = function(window, undefined) {
         } else addVoxelMesh()
     }
 
-    function createVoxel(intersect) {
+    function createVoxel(intersect, done) {
 
         var gPos = intersect.point
         gPos.add(intersect.face.normal)
         gPos.initWorldPos()
         gPos.worldToGrid()
 
-        createNewVoxel(gPos, GUI.getBlockColor(), true)
+        createNewVoxel(gPos, GUI.getBlockColor(), true, done)
 
     }
 
@@ -118,7 +119,7 @@ var ActionMgr = function(window, undefined) {
 
     }
 
-    function deleteVoxel(intersect) {
+    function deleteVoxel(intersect, done) {
 
         var iobj = intersect.object
 
@@ -131,7 +132,10 @@ var ActionMgr = function(window, undefined) {
                 gPos.worldToGrid()
 
                 broadcastRemove(gPos, function(success) {
-                    if (success) deleteNewVoxel(gPos)
+                    if (success) {
+                        deleteNewVoxel(gPos)
+                        done()
+                    }
                 })
 
             } else {
@@ -141,7 +145,10 @@ var ActionMgr = function(window, undefined) {
                 gPos.worldToGrid()
 
                 broadcastRemove(gPos, function(success) {
-                    if (success) deleteMergedVoxel(gPos)
+                    if (success) {
+                        deleteMergedVoxel(gPos)
+                        done()
+                    }
                 })
 
             }

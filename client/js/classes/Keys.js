@@ -78,6 +78,7 @@ var Keys = function(window, undefined) {
 
     function shiftDown() {
         keyStates.shiftDown = true
+        Mouse.forceTriggerMouseMove()
     }
 
     function ctrlDown() {
@@ -90,6 +91,7 @@ var Keys = function(window, undefined) {
 
     function shiftUp() {
         keyStates.shiftDown = false
+        Mouse.forceTriggerMouseMove()
     }
 
     function isShiftDown() {
