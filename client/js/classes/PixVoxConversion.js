@@ -175,7 +175,6 @@ var PixVoxConversion = function(window, undefined) {
 
                     // add to particle system expo
                     var pIdx = pSystemExpo.addPixel(gPos, tColor)
-                    var sid = VoxelUtils.getSectionIndices(gPos)
                     var coordStr = VoxelUtils.getCoordStr(gPos)
                     // overwrite mesh with voxel entry
                     WorldData.addVoxel(sid, coordStr, tColor.getHex(), pIdx, true)

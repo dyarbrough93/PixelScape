@@ -1,10 +1,14 @@
 const generateClientConfig = require('./generateClientConfig.js')
+const _ = require('lodash')
 
-const serverConfig = {
+const sharedConfig = {
     maxVoxelHeight: 75,
     actionDelay: 0.4, // s
     chatDelay: 3, // s
     maxGlobalBlocks: 1000000,
+}
+
+const serverConfig = {
     dataChunkSize: 15000, // keys
     chunkInterval: 50, // ms
     maxClients: 1000
@@ -58,6 +62,9 @@ const clientConfig = {
         maxPolarAngle: Math.PI / 2.15 // radians
     }
 }
+
+_.merge(serverConfig, sharedConfig)
+_.merge(clientConfig.general, sharedConfig)
 
 module.exports = serverConfig
 

@@ -1,0 +1,15 @@
+{
+    "tags": {
+        "dictionaries": ["jsdoc"]
+    },
+    "source": {
+        "exclude": ["./client/js/lib"],
+        "includePattern": ".+\\.js$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}

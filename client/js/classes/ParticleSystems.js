@@ -57,9 +57,10 @@ var ParticleSystems = (function(window, undefined) {
             })
         )
 
+        var i
         if (double) {
             // copy over the old data
-            for (var i = 0, len = _this._size; i < len; i++) {
+            for (i = 0, len = _this._size; i < len; i++) {
                 var v = oldVertices[i],
                     c = oldColors[i]
                 _this._geom.vertices.push(new THREE.Vector3(v.x, v.y, v.z))
@@ -70,7 +71,7 @@ var ParticleSystems = (function(window, undefined) {
         if (double) _this._size *= 2
 
         // initialize blank array spaces (bug fix hack)
-        for (var i = 0, len = _this._size; i < len; i++) {
+        for (i = 0, len = _this._size; i < len; i++) {
             _this._geom.vertices.push(new THREE.Vector3(0, nullVal, 0))
             _this._geom.colors.push(new THREE.Color())
         }
@@ -86,6 +87,7 @@ var ParticleSystems = (function(window, undefined) {
     }
 
     PSystemExpansion.prototype = {
+
         /**
          * Adds a pixel to the particle system expansion
          * @instance
@@ -101,8 +103,8 @@ var ParticleSystems = (function(window, undefined) {
                 // @TODO: fix double size or find another solution
                 throw new Error('Too many expansion pixels.')
 
-                console.debug('resizing psystem')
-                this.doubleSize()
+                //console.debug('resizing psystem')
+                //this.doubleSize()
             }
 
             var wPos = gPos.clone()
@@ -127,18 +129,7 @@ var ParticleSystems = (function(window, undefined) {
             return index
 
         },
-        /**
-         * Deletes a pixel from the particle system expansion
-         * @instance
-         * @memberOf ParticleSystems.PSystemExpansion
-         * @param {number} pIdx Index in the vertices array of the particle to delete
-         */
-        deletePixel: function(pIdx) {
 
-            this._geom.vertices[pIdx].y = nullVal
-            this._emptyIndices.push(pIdx)
-            this.update()
-        },
         /**
          * Shows a pixel that has been hidden by {@link ParticleSystems.PSystemExpansion#hidePixel}
          * @instance
@@ -155,8 +146,9 @@ var ParticleSystems = (function(window, undefined) {
             this._geom.vertices[pIdx].y = oldVal
             this._geom.verticesNeedUpdate = true
         },
+
         /**
-         * Hides a pixel. Can be shown with {@link ParticleSystems.PSystemExpansion#showPixel}
+         * Deletes a pixel. Can be shown with {@link ParticleSystems.PSystemExpansion#showPixel}
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
          * @param {number} pIdx Index in the vertices array of the particle to hide
@@ -170,6 +162,7 @@ var ParticleSystems = (function(window, undefined) {
             this._hiddenPointsPositions[pIdx] = yVal
             this._geom.verticesNeedUpdate = true
         },
+
         /**
          * Doubles the size of the particle system expansion. Used when there are no more
          * empty spots to fill
@@ -197,6 +190,7 @@ var ParticleSystems = (function(window, undefined) {
 
             this._scene.add(this._points)
         },
+
         /**
          * Sets colorsNeedUpdate and verticesNeedUpdate to true
          * @instance
@@ -206,6 +200,7 @@ var ParticleSystems = (function(window, undefined) {
             this._geom.colorsNeedUpdate = true
             this._geom.verticesNeedUpdate = true
         },
+
         /**
          * Checks if the specified index in the vertices array has a valid value
          * @instance
@@ -216,6 +211,7 @@ var ParticleSystems = (function(window, undefined) {
             if ((!(this._geom.vertices[pIdx])) === 'undefined')
                 throw new Error('vertices[' + pIdx + '] does not exist')
         },
+
         /**
          * Checks if the specified index in the hiddenPointsPositions array has a valid value
          * @instance
@@ -271,6 +267,7 @@ var ParticleSystems = (function(window, undefined) {
     }
 
     ParticleSystem.prototype = {
+
         /**
          * Adds the particle system to the scene it was initialized with.
          * @instance
@@ -283,6 +280,7 @@ var ParticleSystems = (function(window, undefined) {
                 }
             }
         },
+
         /**
          * Removes the particle system from the scene it was initialized with.
          * @instance
@@ -295,6 +293,7 @@ var ParticleSystems = (function(window, undefined) {
                 }
             }
         },
+
         /**
          * Adds a pixel to the particle system. Only to be used during initization, before
          * it is added to the scene.
@@ -313,6 +312,7 @@ var ParticleSystems = (function(window, undefined) {
             return pIdx
 
         },
+
         /**
          * Hides the pixel at the specified index.
          * @instance
@@ -329,6 +329,7 @@ var ParticleSystems = (function(window, undefined) {
             this._hiddenPointsPositions[sid.a][sid.b][pIdx] = yVal
             this._geom[sid.a][sid.b].verticesNeedUpdate = true
         },
+
         /**
          * Shows the pixel at the specified index.
          * @instance
@@ -346,6 +347,7 @@ var ParticleSystems = (function(window, undefined) {
             this._geom[sid.a][sid.b].vertices[pIdx].y = oldVal
             this._geom[sid.a][sid.b].verticesNeedUpdate = true
         },
+
         /**
          * Checks if the specified index in the vertices array has a valid value
          * @instance
@@ -356,6 +358,7 @@ var ParticleSystems = (function(window, undefined) {
             if ((this._geom[sid.a][sid.b].vertices[pIdx]) === 'undefined')
                 throw new Error('vertices[' + pIdx + '] does not exist')
         },
+
         /**
          * Checks if the specified index in the hiddenPointsPositions array has a valid value
          * @instance
