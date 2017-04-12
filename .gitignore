@@ -67,3 +67,5 @@ three.js-master/
 textures/
 
 client/js/classes/Config\.js
+
+jsdoc/

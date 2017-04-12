@@ -13,7 +13,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node index.js",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "jsdoc": "jsdoc ./server ./client -r -c ./jsdocconf.json -d jsdoc"
     },
     "author": "Davis Yarbrough",
     "license": "ISC",
