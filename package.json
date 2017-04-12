@@ -16,5 +16,10 @@
         "lint": "eslint ."
     },
     "author": "Davis Yarbrough",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "depcheck": "^0.6.7",
+        "eslint": "^3.19.0",
+        "jsdoc": "^3.4.3"
+    }
 }
