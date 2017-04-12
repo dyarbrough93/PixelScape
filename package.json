@@ -4,17 +4,11 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
-        "compression": "^1.6.2",
         "express": "4.13.4",
         "express-handlebars": "3.0.0",
-        "highland": "^2.10.2",
-        "jsdom": "^9.12.0",
-        "json": "9.0.4",
+        "lodash": "^4.17.4",
         "mongodb": "^2.2.25",
-        "node-stringify": "0.0.19",
-        "oboe": "^2.1.3",
-        "socket.io": "1.5.1",
-        "urlencode": "1.1.0"
+        "socket.io": "1.5.1"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",

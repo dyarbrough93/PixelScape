@@ -14,8 +14,6 @@ var SocketHandler = function(window, undefined) {
 
         socket.on('block added', function(block) {
 
-            console.log('block added')
-
             var pos = block.position
 
             var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
@@ -31,6 +29,23 @@ var SocketHandler = function(window, undefined) {
             }
 
             GameScene.render()
+
+        })
+
+        socket.on('block removed', function(pos) {
+
+            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
+
+            if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
+
+                // delete voxel
+                ActionMgr.deleteVoxelAtGridPos(gPos)
+
+            } else { // delete pixel
+
+                ActionMgr.deletePixelAtGridPos(gPos)
+
+            }
 
         })
 

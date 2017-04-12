@@ -28,13 +28,13 @@ var WorldData = function(window, undefined) {
 
         console.log('loading pixels into scene ...')
 
-        for (var coord in data) {
-            if (data.hasOwnProperty(coord)) {
+        for (var coordStr in data) {
+            if (data.hasOwnProperty(coordStr)) {
 
-                var color = data[coord].c
+                var color = data[coordStr].c
                 var tColor = new THREE.Color(color)
 
-                var gPos = VoxelUtils.coordStrParse(coord)
+                var gPos = VoxelUtils.coordStrParse(coordStr)
                 var wPos = gPos.clone().gridToWorld()
 
                 var sid = VoxelUtils.getSectionIndices(gPos)
@@ -42,7 +42,7 @@ var WorldData = function(window, undefined) {
                 // add a pixel to the particle system,
                 // then add a voxel to worldData
                 var pIdx = particleSystem.addPixel(sid, wPos, tColor)
-                addVoxel(sid, coord, color, pIdx, false)
+                addVoxel(sid, coordStr, color, pIdx, false)
 
             }
         }
@@ -50,6 +50,8 @@ var WorldData = function(window, undefined) {
         particleSystem.addToScene()
 
         console.log('done loading pixels')
+
+        GameScene.render()
 
     }
 
@@ -61,11 +63,11 @@ var WorldData = function(window, undefined) {
      * @param {number} tColor THREE Color
      * @param {number} pIdx Index in the particle system geometry
      * @param {boolean} exp Part of particle system expansion?
-     * @param {VoxelUtils.coordStr} coord Coordinate string (grid coords)
+     * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
      */
-    function addVoxel(sid, coord, tColor, pIdx, exp) {
+    function addVoxel(sid, coordStr, tColor, pIdx, exp) {
 
-        worldData[sid.a][sid.b][coord] = {
+        worldData[sid.a][sid.b][coordStr] = {
             c: tColor,
             pIdx: pIdx,
             exp: exp
@@ -73,22 +75,22 @@ var WorldData = function(window, undefined) {
 
     }
 
-    function addMesh(sid, coord, mesh) {
-        worldData[sid.a][sid.b][coord] = mesh
+    function addMesh(sid, coordStr, mesh) {
+        worldData[sid.a][sid.b][coordStr] = mesh
     }
 
     /**
      * Remove a voxel from worldData
      *
      * @param {VoxelUtils.Tuple} sid Section indices
-     * @param {VoxelUtils.coordStr} coord Coordinate string (grid coords)
+     * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
      */
-    function removeVoxel(sid, coord) {
-        delete worldData[sid.a][sid.b][coord]
+    function removeVoxel(sid, coordStr) {
+        delete worldData[sid.a][sid.b][coordStr]
     }
 
-    function getVoxel(sid, coord) {
-        return worldData[sid.a][sid.b][coord]
+    function getVoxel(sid, coordStr) {
+        return worldData[sid.a][sid.b][coordStr]
     }
 
     function getWorldData() {
