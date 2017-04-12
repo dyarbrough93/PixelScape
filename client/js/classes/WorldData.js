@@ -22,7 +22,7 @@ var WorldData = function(window, undefined) {
      * @param {VoxelUtils.coordStr} voxelData.coordStr Coordinate string in grid coordinates.
      * @param {Number} voxelData.coordStr.c Hex color of the voxel
      */
-    function load(data) {
+    function loadIntoScene(data) {
 
         var particleSystem = GameScene.getPSystem()
 
@@ -97,7 +97,7 @@ var WorldData = function(window, undefined) {
 
     return {
         init: init,
-        load: load,
+        loadIntoScene: loadIntoScene,
         getVoxel: getVoxel,
         addVoxel: addVoxel,
         addMesh: addMesh,
