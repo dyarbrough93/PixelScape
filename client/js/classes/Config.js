@@ -2,7 +2,7 @@ var Config = function(window, undefined) {
 
     var settings = {
         "general": {
-            "maxVoxelHeight": 75,
+            "maxVoxelHeight": 50,
             "actionDelay": 0.4,
             "chatDelay": 3,
             "clearColor": 16777215

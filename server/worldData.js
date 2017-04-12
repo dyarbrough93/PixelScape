@@ -1,4 +1,4 @@
-const config = require('./config.js').server
+const config = require('./config.js')
 
 'use strict'
 

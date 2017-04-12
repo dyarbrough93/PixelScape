@@ -1,8 +1,8 @@
-'use strict'
+const generateClientConfig = require('./generateClientConfig.js')
 
 var me = module.exports
 
-me.server = {
+me = {
     /*  */
     maxVoxelHeight: 75,
     /* x */
@@ -21,11 +21,11 @@ me.server = {
 
 // each set much be contanined within
 // an object for generation to work properly
-me.client = {
+const clientConfig = {
     general: {
-        maxVoxelHeight: me.server.maxVoxelHeight,
-        actionDelay: me.server.actionDelay,
-        chatDelay: me.server.chatDelay,
+        maxVoxelHeight: me.maxVoxelHeight,
+        actionDelay: me.actionDelay,
+        chatDelay: me.chatDelay,
         clearColor: 0xffffff
     },
     convert: {
@@ -63,3 +63,5 @@ me.client = {
         maxPolarAngle: Math.PI / 2.15 // radians
     }
 }
+
+generateClientConfig(clientConfig)

@@ -1,6 +1,6 @@
 'use strict'
 
-const config = require('./config.js').server
+const config = require('./config.js')
 
 const actionDelay = {}
 const sockUNames = {}
