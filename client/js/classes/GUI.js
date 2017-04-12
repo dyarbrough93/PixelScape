@@ -21,7 +21,7 @@ var GUI = function(window, undefined) {
                     for (var i = 0; i < worldData.length; i++) {
                         for (var j = 0; j < worldData[i].length; j++) {
                             for (var voxPos in worldData[i][j]) {
-                                console.log(voxPos)
+                                console.log(`voxPos: ${voxPos}`)
                             }
                         }
                     }
@@ -46,20 +46,28 @@ var GUI = function(window, undefined) {
     function addGUIEls() {
 
         var colors = gui.addFolder('colors')
+        var debug = gui.addFolder('debug')
 
-        var blockColor = colors.addColor(settings.colors, 'blockColor')
-        colors.addColor(settings.colors, 'savedColor1')
-        colors.addColor(settings.colors, 'savedColor2')
-        colors.addColor(settings.colors, 'savedColor3')
+        ;
+        (function initColorsFolder() {
 
-        colors.add(settings.colors, 'randomColor')
-        colors.add(settings.colors, 'colorPicker')
+            var blockColor = colors.addColor(settings.colors, 'blockColor')
+            colors.addColor(settings.colors, 'savedColor1')
+            colors.addColor(settings.colors, 'savedColor2')
+            colors.addColor(settings.colors, 'savedColor3')
 
-        blockColor.onChange(function(newColor) {
-            GameScene.setGhostMeshColor(newColor)
-        })
+            colors.add(settings.colors, 'randomColor')
+            colors.add(settings.colors, 'colorPicker')
 
-        colors.open()
+            blockColor.onChange(function(newColor) {
+                GameScene.setGhostMeshColor(newColor)
+            })
+
+            colors.open()
+
+        })()
+
+        debug.add(settings.debug, 'logWorldData')
 
     }
 

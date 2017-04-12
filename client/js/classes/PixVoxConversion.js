@@ -98,8 +98,6 @@ var PixVoxConversion = function(window, undefined) {
         var sid
         var vox
 
-        var worldData = WorldData.getWorldData()
-
         var i = 0
         var bufVertsLen = BufMeshMgr.getBufVertsLen()
 
@@ -179,7 +177,8 @@ var PixVoxConversion = function(window, undefined) {
                     var pIdx = pSystemExpo.addPixel(gPos, tColor)
                     var sid = VoxelUtils.getSectionIndices(gPos)
                     var coordStr = VoxelUtils.getCoordStr(gPos)
-                    WorldData.addVoxel(sid, tColor.getHex(), pIdx, true, coordStr)
+                    // overwrite mesh with voxel entry
+                    WorldData.addVoxel(sid, coordStr, tColor.getHex(), pIdx, true)
 
                     // remove from scene and stop
                     // raycasting against it
