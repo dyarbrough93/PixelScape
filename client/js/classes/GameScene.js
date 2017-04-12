@@ -182,7 +182,6 @@ var GameScene = function(window, undefined) {
         (function _initHoverVoxels() {
 
             // voxel shown when hovering grid
-            ;
             (function _initGhostVoxel() {
 
                 var blockSize = Config.getGrid().blockSize

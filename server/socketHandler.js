@@ -3,7 +3,6 @@
 const config = require('./config.js')
 
 const actionDelay = {}
-const sockUNames = {}
 
 var worldData
 
@@ -11,8 +10,6 @@ function handleBlockOperations(socket) {
 
     // handle block add
     socket.on('block added', function(block, callback) {
-
-        var p = block.position
 
         // only allow add if user hasn't
         // added for delayTime

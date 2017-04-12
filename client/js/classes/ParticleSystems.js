@@ -57,9 +57,10 @@ var ParticleSystems = (function(window, undefined) {
             })
         )
 
+        var i
         if (double) {
             // copy over the old data
-            for (var i = 0, len = _this._size; i < len; i++) {
+            for (i = 0, len = _this._size; i < len; i++) {
                 var v = oldVertices[i],
                     c = oldColors[i]
                 _this._geom.vertices.push(new THREE.Vector3(v.x, v.y, v.z))
@@ -70,7 +71,7 @@ var ParticleSystems = (function(window, undefined) {
         if (double) _this._size *= 2
 
         // initialize blank array spaces (bug fix hack)
-        for (var i = 0, len = _this._size; i < len; i++) {
+        for (i = 0, len = _this._size; i < len; i++) {
             _this._geom.vertices.push(new THREE.Vector3(0, nullVal, 0))
             _this._geom.colors.push(new THREE.Color())
         }
@@ -102,8 +103,8 @@ var ParticleSystems = (function(window, undefined) {
                 // @TODO: fix double size or find another solution
                 throw new Error('Too many expansion pixels.')
 
-                console.debug('resizing psystem')
-                this.doubleSize()
+                //console.debug('resizing psystem')
+                //this.doubleSize()
             }
 
             var wPos = gPos.clone()
@@ -130,20 +131,6 @@ var ParticleSystems = (function(window, undefined) {
         },
 
         /**
-         * Hides a pixel from the particle system expansion
-         * @instance
-         * @memberOf ParticleSystems.PSystemExpansion
-         * @param {number} pIdx Index in the vertices array of the particle to delete
-         */
-        hidePixel: function(pIdx) {
-
-            this._geom.vertices[pIdx].y = nullVal
-            this._emptyIndices.push(pIdx)
-            this.update()
-
-        },
-
-        /**
          * Shows a pixel that has been hidden by {@link ParticleSystems.PSystemExpansion#hidePixel}
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
@@ -161,7 +148,7 @@ var ParticleSystems = (function(window, undefined) {
         },
 
         /**
-         * Hides a pixel. Can be shown with {@link ParticleSystems.PSystemExpansion#showPixel}
+         * Deletes a pixel. Can be shown with {@link ParticleSystems.PSystemExpansion#showPixel}
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
          * @param {number} pIdx Index in the vertices array of the particle to hide

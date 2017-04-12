@@ -75,6 +75,7 @@
             return
         }
 
+        var intersects
         if (event.button === 1) {
 
             state = STATE.PAN
@@ -82,7 +83,7 @@
             var mouseX = (event.clientX / window.innerWidth) * 2 - 1
             var mouseY = -(event.clientY / window.innerHeight) * 2 + 1
 
-            var intersects = getIntersects({
+            intersects = getIntersects({
                 x: mouseX,
                 y: mouseY
             })
@@ -97,7 +98,7 @@
 
             state = STATE.ROTATE
 
-            var intersects = getIntersects({
+            intersects = getIntersects({
                 x: 0,
                 y: 0
             })

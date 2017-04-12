@@ -101,9 +101,10 @@ var ActionMgr = function(window, undefined) {
 
         if (iobj.name !== 'plane') {
 
+            var gPos
             if (iobj.name === 'voxel') {
 
-                var gPos = iobj.position.clone()
+                gPos = iobj.position.clone()
                 gPos.initWorldPos()
                 gPos.worldToGrid()
 
@@ -116,7 +117,7 @@ var ActionMgr = function(window, undefined) {
 
             } else {
 
-                var gPos = (intersect.point).sub(intersect.face.normal)
+                gPos = (intersect.point).sub(intersect.face.normal)
                 gPos.initWorldPos()
                 gPos.worldToGrid()
 

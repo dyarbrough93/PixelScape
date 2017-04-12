@@ -15,7 +15,8 @@ WorldData.count = function() {
 
     if (!numVoxels) {
         for (var vox in WorldData.voxels) {
-            numVoxels++
+            if (WorldData.voxels.hasOwnProperty(vox))
+                numVoxels++
         }
         return numVoxels++
     } else {
