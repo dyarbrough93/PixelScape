@@ -60,7 +60,13 @@ var GUI = function(window, undefined) {
             colors.add(settings.colors, 'colorPicker')
 
             blockColor.onChange(function(newColor) {
+
+                // if the gui color is manually edited (typing in the color),
+                // it returns a hex string for some reason.
+                if (newColor[0] === '#') newColor = parseInt(newColor.substring(1), 16)
                 GameScene.setGhostMeshColor(newColor)
+                settings.colors.blockColor = newColor
+
             })
 
             colors.open()
