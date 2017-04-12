@@ -65,14 +65,18 @@ var Keys = function(window, undefined) {
 
     function escDown(e) {
 
-      if (UserState.modeIsEdit()) {
+        if (UserState.stateIsPick())
+            UserState.setDefaultState()
 
-        UserState.setSelectMode()
-        UserState.resetSelectedRegion()
-        PixVoxConversion.convertToPixels()
-        GameScene.setGhostMeshVis(false)
 
-      }
+        if (UserState.modeIsEdit()) {
+
+            UserState.setSelectMode()
+            UserState.resetSelectedRegion()
+            PixVoxConversion.convertToPixels()
+            GameScene.setGhostMeshVis(false)
+
+        }
 
     }
 

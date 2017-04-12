@@ -51,7 +51,7 @@ var GameScene = function(window, undefined) {
                 fov: 45,
                 near: 100,
                 far: 300000,
-                distMult: 1
+                distMult: 0.1
             }
 
             var aspect = window.innerWidth / window.innerHeight
@@ -277,7 +277,7 @@ var GameScene = function(window, undefined) {
         gPos.add(intersect.face.normal).worldToGrid()
 
         if (!VoxelUtils.withinSelectionBounds(gPos) ||
-            Keys.isShiftDown()) {
+            Keys.isShiftDown() || UserState.stateIsPick()) {
             setGhostMeshVis(false)
             return
         }

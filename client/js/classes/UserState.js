@@ -25,10 +25,12 @@ var UserState = function(window, undefined) {
 
     function setDefaultState() {
         state = states.DEFAULT
+        $('body').css('cursor', 'default')
     }
 
     function setPickState() {
         state = states.PICKCOLOR
+        $('body').css('cursor', 'url(/img/eyedropper2.cur), auto')
     }
 
     function setEditMode() {
