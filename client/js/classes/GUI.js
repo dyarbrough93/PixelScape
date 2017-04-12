@@ -9,9 +9,11 @@ var GUI = function(window, undefined) {
         settings = {
             colors: {
                 blockColor: randomHexColor(),
-                savedColor1: randomHexColor(),
-                savedColor2: randomHexColor(),
-                savedColor3: randomHexColor(),
+                saved: {
+                    1: randomHexColor(),
+                    2: randomHexColor(),
+                    3: randomHexColor()
+                },
                 randomColor: setRandomBlockColor,
                 colorPicker: pickColor
             },
@@ -45,19 +47,19 @@ var GUI = function(window, undefined) {
 
     function addGUIEls() {
 
-        var colors = gui.addFolder('colors')
-        var debug = gui.addFolder('debug')
+        var colors = gui.addFolder('Colors')
+        var debug = gui.addFolder('_debug')
 
         ;
         (function initColorsFolder() {
 
-            var blockColor = colors.addColor(settings.colors, 'blockColor').listen()
-            colors.addColor(settings.colors, 'savedColor1')
-            colors.addColor(settings.colors, 'savedColor2')
-            colors.addColor(settings.colors, 'savedColor3')
+            var blockColor = colors.addColor(settings.colors, 'blockColor').listen().name('Block Color')
+            colors.addColor(settings.colors.saved, '1').name('Saved Color 1').listen()
+            colors.addColor(settings.colors.saved, '2').name('Saved Color 2').listen()
+            colors.addColor(settings.colors.saved, '3').name('Saved Color 3').listen()
 
-            colors.add(settings.colors, 'randomColor')
-            colors.add(settings.colors, 'colorPicker')
+            colors.add(settings.colors, 'randomColor').name('Random Color')
+            colors.add(settings.colors, 'colorPicker').name('Color Picker')
 
             blockColor.onChange(function(newColor) {
 
@@ -75,6 +77,14 @@ var GUI = function(window, undefined) {
 
         debug.add(settings.debug, 'logWorldData')
 
+    }
+
+    function setSavedColor(cNum) {
+        settings.colors.saved[cNum] = settings.colors.blockColor
+    }
+
+    function loadSavedColor(cNum) {
+        settings.colors.blockColor = settings.colors.saved[cNum]
     }
 
     function setPickColor(intersect) {
@@ -141,7 +151,9 @@ var GUI = function(window, undefined) {
         getBlockColor: getBlockColor,
         wasClicked: wasClicked,
         setClicked: setClicked,
-        setPickColor: setPickColor
+        setPickColor: setPickColor,
+        setSavedColor: setSavedColor,
+        loadSavedColor: loadSavedColor
     }
 
 }(window)

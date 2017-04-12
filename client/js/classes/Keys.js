@@ -45,6 +45,22 @@ var Keys = function(window, undefined) {
 
         }
 
+        // 1-3
+        if (e.keyCode >= 49 && e.keyCode <= 51)
+            numberDown(e)
+
+    }
+
+    function numberDown(e) {
+
+        e.preventDefault()
+
+        var colorNum = e.keyCode - 48
+
+        if (keyStates.ctrlDown)
+            GUI.setSavedColor(colorNum)
+        else GUI.loadSavedColor(colorNum)
+
     }
 
     function keyUp(e) {
