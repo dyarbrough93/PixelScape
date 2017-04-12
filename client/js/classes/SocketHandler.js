@@ -1,31 +1,85 @@
 var SocketHandler = function(window, undefined) {
 
-    /*socket.on('block added', function(block) {
+    var socket
 
-        var pos = block.position
+    function init() {
 
-        var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
-        var color = new THREE.Color(block.color)
+        socket = io.connect()
 
-        if (currentSelection && withinSelectionBounds(gPos)) {
-            createAndAddVoxel(gPos, block.color, false)
-        } else {
-            var sid = getSectionIndices(gPos)
-            voxels[sid.a][sid.b][VoxelUtils.getCoordStr(gPos)] = {
-                c: color,
-                exp: true
+        initSocketOns()
+
+    }
+
+    function initSocketOns() {
+
+        socket.on('block added', function(block) {
+
+            console.log('block added')
+
+            var pos = block.position
+
+            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
+            var tColor = new THREE.Color(block.color)
+
+            if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
+                ActionMgr.createVoxelAtGridPos(gPos, tColor.getHex())
+            } else {
+                var sid = VoxelUtils.getSectionIndices(gPos)
+                var coordStr = VoxelUtils.getCoordStr(gPos)
+                var pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
+                WorldData.addVoxel(sid, coordStr, tColor, pIdx, true)
             }
-            addPixel(gPos, c)
-        }
 
-    })*/
+            GameScene.render()
+
+        })
+
+    }
+
+    function emitBlockRemoved(gPos, cb) {
+
+        socket.emit('block removed', {
+            x: gPos.x,
+            y: gPos.y,
+            z: gPos.z
+        }, function(response) {
+
+            if (response === 'success')
+                return cb(true)
+            else return cb(false)
+
+        })
+
+    }
+
+    function emitBlockAdded(gPos, hColor, cb) {
+
+        socket.emit('block added', {
+            color: hColor,
+            position: {
+                x: gPos.x,
+                y: gPos.y,
+                z: gPos.z
+            }
+        }, function(response) {
+
+            if (response === 'success')
+                return cb(true)
+            else if (response === 'max') {
+                alert('maximum voxel limit reached.')
+                return cb(false)
+            }
+
+        })
+
+    }
 
     /**************************************\
     | Receive Chunked Data                 |
     \**************************************/
 
     function retrieveData(cb) {
-        
+
         socket.emit('start chunking')
 
         var numChunks
@@ -65,7 +119,10 @@ var SocketHandler = function(window, undefined) {
     }
 
     return {
-        retrieveData: retrieveData
+        init: init,
+        retrieveData: retrieveData,
+        emitBlockAdded: emitBlockAdded,
+        emitBlockRemoved: emitBlockRemoved
     }
 
 }()

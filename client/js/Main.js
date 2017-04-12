@@ -13,9 +13,10 @@ var Main = function() {
         MapControls.init()
         PixVoxConversion.init()
         BufMeshMgr.init()
+        SocketHandler.init()
 
-        // download the world data and load it
-        // into the scene
+        // download the world data and
+        // load it into the scene
         SocketHandler.retrieveData(function(data) {
 
             WorldData.loadIntoScene(data)

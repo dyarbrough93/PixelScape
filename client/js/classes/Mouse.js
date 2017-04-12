@@ -31,13 +31,6 @@ var Mouse = function(window, undefined) {
         if (e.which === 1) leftDown(e)
     }
 
-    function validEdit(intxGPos) {
-
-        return VoxelUtils.validHeight(intxGPos) &&
-            VoxelUtils.withinSelectionBounds(intxGPos)
-
-    }
-
     function forceTriggerMouseMove() {
 
         var e = $.Event('mousemove')
@@ -61,16 +54,16 @@ var Mouse = function(window, undefined) {
 
             if (UserState.modeIsEdit()) {
 
-                if (validEdit(intxGPos)) {
+                if (VoxelUtils.validBlockLocation(intxGPos)) {
 
                     if (UserState.stateIsPick())
                         GUI.setPickColor(intersect)
                     else if (Keys.isShiftDown()) {
-                        ActionMgr.deleteVoxel(intersect, function() {
+                        ActionMgr.deleteVoxelAtIntersect(intersect, function() {
                             forceTriggerMouseMove()
                         })
                     } else {
-                        ActionMgr.createVoxel(intersect, function() {
+                        ActionMgr.createVoxelAtIntersect(intersect, function() {
                             forceTriggerMouseMove()
                         })
                     }

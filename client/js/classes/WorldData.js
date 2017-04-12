@@ -58,15 +58,15 @@ var WorldData = function(window, undefined) {
      * parameters.
      *
      * @param {VoxelUtils.Tuple} sid Section indices
-     * @param {number} color Color
+     * @param {number} tColor THREE Color
      * @param {number} pIdx Index in the particle system geometry
      * @param {boolean} exp Part of particle system expansion?
      * @param {VoxelUtils.coordStr} coord Coordinate string (grid coords)
      */
-    function addVoxel(sid, coord, color, pIdx, exp) {
+    function addVoxel(sid, coord, tColor, pIdx, exp) {
 
         worldData[sid.a][sid.b][coord] = {
-            c: color,
+            c: tColor,
             pIdx: pIdx,
             exp: exp
         }

@@ -233,6 +233,11 @@ var VoxelUtils = (function(window, undefined) {
 
     }
 
+    function validBlockLocation(gPos) {
+        return withinSelectionBounds(gPos)
+        && validHeight(gPos)
+    }
+
     /**
      * Initializes a voxel mesh with the specified position
      * @memberOf! VoxelUtils.
@@ -288,15 +293,14 @@ var VoxelUtils = (function(window, undefined) {
     /**************************************/
 
     return {
-
         withinSelectionBounds: withinSelectionBounds,
+        validBlockLocation: validBlockLocation,
         coordStrParse: coordStrParse,
         getCoordStr: getCoordStr,
         initVoxel: initVoxel,
         countObjAttrs: countObjAttrs,
         Tuple: Tuple,
         getSectionIndices: getSectionIndices,
-        validHeight: validHeight
 
     }
 
