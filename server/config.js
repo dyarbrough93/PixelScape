@@ -3,19 +3,12 @@ const generateClientConfig = require('./generateClientConfig.js')
 var me = module.exports
 
 me = {
-    /*  */
     maxVoxelHeight: 75,
-    /* x */
     actionDelay: 0.4, // s
-    /* x */
     chatDelay: 3, // s
-    /* x */
     maxGlobalBlocks: 1000000,
-    /* x */
     dataChunkSize: 15000, // keys
-    /* x */
     chunkInterval: 50, // ms
-    /* x */
     maxClients: 1000
 }
 
@@ -50,14 +43,18 @@ const clientConfig = {
     }.init(),
 
     mapControls: {
-        zoomSpeed: 1.0,
+        // these two are not really
+        // used, look into removing
         minDistance: 0,
         maxDistance: Number.MAX_VALUE,
+        // cam position constraints
         camMinxz: -100000,
         camMaxxz: 100000,
         camMiny: 100,
         camMaxy: 75000,
+        // cam rotation / zoom speed
         rotateSpeed: 0.5,
+        zoomSpeed: 1.0,
         // How far you can orbit vertically, upper and lower limits.
         minPolarAngle: 0.05, // radians
         maxPolarAngle: Math.PI / 2.15 // radians

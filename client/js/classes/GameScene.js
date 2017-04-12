@@ -293,6 +293,10 @@ var GameScene = function(window, undefined) {
 
     }
 
+    function setGhostMeshColor(hColor) {
+        ghostMesh.material.color.setHex(hColor)
+    }
+
     function updateDeleteMesh(intersect) {
 
         if (intersect.object.name === 'plane' ||
@@ -371,6 +375,7 @@ var GameScene = function(window, undefined) {
         removeFromScene: removeFromScene,
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
+        setGhostMeshColor: setGhostMeshColor,
         updateGhostMesh: updateGhostMesh,
         updateDeleteMesh: updateDeleteMesh,
         getScene: getScene,

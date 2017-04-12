@@ -24,6 +24,10 @@ var Mouse = function(window, undefined) {
     }
 
     function mouseDown(e) {
+        if (GUI.wasClicked()) {
+            GUI.setClicked(false)
+            return
+        }
         if (e.which === 1) leftDown(e)
     }
 
