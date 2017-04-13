@@ -31,20 +31,6 @@ var Mouse = function(window, undefined) {
     }
 
     /**
-     * Route a mouse down event
-     * @memberOf Mouse
-     * @access public
-     * @param  {Event} e
-     */
-    function mouseDown(e) {
-        if (GUI.wasClicked()) {
-            GUI.setClicked(false)
-            return
-        }
-        if (e.which === 1) leftDown(e)
-    }
-
-    /**
      * Force trigger a mouse move event. This is
      * needed when certain changes are made that
      * require the specific functionality of the
@@ -66,6 +52,20 @@ var Mouse = function(window, undefined) {
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
+
+     /**
+      * Route a mouse down event
+      * @memberOf Mouse
+      * @access private
+      * @param  {Event} e
+      */
+     function mouseDown(e) {
+         if (GUI.wasClicked()) {
+             GUI.setClicked(false)
+             return
+         }
+         if (e.which === 1) leftDown(e)
+     }
 
     /**
      * Handle a left mouse button
