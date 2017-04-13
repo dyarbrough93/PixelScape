@@ -1,11 +1,12 @@
-const path = require('path')
-
 module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig({
         uglify: {
             lib: {
+                // Grunt will search for "**/*.js" under "lib/" when the "uglify" task
+                // runs and build the appropriate src-dest file mappings then, so you
+                // don't need to update the Gruntfile when files are added or removed.
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: 'client/js/lib/', // Src matches are relative to this path.

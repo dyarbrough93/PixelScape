@@ -134,6 +134,9 @@ var Mouse = function(window, undefined) {
 
         e.preventDefault()
 
+        Keys.setCtrlDown(e.ctrlKey)
+        Keys.setShiftDown(e.shiftKey)
+
         pos.clientX = e.clientX
         pos.clientY = e.clientY
 

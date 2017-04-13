@@ -43,15 +43,44 @@ var Keys = function(window, undefined) {
         return keyStates.shiftDown
     }
 
+    function isCtrlDown() {
+        return keyStates.ctrlDown
+    }
+
+    /**
+     * Set the state of the control key.
+     * This is needed in scearios where the
+     * key events are not triggered (window
+     * out of focus)
+     * @memberOf Keys
+     * @access public
+     */
+    function setCtrlDown(value) {
+        keyStates.ctrlDown = value
+    }
+
+
+    /**
+     * Set the state of the shift key.
+     * This is needed in scearios where the
+     * key events are not triggered (window
+     * out of focus)
+     * @memberOf Keys
+     * @access public
+     */
+    function setShiftDown(value) {
+        keyStates.shiftDown = value
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
 
-     /**
-      * Add keyboard event listeners to the document
-      * @memberOf Keys
-      * @access private
-      */
+    /**
+     * Add keyboard event listeners to the document
+     * @memberOf Keys
+     * @access private
+     */
     function addEventListeners() {
 
         document.addEventListener('keydown', keyDown)
@@ -205,7 +234,10 @@ var Keys = function(window, undefined) {
 
     return {
         init: init,
-        isShiftDown: isShiftDown
+        isShiftDown: isShiftDown,
+        isCtrlDown: isCtrlDown,
+        setCtrlDown: setCtrlDown,
+        setShiftDown: setShiftDown
     }
 
 }()

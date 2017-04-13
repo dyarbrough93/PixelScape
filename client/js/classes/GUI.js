@@ -196,6 +196,7 @@ var GUI = function(window, undefined) {
         })()
 
         debug.add(settings.debug, 'logWorldData')
+        debug.open()
 
     }
 
