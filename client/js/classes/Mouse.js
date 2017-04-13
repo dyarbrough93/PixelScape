@@ -1,7 +1,27 @@
+'use strict'
+
+/**
+ * Manages and routes Mouse events
+ * @namespace Mouse
+ */
 var Mouse = function(window, undefined) {
+
+    /*------------------------------------*
+     :: Class Variables
+     *------------------------------------*/
 
     var pos
 
+    /*------------------------------------*
+     :: Public Methods
+     *------------------------------------*/
+
+     /**
+      * Initializes the module. Must be called
+      * before anything else
+      * @memberOf Mouse
+      * @access public
+      */
     function init() {
 
         pos = {}
@@ -10,19 +30,12 @@ var Mouse = function(window, undefined) {
 
     }
 
-    function addEventListeners() {
-
-        // we are using a jQuery bind here so we can force
-        // trigger a mouseMove event from mouseDown
-        $(document).mousemove(mouseMove)
-        document.addEventListener('mousedown', mouseDown)
-    }
-
-    function removeEventListenerers() {
-        $(document).unbind('mousemove')
-        document.removeEventListener('mousedown', mouseDown)
-    }
-
+    /**
+     * Route a mouse down event
+     * @memberOf Mouse
+     * @access public
+     * @param  {Event} e
+     */
     function mouseDown(e) {
         if (GUI.wasClicked()) {
             GUI.setClicked(false)
@@ -31,6 +44,15 @@ var Mouse = function(window, undefined) {
         if (e.which === 1) leftDown(e)
     }
 
+    /**
+     * Force trigger a mouse move event. This is
+     * needed when certain changes are made that
+     * require the specific functionality of the
+     * mouse move event but cannot be extracted into
+     * another function
+     * @memberOf Mouse
+     * @access public
+     */
     function forceTriggerMouseMove() {
 
         var e = $.Event('mousemove')
@@ -41,121 +63,169 @@ var Mouse = function(window, undefined) {
 
     }
 
-    function leftDown(e) {
+    /*------------------------------------*
+     :: Private Methods
+     *------------------------------------*/
 
-        e.preventDefault()
+     /**
+      * Handle a left mouse button
+      * down event
+      * @memberOf Mouse
+      * @access private
+      * @param  {Event} e
+      */
+     function leftDown(e) {
 
-        var intersect = getMouseIntersects(e).closestIntx
+         e.preventDefault()
 
-        if (intersect) {
+         var intersect = getMouseIntersects(e).closestIntx
 
-            var intxGPos = intersect.point.clone().initWorldPos()
-            intxGPos = intxGPos.add(intersect.face.normal).worldToGrid()
+         if (intersect) { // only act if we intersected something
 
-            if (UserState.modeIsEdit()) {
+             var intxGPos = intersect.point.clone().initWorldPos()
+             intxGPos = intxGPos.add(intersect.face.normal).worldToGrid()
 
-                if (VoxelUtils.validBlockLocation(intxGPos)) {
+             if (UserState.modeIsEdit()) {
 
-                    if (UserState.stateIsPick())
-                        GUI.setPickColor(intersect)
-                    else if (Keys.isShiftDown()) {
-                        VoxelActions.deleteVoxelAtIntersect(intersect, function() {
-                            forceTriggerMouseMove()
-                        })
-                    } else {
-                        VoxelActions.createVoxelAtIntersect(intersect, function() {
-                            forceTriggerMouseMove()
-                        })
-                    }
+                 if (VoxelUtils.validBlockLocation(intxGPos)) {
 
-                }
+                     if (UserState.stateIsPick())
+                         GUI.setPickColor(intersect)
+                     else if (Keys.isShiftDown()) {
+                         VoxelActions.deleteVoxelAtIntersect(intersect, function() {
+                             forceTriggerMouseMove()
+                         })
+                     } else {
+                         VoxelActions.createVoxelAtIntersect(intersect, function() {
+                             forceTriggerMouseMove()
+                         })
+                     }
 
-            } else if (UserState.modeIsSelect()) {
+                 }
 
-                UserState.setSelectedRegion(intersect)
-                var region = UserState.getSelectedRegion()
-                PixVoxConversion.convertToVoxels(region)
-                UserState.setEditMode()
+             } else if (UserState.modeIsSelect()) {
 
-            }
+                 // switch to edit mode
+                 UserState.setSelectedRegion(intersect)
+                 var region = UserState.getSelectedRegion()
+                 PixVoxConversion.convertToVoxels(region)
+                 UserState.setEditMode()
 
-        }
+             }
 
-    }
+         }
 
-    function mouseMove(e) {
+     }
 
-        e.preventDefault()
+     /**
+      * Handle a mouse move event
+      * @memberOf Mouse
+      * @access private
+      * @param  {Event} e
+      */
+     function mouseMove(e) {
 
-        pos.clientX = e.clientX
-        pos.clientY = e.clientY
+         e.preventDefault()
 
-        var intersects = getMouseIntersects(e)
-        var intersect = intersects.closestIntx
+         pos.clientX = e.clientX
+         pos.clientY = e.clientY
 
-        if (intersect) {
+         var intersects = getMouseIntersects(e)
+         var intersect = intersects.closestIntx
 
-            if (UserState.modeIsEdit()) {
+         if (intersect) { // only act if we intersected something
 
-                GameScene.updateGhostMesh(intersect)
-                GameScene.updateDeleteMesh(intersect)
+             if (UserState.modeIsEdit()) {
 
-            } else if (UserState.modeIsSelect()) {
+                 GameScene.updateGhostMesh(intersect)
+                 GameScene.updateDeleteMesh(intersect)
 
-                var planeIntx = intersects.planeIntx
+             } else if (UserState.modeIsSelect()) {
 
-                if (planeIntx) {
+                 var planeIntx = intersects.planeIntx
 
-                    GameScene.moveRegionSelectPlane(planeIntx)
+                 if (planeIntx) {
 
-                }
+                     GameScene.moveRegionSelectPlane(planeIntx)
 
-            }
+                 }
 
-        }
+             }
 
-        GameScene.render()
+         }
 
-    }
+         GameScene.render()
 
-    function getMouseIntersects(e) {
+     }
 
-        var camera = GameScene.getCamera()
+     /**
+      * This gets the objects that the mouse
+      * is currently intersecting based on the event\
+      * @memberOf Mouse
+      * @access private
+      * @param  {Event} e
+      * @return {Object}
+      * @return {{closestIntx: THREE.Intersect, planeIntx: THREE.Intersect}} closestIntx is
+      * the object the mouse intersected that the is closest to the raycast origin. planeIntx
+      * is the voxelPlane intersect, if there is one
+      */
+     function getMouseIntersects(e) {
 
-        pos.x = (e.clientX / window.innerWidth) * 2 - 1
-        pos.y = -(e.clientY / window.innerHeight) * 2 + 1
+         var camera = GameScene.getCamera()
 
-        var intersects = Raycast.getIntersects(pos, camera)
+         pos.x = (e.clientX / window.innerWidth) * 2 - 1
+         pos.y = -(e.clientY / window.innerHeight) * 2 + 1
 
-        var minDist = Number.MAX_VALUE
-        var closestIntx
-        var planeIntx
+         var intersects = Raycast.getIntersects(pos, camera)
 
-        intersects.forEach(function(intx) {
-            if (intx.distance < minDist) {
-                closestIntx = intx
-                minDist = intx.distance
-            }
-            if (intx.object.name === 'plane')
-                planeIntx = intx
-        })
+         var minDist = Number.MAX_VALUE
+         var closestIntx
+         var planeIntx
 
-        return {
-            closestIntx: closestIntx,
-            planeIntx: planeIntx
-        }
+         intersects.forEach(function(intx) {
+             if (intx.distance < minDist) {
+                 closestIntx = intx
+                 minDist = intx.distance
+             }
+             if (intx.object.name === 'plane')
+                 planeIntx = intx
+         })
 
-    }
+         return {
+             closestIntx: closestIntx,
+             planeIntx: planeIntx
+         }
 
-    function getPos() {
-        return pos
-    }
+     }
+
+     /**
+      * Add mouse event listeners to the document
+      * @memberOf Mouse
+      * @access private
+      */
+     function addEventListeners() {
+
+         // we are using a jQuery bind here so we can force
+         // trigger a mouseMove event from mouseDown
+         $(document).mousemove(mouseMove)
+         document.addEventListener('mousedown', mouseDown)
+     }
+
+     /**
+      * Remove mouse event listeners to the document
+      * @memberOf Mouse
+      * @access private
+      */
+     function removeEventListenerers() {
+         $(document).unbind('mousemove')
+         document.removeEventListener('mousedown', mouseDown)
+     }
+
+     /*********** expose public methods *************/
 
     return {
         init: init,
-        getPos: getPos,
-        forceTriggerMouseMove: forceTriggerMouseMove,
-        leftDown: leftDown
+        forceTriggerMouseMove: forceTriggerMouseMove
     }
 
 }(window)
