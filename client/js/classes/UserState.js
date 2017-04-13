@@ -67,10 +67,24 @@ var UserState = function(window, undefined) {
 
     }
 
+    /**
+     * Reset the action timer to delay
+     * actions again
+     * @memberOf UserState
+     * @access public
+     */
     function resetActionTimer() {
         actionTimer = new Date()
     }
 
+    /**
+     * Checks if the user can act
+     * based on the actionDelay config
+     * setting and the last time acted
+     * @memberOf UserState
+     * @access public
+     * @return {boolean}
+     */
     function canAct() {
         var actionDelay = Config.getGeneral().actionDelay
         return new Date(new Date() - actionTimer).getMilliseconds() > actionDelay
@@ -109,44 +123,94 @@ var UserState = function(window, undefined) {
 
     /*********** setters *************/
 
+    /**
+     * Set the user state to default
+     * @memberOf UserState
+     * @access public
+     */
     function setDefaultState() {
         state = states.DEFAULT
         $('body').css('cursor', 'default')
     }
 
+    /**
+     * Set the user state to PICKCOLOR
+     * @memberOf UserState
+     * @access public
+     */
     function setPickState() {
         state = states.PICKCOLOR
         $('body').css('cursor', 'url(/img/eyedropper2.cur), auto')
     }
 
+    /**
+     * Set the user mode to edit
+     * @memberOf UserState
+     * @access public
+     */
     function setEditMode() {
         mode = modes.EDIT
     }
 
+    /**
+     * Set the user mode to select
+     * @memberOf UserState
+     * @access public
+     */
     function setSelectMode() {
         mode = modes.SELECT
     }
 
+    /**
+     * Set the currently selected region
+     * to undefined
+     * @memberOf UserState
+     * @access public
+     */
+    function resetSelectedRegion() {
+        selectedRegion = undefined
+    }
+
     /*********** getters *************/
 
+    /**
+     * Is the user mode select?
+     * @memberOf UserState
+     * @access public
+     * @return {boolean}
+     */
     function modeIsSelect() {
         return mode === modes.SELECT
     }
 
+    /**
+     * Is the user mode edit?
+     * @memberOf UserState
+     * @access public
+     * @return {boolean}
+     */
     function modeIsEdit() {
         return mode === modes.EDIT
     }
 
+    /**
+     * Is the user state pick?
+     * @memberOf UserState
+     * @access public
+     * @return {boolean}
+     */
     function stateIsPick() {
         return state === states.PICKCOLOR
     }
 
+    /**
+     * Get the currently selected region
+     * @memberOf UserState
+     * @access public
+     * @return {UserState.RegionSelection}
+     */
     function getSelectedRegion() {
         return selectedRegion
-    }
-
-    function resetSelectedRegion() {
-        selectedRegion = undefined
     }
 
     /*********** expose public methods *************/

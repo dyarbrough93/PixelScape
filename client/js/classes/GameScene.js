@@ -276,7 +276,7 @@ var GameScene = function(window, undefined) {
      * Turn the delete mesh visibility on or off
      * @memberOf GameScene
      * @access public
-     * @param {Boolean} visible set visiblity
+     * @param {boolean} visible set visiblity
      */
     function setDeleteMeshVis(visible) {
         deleteMesh.material.visible = visible
@@ -286,7 +286,7 @@ var GameScene = function(window, undefined) {
      * Turn the ghost mesh visibility on or off
      * @memberOf GameScene
      * @access public
-     * @param {Boolean} visible set visibility
+     * @param {boolean} visible set visibility
      */
     function setGhostMeshVis(visible) {
         ghostMesh.material.visible = visible
@@ -296,7 +296,7 @@ var GameScene = function(window, undefined) {
      * Set the color of the ghost mesh
      * @memberOf GameScene
      * @access public
-     * @param {Number} hColor Hex color to set
+     * @param {number} hColor Hex color to set
      */
     function setGhostMeshColor(hColor) {
         ghostMesh.material.color.setHex(hColor)

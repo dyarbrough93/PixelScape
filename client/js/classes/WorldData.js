@@ -41,7 +41,7 @@ var WorldData = function(window, undefined) {
      * Load all of the world data into the scene
      * @memberOf WorldData
      * @access public
-     * @param {Object} data Contains all of the data
+     * @param {object} data Contains all of the data
      * to load in, retrieved viq the SocketHandler
      */
     function loadIntoScene(data) {
@@ -126,7 +126,7 @@ var WorldData = function(window, undefined) {
      * section indices and coordStr
      * @param  {VoxelUtils.Tuple} sid Section indices
      * @param  {VoxelUtils.coordStr} coordStr Coordinate string
-     * @return {Object} The mesh or object
+     * @return {object} The mesh or object
      */
     function getVoxel(sid, coordStr) {
         return worldData[sid.a][sid.b][coordStr]

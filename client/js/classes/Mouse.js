@@ -171,7 +171,7 @@ var Mouse = function(window, undefined) {
      * @memberOf Mouse
      * @access private
      * @param  {Event} e
-     * @return {Object}
+     * @return {object}
      * @return {{closestIntx: THREE.Intersect, planeIntx: THREE.Intersect}} closestIntx is
      * the object the mouse intersected that the is closest to the raycast origin. planeIntx
      * is the voxelPlane intersect, if there is one

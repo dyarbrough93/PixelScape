@@ -226,7 +226,7 @@ var PixVoxConversion = function(window, undefined) {
       * @access private
       * @param  {number} numConverting Number of voxels
       * we are attempting to convert
-      * @return {Boolean}
+      * @return {boolean}
       */
      function validNumConverting(numConverting) {
 

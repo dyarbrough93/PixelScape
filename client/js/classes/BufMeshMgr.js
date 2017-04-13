@@ -264,7 +264,7 @@ var BufMeshMgr = function(window, undefined) {
      * vertices array
      * @memberOf BufMeshMgr
      * @access public
-     * @return {Number} The length
+     * @return {number} The length
      */
     function getBufVertsLen() {
         return bufVerts.length

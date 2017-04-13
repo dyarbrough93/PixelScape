@@ -37,7 +37,7 @@ var Keys = function(window, undefined) {
      * Is the shift key currently down?
      * @memberOf Keys
      * @access public
-     * @return {Boolean}
+     * @return {boolean}
      */
     function isShiftDown() {
         return keyStates.shiftDown
