@@ -171,7 +171,7 @@ var ParticleSystems = (function(window, undefined) {
          * Doubles the size of the particle system expansion. Used when there are no more
          * empty spots to fill
          * @instance
-         * @private
+         * @access private
          * @memberOf ParticleSystems.PSystemExpansion
          * @param {number} pIdx Index in the vertices array of the particle to hide
          */
@@ -209,7 +209,7 @@ var ParticleSystems = (function(window, undefined) {
          * Checks if the specified index in the vertices array has a valid value
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
-         * @private
+         * @access private
          */
         checkVertexExists: function(pIdx) {
             if ((!(this._geom.vertices[pIdx])) === 'undefined')
@@ -220,7 +220,7 @@ var ParticleSystems = (function(window, undefined) {
          * Checks if the specified index in the hiddenPointsPositions array has a valid value
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
-         * @private
+         * @access private
          */
         checkHiddenPointExists: function(pIdx) {
             if ((!(this._hiddenPointsPositions[pIdx])) === 'undefined')
@@ -356,7 +356,7 @@ var ParticleSystems = (function(window, undefined) {
          * Checks if the specified index in the vertices array has a valid value
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
-         * @private
+         * @access private
          */
         checkVertexExists: function(sid, pIdx) {
             if ((this._geom[sid.a][sid.b].vertices[pIdx]) === 'undefined')
@@ -367,7 +367,7 @@ var ParticleSystems = (function(window, undefined) {
          * Checks if the specified index in the hiddenPointsPositions array has a valid value
          * @instance
          * @memberOf ParticleSystems.PSystemExpansion
-         * @private
+         * @access private
          */
         checkHiddenPointExists: function(sid, pIdx) {
              if ((this._hiddenPointsPositions[sid.a][sid.b][pIdx]) === 'undefined') {

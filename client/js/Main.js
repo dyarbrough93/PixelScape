@@ -1,3 +1,10 @@
+'use strict'
+
+/**
+ * Initializes all classes and triggers
+ * the server data retrieval
+ * @namespace Main
+ */
 var Main = function() {
 
     $(document).ready(function() {
