@@ -218,7 +218,7 @@ var UserState = function(window, undefined) {
     return {
         init: init,
         canAct: canAct,
-        resetActionTimer,
+        resetActionTimer: resetActionTimer,
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
         stateIsPick: stateIsPick,

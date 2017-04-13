@@ -72,9 +72,7 @@ var GameScene = function(window, undefined) {
         ;
         (function _initRenderer() {
 
-            var {
-                clearColor
-            } = Config.getGeneral()
+            var clearColor = Config.getGeneral().clearColor
 
             renderer = new THREE.WebGLRenderer({
                 antialias: false

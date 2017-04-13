@@ -43,7 +43,7 @@ var GUI = function(window, undefined) {
                     for (var i = 0; i < worldData.length; i++) {
                         for (var j = 0; j < worldData[i].length; j++) {
                             for (var voxPos in worldData[i][j]) {
-                                console.log(`voxPos: ${voxPos}`)
+                                console.log('voxPos: ' + voxPos)
                             }
                         }
                     }

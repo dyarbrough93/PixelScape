@@ -12,9 +12,10 @@ const exphbs = require('express-handlebars')
 //===============EXPRESS==================//
 
 // static client folder
-exprApp.use(express.static(__dirname + '/../client'));
+exprApp.use(express.static(__dirname + '/../build'))
 
 // Configure express to use handlebars templates
+;
 (function handlebars() {
 
     const hbs = exphbs.create()
