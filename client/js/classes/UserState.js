@@ -34,6 +34,7 @@ var UserState = function(window, undefined) {
     var modes
     var mode
     var selectedRegion
+    var actionTimer
 
     /*------------------------------------*
      :: Public Methods
@@ -62,6 +63,17 @@ var UserState = function(window, undefined) {
 
         selectedRegion = new RegionSelection(0, 0)
 
+        actionTimer = new Date()
+
+    }
+
+    function resetActionTimer() {
+        actionTimer = new Date()
+    }
+
+    function canAct() {
+        var actionDelay = Config.getGeneral().actionDelay
+        return new Date(new Date() - actionTimer).getMilliseconds() > actionDelay
     }
 
     /**
@@ -141,6 +153,8 @@ var UserState = function(window, undefined) {
 
     return {
         init: init,
+        canAct: canAct,
+        resetActionTimer,
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
         stateIsPick: stateIsPick,
