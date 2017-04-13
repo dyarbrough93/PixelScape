@@ -1,9 +1,15 @@
+'use strict'
+
 /**
  * @author Jacek Jankowski / http://grey-eminence.org/
  */
 
 // It is an adaptation of the three.js OrbitControls class to map environments
 
+/**
+ * Handles the zoom, pan, and rotate controls
+ * @namespace MapControls
+ */
  var MapControls = function() {
 
      var enabled

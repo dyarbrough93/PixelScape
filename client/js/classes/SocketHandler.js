@@ -1,7 +1,27 @@
+'use strict'
+
+/**
+ * Manages socket events
+ * @namespace SocketHandler
+ */
 var SocketHandler = function(window, undefined) {
+
+    /*------------------------------------*
+     :: Class Variables
+     *------------------------------------*/
 
     var socket
 
+    /*------------------------------------*
+     :: Public Methods
+     *------------------------------------*/
+
+    /**
+     * Initializes the module. Must be called
+     * before anything else
+     * @memberOf SocketHandler
+     * @access public
+     */
     function init() {
 
         socket = io.connect()
@@ -10,47 +30,16 @@ var SocketHandler = function(window, undefined) {
 
     }
 
-    function initSocketOns() {
-
-        socket.on('block added', function(block) {
-
-            var pos = block.position
-
-            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
-            var tColor = new THREE.Color(block.color)
-
-            if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
-                ActionMgr.createVoxelAtGridPos(gPos, tColor.getHex())
-            } else {
-                var sid = VoxelUtils.getSectionIndices(gPos)
-                var coordStr = VoxelUtils.getCoordStr(gPos)
-                var pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
-                WorldData.addVoxel(sid, coordStr, tColor, pIdx, true)
-            }
-
-            GameScene.render()
-
-        })
-
-        socket.on('block removed', function(pos) {
-
-            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
-
-            if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
-
-                // delete voxel
-                ActionMgr.deleteVoxelAtGridPos(gPos)
-
-            } else { // delete pixel
-
-                ActionMgr.deletePixelAtGridPos(gPos)
-
-            }
-
-        })
-
-    }
-
+    /**
+     * Send a "block removed" socket emit
+     * with the given grid position
+     * @memberOf SocketHandler
+     * @access public
+     * @param  {VoxelUtils.GridVector3} gPos The grid
+     * position of the voxel to remove
+     * @param  {Function} cb Callback to call with
+     * a boolean indicating success
+     */
     function emitBlockRemoved(gPos, cb) {
 
         socket.emit('block removed', {
@@ -67,6 +56,18 @@ var SocketHandler = function(window, undefined) {
 
     }
 
+    /**
+     * Send a "block added" socket emit
+     * with the given grid position and color
+     * @memberOf SocketHandler
+     * @access public
+     * @param  {VoxelUtils.GridVector3} gPos The grid
+     * position of the voxel to add
+     * @param {Number} hColor Hex color of the voxel
+     * we are adding
+     * @param  {Function} cb Callback to call with
+     * a boolean indicating success
+     */
     function emitBlockAdded(gPos, hColor, cb) {
 
         socket.emit('block added', {
@@ -89,10 +90,11 @@ var SocketHandler = function(window, undefined) {
 
     }
 
-    /**************************************\
-    | Receive Chunked Data                 |
-    \**************************************/
-
+    /**
+     * Retrieve the world data from the server
+     * @param  {Function} cb Callback to call with
+     * the received data as the only parameter
+     */
     function retrieveData(cb) {
 
         socket.emit('start chunking')
@@ -132,6 +134,58 @@ var SocketHandler = function(window, undefined) {
             cb(chunkData)
         })
     }
+
+    /*------------------------------------*
+     :: Private Methods
+     *------------------------------------*/
+
+    /**
+     * Initialize socket.on events
+     * @memberOf SocketHandler
+     * @access public
+     */
+    function initSocketOns() {
+
+        socket.on('block added', function(block) {
+
+            var pos = block.position
+
+            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
+            var tColor = new THREE.Color(block.color)
+
+            if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
+                VoxelActions.createVoxelAtGridPos(gPos, tColor.getHex())
+            } else {
+                var sid = VoxelUtils.getSectionIndices(gPos)
+                var coordStr = VoxelUtils.getCoordStr(gPos)
+                var pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
+                WorldData.addVoxel(sid, coordStr, tColor, pIdx, true)
+            }
+
+            GameScene.render()
+
+        })
+
+        socket.on('block removed', function(pos) {
+
+            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
+
+            if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
+
+                // delete voxel
+                VoxelActions.deleteVoxelAtGridPos(gPos)
+
+            } else { // delete pixel
+
+                VoxelActions.deletePixelAtGridPos(gPos)
+
+            }
+
+        })
+
+    }
+
+    /*********** expose public methods *************/
 
     return {
         init: init,

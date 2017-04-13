@@ -1,7 +1,27 @@
+'use strict'
+
+/**
+ * Manages and routes keyboard events
+ * @namespace Keys
+ */
 var Keys = function(window, undefined) {
+
+    /*------------------------------------*
+     :: Class Variables
+     *------------------------------------*/
 
     var keyStates
 
+    /*------------------------------------*
+     :: Public Methods
+     *------------------------------------*/
+
+    /**
+     * Initializes the module. Must be called
+     * before anything else
+     * @memberOf Keys
+     * @access public
+     */
     function init() {
 
         keyStates = {
@@ -13,6 +33,25 @@ var Keys = function(window, undefined) {
 
     }
 
+    /**
+     * Is the shift key currently down?
+     * @memberOf Keys
+     * @access public
+     * @return {Boolean}
+     */
+    function isShiftDown() {
+        return keyStates.shiftDown
+    }
+
+    /*------------------------------------*
+     :: Private Methods
+     *------------------------------------*/
+
+     /**
+      * Add keyboard event listeners to the document
+      * @memberOf Keys
+      * @access private
+      */
     function addEventListeners() {
 
         document.addEventListener('keydown', keyDown)
@@ -20,6 +59,11 @@ var Keys = function(window, undefined) {
 
     }
 
+    /**
+     * Remove keyboard event listeners from the document
+     * @memberOf Keys
+     * @access private
+     */
     function removeEventListeners() {
 
         document.removeEventListener('keydown', keyDown)
@@ -27,20 +71,26 @@ var Keys = function(window, undefined) {
 
     }
 
+    /**
+     * Route keydown events
+     * @memberOf Keys
+     * @access private
+     * @param  {Event} e
+     */
     function keyDown(e) {
 
         switch (e.keyCode) {
 
             case 27:
-                escDown(e)
+                escDown()
                 break
 
             case 16:
-                shiftDown(e)
+                shiftDown()
                 break
 
             case 17:
-                ctrlDown(e)
+                ctrlDown()
                 break
 
         }
@@ -51,6 +101,34 @@ var Keys = function(window, undefined) {
 
     }
 
+    /**
+     * Route keyup events
+     * @memberOf Keys
+     * @access private
+     * @param  {Event} e
+     */
+    function keyUp(e) {
+
+        switch (e.keyCode) {
+
+            case 16:
+                shiftUp()
+                break
+
+            case 17:
+                ctrlUp()
+                break
+
+        }
+
+    }
+
+    /**
+     * Handle number presses
+     * @memberOf Keys
+     * @access private
+     * @param  {Event} e
+     */
     function numberDown(e) {
 
         e.preventDefault()
@@ -63,23 +141,12 @@ var Keys = function(window, undefined) {
 
     }
 
-    function keyUp(e) {
-
-        switch (e.keyCode) {
-
-            case 16:
-                shiftUp(e)
-                break
-
-            case 17:
-                ctrlUp(e)
-                break
-
-        }
-
-    }
-
-    function escDown(e) {
+    /**
+     * Handle an escape down event
+     * @memberOf Keys
+     * @access private
+     */
+    function escDown() {
 
         if (UserState.stateIsPick())
             UserState.setDefaultState()
@@ -96,27 +163,45 @@ var Keys = function(window, undefined) {
 
     }
 
+    /**
+     * Handle a shift down event
+     * @memberOf Keys
+     * @access private
+     */
     function shiftDown() {
         keyStates.shiftDown = true
         Mouse.forceTriggerMouseMove()
     }
 
+    /**
+     * Handle a control down event
+     * @memberOf Keys
+     * @access private
+     */
     function ctrlDown() {
         keyStates.ctrlDown = true
     }
 
+    /**
+     * Handle a control up event
+     * @memberOf Keys
+     * @access private
+     */
     function ctrlUp() {
         keyStates.ctrlDown = false
     }
 
+    /**
+     * Handle a shift up event
+     * @memberOf Keys
+     * @access private
+     */
     function shiftUp() {
         keyStates.shiftDown = false
         Mouse.forceTriggerMouseMove()
     }
 
-    function isShiftDown() {
-        return keyStates.shiftDown
-    }
+    /*********** expose public methods *************/
 
     return {
         init: init,
