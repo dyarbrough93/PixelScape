@@ -61,6 +61,7 @@ var ParticleSystems = (function(window, undefined) {
         )
 
         var i
+        var len
         if (double) {
             // copy over the old data
             for (i = 0, len = _this._size; i < len; i++) {

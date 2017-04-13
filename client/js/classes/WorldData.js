@@ -1,7 +1,28 @@
+'use strict'
+
+/**
+ * Manages the world state (location and
+ * color of all voxels)
+ * @namespace WorldData
+ */
 var WorldData = function(window, undefined) {
+
+    /*------------------------------------*
+     :: Class Variables
+     *------------------------------------*/
 
     var worldData
 
+    /*------------------------------------*
+     :: Public Methods
+     *------------------------------------*/
+
+    /**
+     * Initializes the module. Must be called
+     * before anything else
+     * @memberOf WorldData
+     * @access public
+     */
     function init() {
 
         var secPerSide = Config.getGrid().sectionsPerSide
@@ -15,12 +36,13 @@ var WorldData = function(window, undefined) {
         }
 
     }
+
     /**
-     * Load all of the world data
-     * @memberOf VoxelWorld
-     * @param {Object} data Contains
-     * @param {VoxelUtils.coordStr} voxelData.coordStr Coordinate string in grid coordinates.
-     * @param {Number} voxelData.coordStr.c Hex color of the voxel
+     * Load all of the world data into the scene
+     * @memberOf WorldData
+     * @access public
+     * @param {Object} data Contains all of the data
+     * to load in, retrieved viq the SocketHandler
      */
     function loadIntoScene(data) {
 
@@ -58,9 +80,10 @@ var WorldData = function(window, undefined) {
     /**
      * Creates an entry in the worldData object with the specified
      * parameters.
-     *
+     * @memberOf WorldData
+     * @access public
      * @param {VoxelUtils.Tuple} sid Section indices
-     * @param {number} tColor THREE Color
+     * @param {number} tColor THREE.Color
      * @param {number} pIdx Index in the particle system geometry
      * @param {boolean} exp Part of particle system expansion?
      * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
@@ -75,13 +98,22 @@ var WorldData = function(window, undefined) {
 
     }
 
+    /**
+     * Add a mesh to the world data
+     * @memberOf WorldData
+     * @access public
+     * @param {VoxelUtils.Tuple} sid Section indices of the voxel we are adding
+     * @param {VoxelUtils.coordStr} coordStr coordinate string of the voxel
+     * @param {THREE.Mesh} mesh The mesh to add
+     */
     function addMesh(sid, coordStr, mesh) {
         worldData[sid.a][sid.b][coordStr] = mesh
     }
 
     /**
      * Remove a voxel from worldData
-     *
+     * @memberOf WorldData
+     * @access public
      * @param {VoxelUtils.Tuple} sid Section indices
      * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
      */
@@ -89,13 +121,26 @@ var WorldData = function(window, undefined) {
         delete worldData[sid.a][sid.b][coordStr]
     }
 
+    /**
+     * Retrieve a voxel with the specified
+     * section indices and coordStr
+     * @param  {VoxelUtils.Tuple} sid Section indices
+     * @param  {VoxelUtils.coordStr} coordStr Coordinate string
+     * @return {Object} The mesh or object
+     */
     function getVoxel(sid, coordStr) {
         return worldData[sid.a][sid.b][coordStr]
     }
 
+    /**
+     * Return the worldData object
+     * @return {Ojbect} The world data
+     */
     function getWorldData() {
         return worldData
     }
+
+    /*********** expose public methods *************/
 
     return {
         init: init,

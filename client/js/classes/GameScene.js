@@ -387,6 +387,18 @@ var GameScene = function(window, undefined) {
         return pSystemExpansion
     }
 
+    function getMapControlsPlane() {
+        return mapControlsPlane
+    }
+
+    function getCamera() {
+        return camera
+    }
+
+    function getScene() {
+        return scene
+    }
+
     /*------------------------------------*
      :: Private methods
      *------------------------------------*/
@@ -419,8 +431,9 @@ var GameScene = function(window, undefined) {
         updateGhostMesh: updateGhostMesh,
         updateDeleteMesh: updateDeleteMesh,
         moveRegionSelectPlane: moveRegionSelectPlane,
-        getGhostMesh: getGhostMesh,
-        getDeleteMesh: getDeleteMesh,
+        getMapControlsPlane: getMapControlsPlane,
+        getScene: getScene,
+        getCamera: getCamera,
         getPSystem: getPSystem,
         getPSystemExpo: getPSystemExpo,
         render: render
