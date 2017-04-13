@@ -1,6 +1,7 @@
 'use strict'
 
 const port = process.env.PORT || 5000
+const devEnv = process.env.NODE_ENV === 'dev'
 
 //===============REQUIRES=================//
 
@@ -12,7 +13,8 @@ const exphbs = require('express-handlebars')
 //===============EXPRESS==================//
 
 // static client folder
-exprApp.use(express.static(__dirname + '/../build'))
+const staticFolder = devEnv ? '/../client' : '/../build'
+exprApp.use(express.static(__dirname + staticFolder))
 
 // Configure express to use handlebars templates
 ;
@@ -27,9 +29,15 @@ exprApp.use(express.static(__dirname + '/../build'))
 
 // routes
 exprApp.get('/', function(req, res) {
-    res.render('home', {
-        layout: false
-    })
+    if (devEnv) {
+        res.render('dev/devHome', {
+            layout: false
+        })
+    } else {
+        res.render('home', {
+            layout: false
+        })
+    }
 })
 
 module.exports = {
