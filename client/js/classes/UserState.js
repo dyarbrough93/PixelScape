@@ -68,7 +68,19 @@ var UserState = function(window, undefined) {
         var c1 = new THREE.Vector3(x1, 0, z1).initGridPos()
         var c2 = new THREE.Vector3(x2, 0, z2).initGridPos()
 
-        selectedRegion = {
+        selectedRegion = new RegionSelection(c1, c2)
+    }
+
+    /**
+     * Represents a square region selection
+     * @class RegionSelection
+     * @property {THREE.Vector3} corner1 The top left corner
+     * of the selection
+     * @property {THREE.Vector3} corner2 The bottom right corner
+     * of the selection
+     */
+    function RegionSelection(c1, c2) {
+        return {
             corner1: c1,
             corner2: c2
         }

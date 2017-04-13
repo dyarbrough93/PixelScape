@@ -1,5 +1,7 @@
+'use strict'
+
 /**
- * Defines particle systems for use in main class
+ * Defines particle systems for use in GameScene
  * @namespace ParticleSystems
  */
 var ParticleSystems = (function(window, undefined) {
@@ -31,6 +33,7 @@ var ParticleSystems = (function(window, undefined) {
      * It takes care of the bulk of the initialization, while allowing for
      * reuse (re-initialization while maintaining some class values) in doubleSize().
      * @memberOf ParticleSystems
+     * @access private
      * @param {PSystemExpansion} _this Expansion we are initializing
      * @param {number} size Size. Same as in constructor
      * @param {THREE.scene} scene Same as in constructor
