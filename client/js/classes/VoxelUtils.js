@@ -1,10 +1,5 @@
 'use strict'
 
-/*
- * @file VoxelUtils
- * @author Davis Yarbrough
- */
-
 /**
  * Provides utility functions for VoxelWorld.js
  * @namespace VoxelUtils
@@ -214,6 +209,12 @@ var VoxelUtils = (function(window, undefined) {
 
     }
 
+    /**
+     * Check if the given position is within
+     * the global height limit
+     * @param  {VoxelUtils.GridVector3} gPos The position
+     * @return {Boolean}
+     */
     function validHeight(gPos) {
 
         // too high?
@@ -233,9 +234,17 @@ var VoxelUtils = (function(window, undefined) {
 
     }
 
+    /**
+     * Check if the given position is both
+     * within the selection bounds and less
+     * than the global height limit
+     * @param  {VoxelUtils.GridVector3} gPos The position
+     * we are checking
+     * @return {Boolean}
+     */
     function validBlockLocation(gPos) {
-        return withinSelectionBounds(gPos)
-        && validHeight(gPos)
+        return withinSelectionBounds(gPos) &&
+            validHeight(gPos)
     }
 
     /**
@@ -290,7 +299,7 @@ var VoxelUtils = (function(window, undefined) {
         return num
     }
 
-    /**************************************/
+    /*********** expose public methods *************/
 
     return {
         withinSelectionBounds: withinSelectionBounds,
