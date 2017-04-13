@@ -59,11 +59,11 @@ var Mouse = function(window, undefined) {
                     if (UserState.stateIsPick())
                         GUI.setPickColor(intersect)
                     else if (Keys.isShiftDown()) {
-                        ActionMgr.deleteVoxelAtIntersect(intersect, function() {
+                        VoxelActions.deleteVoxelAtIntersect(intersect, function() {
                             forceTriggerMouseMove()
                         })
                     } else {
-                        ActionMgr.createVoxelAtIntersect(intersect, function() {
+                        VoxelActions.createVoxelAtIntersect(intersect, function() {
                             forceTriggerMouseMove()
                         })
                     }

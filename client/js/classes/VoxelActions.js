@@ -1,43 +1,21 @@
-var ActionMgr = function(window, undefined) {
+'use strict'
 
-    function createVoxelAtGridPos(gPos, hColor) {
+/**
+ * This module manages the creation and deletion
+ * of voxels
+ * @namespace VoxelActions
+ */
+var VoxelActions = function(window, undefined) {
 
-        var voxelMesh = VoxelUtils.initVoxel({
-            color: hColor,
-            gPos: gPos
-        })
-
-        var sid = VoxelUtils.getSectionIndices(gPos)
-
-        var coordStr = VoxelUtils.getCoordStr(gPos)
-        WorldData.addMesh(sid, coordStr, voxelMesh)
-
-        Raycast.add(voxelMesh)
-        PixVoxConversion.addToConvertedVoxels(sid, coordStr)
-
-        GameScene.addToScene(voxelMesh)
-        GameScene.render()
-
-    }
-
-    function createVoxelAtIntersect(intersect, done) {
-
-        var gPos = intersect.point
-        gPos.add(intersect.face.normal)
-        gPos.initWorldPos()
-        gPos.worldToGrid()
-
-        var hColor = GUI.getBlockColor()
-
-        SocketHandler.emitBlockAdded(gPos, hColor, function(success) {
-            if (success) createVoxelAtGridPos(gPos, hColor)
-        })
-
-    }
+    /*------------------------------------*
+     :: Private
+     *------------------------------------*/
 
     /**
      * Deletes a specified voxel mesh. This is a voxel that has been added to the
      * selected region since its selection
+     * @memberOf VoxelActions
+     * @access private
      * @param {VoxelUtils.GridVector3} gPos Grid position of the voxel to delete
      */
     function deleteNewVoxel(gPos) {
@@ -62,6 +40,8 @@ var ActionMgr = function(window, undefined) {
     /**
      * Deletes a specified voxel from the buffer geometry. This is a voxel
      * that was created upon initial conversion from pixels to voxels.
+     * @memberOf VoxelActions
+     * @access private
      * @param {VoxelUtils.GridVector3} gPos Grid position of the voxel to delete
      */
     function deleteMergedVoxel(gPos) {
@@ -82,6 +62,70 @@ var ActionMgr = function(window, undefined) {
 
     }
 
+    /*------------------------------------*
+     :: Public
+     *------------------------------------*/
+
+    /**
+     * Creates a voxel mesh at the specified
+     * grid position
+     * @memberOf VoxelActions
+     * @access public
+     * @param  {VoxelUtils.GridVector3} gPos The grid position
+     * to create the voxel at
+     * @param  {number} hColor Hex color of the voxel
+     */
+    function createVoxelAtGridPos(gPos, hColor) {
+
+        var voxelMesh = VoxelUtils.initVoxel({
+            color: hColor,
+            gPos: gPos
+        })
+
+        var sid = VoxelUtils.getSectionIndices(gPos)
+
+        var coordStr = VoxelUtils.getCoordStr(gPos)
+        WorldData.addMesh(sid, coordStr, voxelMesh)
+
+        Raycast.add(voxelMesh)
+        PixVoxConversion.addToConvertedVoxels(sid, coordStr)
+
+        GameScene.addToScene(voxelMesh)
+        GameScene.render()
+
+    }
+
+    /**
+     * Creates a voxel at a position based on the
+     * given intersect
+     * @memberOf VoxelActions
+     * @access public
+     * @param  {THREE.Intersect}   intersect The intersect
+     * @param  {Function} done      Called upon completion
+     */
+    function createVoxelAtIntersect(intersect, done) {
+
+        var gPos = intersect.point
+        gPos.add(intersect.face.normal)
+        gPos.initWorldPos()
+        gPos.worldToGrid()
+
+        var hColor = GUI.getBlockColor()
+
+        SocketHandler.emitBlockAdded(gPos, hColor, function(success) {
+            if (success) createVoxelAtGridPos(gPos, hColor)
+        })
+
+    }
+
+    /**
+     * Deletes a voxel mesh. This is a voxel that
+     * was newly created after the conversion from
+     * pixels to voxels
+     * @memberOf VoxelActions
+     * @access public
+     * @param  {VoxelUtils.GridVector3} gPos Grid position of the voxel to delete
+     */
     function deleteVoxelAtGridPos(gPos) {
 
         var sid = VoxelUtils.getSectionIndices(gPos)
@@ -95,6 +139,14 @@ var ActionMgr = function(window, undefined) {
 
     }
 
+    /**
+     * Deletes a voxel at a position based on the
+     * given intersect
+     * @memberOf VoxelActions
+     * @access public
+     * @param  {THREE.Intersect}   intersect The intersect
+     * @param  {Function} done      Called upon completion
+     */
     function deleteVoxelAtIntersect(intersect, done) {
 
         var iobj = intersect.object
@@ -134,6 +186,12 @@ var ActionMgr = function(window, undefined) {
 
     }
 
+    /**
+     * Deletes a voxel at the specified grid position
+     * @memberOf VoxelActions
+     * @access public
+     * @param  {VoxelUtils.GridVector3} gPos The grid position
+     */
     function deletePixelAtGridPos(gPos) {
 
         var sid = VoxelUtils.getSectionIndices(gPos)
@@ -153,12 +211,11 @@ var ActionMgr = function(window, undefined) {
 
     return {
 
-        createVoxelAtIntersect: createVoxelAtIntersect,
         createVoxelAtGridPos: createVoxelAtGridPos,
+        createVoxelAtIntersect: createVoxelAtIntersect,
         deleteVoxelAtIntersect: deleteVoxelAtIntersect,
         deleteVoxelAtGridPos: deleteVoxelAtGridPos,
         deletePixelAtGridPos: deletePixelAtGridPos
-
 
     }
 

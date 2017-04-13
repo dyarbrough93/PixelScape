@@ -20,7 +20,7 @@ var SocketHandler = function(window, undefined) {
             var tColor = new THREE.Color(block.color)
 
             if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
-                ActionMgr.createVoxelAtGridPos(gPos, tColor.getHex())
+                VoxelActions.createVoxelAtGridPos(gPos, tColor.getHex())
             } else {
                 var sid = VoxelUtils.getSectionIndices(gPos)
                 var coordStr = VoxelUtils.getCoordStr(gPos)
@@ -39,11 +39,11 @@ var SocketHandler = function(window, undefined) {
             if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
 
                 // delete voxel
-                ActionMgr.deleteVoxelAtGridPos(gPos)
+                VoxelActions.deleteVoxelAtGridPos(gPos)
 
             } else { // delete pixel
 
-                ActionMgr.deletePixelAtGridPos(gPos)
+                VoxelActions.deletePixelAtGridPos(gPos)
 
             }
 

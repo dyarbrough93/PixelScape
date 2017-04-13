@@ -1,6 +1,16 @@
 'use strict'
 
+/**
+ * This module manages the creation / deletion of a buffer
+ * mesh. It also provides methods for inserting and removing
+ * voxels from the buffer mesh
+ * @namespace BufMeshMgr
+ */
 var BufMeshMgr = function(window, undefined) {
+
+    /*------------------------------------*
+     :: Class Variables
+     *------------------------------------*/
 
     var p
     var n
@@ -10,6 +20,16 @@ var BufMeshMgr = function(window, undefined) {
 
     var bufObj
 
+    /*------------------------------------*
+     :: Public methods
+     *------------------------------------*/
+
+    /**
+     * Initializes the module. Must be
+     * called before usage.
+     * @memberOf BufMeshMgr
+     * @access public
+     */
     function init() {
 
         var blockSize = Config.getGrid().blockSize
@@ -134,8 +154,9 @@ var BufMeshMgr = function(window, undefined) {
     }
 
     /**
-     * Object used to manage the game's buffer mesh
-     * @constructor
+     * Creates the buffer mesh.
+     * @memberOf BufMeshMgr
+     * @access public
      * @param {number} size Number of spaces to initialize the bufferattributes with
      */
     function createBufMesh(size) {
@@ -165,7 +186,8 @@ var BufMeshMgr = function(window, undefined) {
     /**
      * Adds a voxel to the buffer mesh. Only to be used before
      * the mesh is added to the scene.
-     * @memberOf BufMeshObj
+     * @memberOf BufMeshMgr
+     * @access public
      * @param {number} addIdx Index to add the voxel at
      * @param {VoxelUtils.WorldVector3} wPos World position of the voxel
      * @param {THREE.Color} color Color of the voxel
@@ -197,8 +219,10 @@ var BufMeshMgr = function(window, undefined) {
     }
 
     /**
-     * Removes a voxel from the buffer mesh (sets associated vertices / colors to 0)
-     * @memberOf BufMeshObj
+     * Removes a voxel from the buffer mesh
+     * (sets associated vertices / colors to 0)
+     * @memberOf BufMeshMgr
+     * @access public
      * @param {number} bIdx Index of the voxel to remove.
      */
     function removeVoxel(bIdx) {
@@ -218,7 +242,8 @@ var BufMeshMgr = function(window, undefined) {
 
     /**
      * De-initializes all properties and frees associated memory.
-     * @memberOf BufMeshObj
+     * @memberOf BufMeshMgr
+     * @access public
      */
     function destroyBufMesh() {
 
@@ -234,13 +259,29 @@ var BufMeshMgr = function(window, undefined) {
 
     }
 
+    /**
+     * Gets the length of the buffer
+     * vertices array
+     * @memberOf BufMeshMgr
+     * @access public
+     * @return {Number} The length
+     */
     function getBufVertsLen() {
         return bufVerts.length
     }
 
+    /**
+     * Gets the actual mesh associated
+     * with the buffer object
+     * @memberOf BufMeshMgr
+     * @access public
+     * @return {THREE.Mesh} The buffer mesh
+     */
     function getBufMesh() {
         return bufObj.mesh
     }
+
+    /*********** expose public methods *************/
 
     return {
         init: init,

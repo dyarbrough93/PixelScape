@@ -1,16 +1,17 @@
 'use strict'
 
 /**
- * The game scene.
- * @namespace Scene
+ * Manages the game scene (camera, scene, lights, etc)
+ * and related game assets
+ * @namespace GameScene
  */
 var GameScene = function(window, undefined) {
 
     if (!Detector.webgl) Detector.addGetWebGLMessage()
 
-    /******************************************\
-    | Class Variables                          |
-    \******************************************/
+    /*------------------------------------*
+     :: Class Variables
+     *------------------------------------*/
 
     // basic scene els
     var scene
@@ -33,10 +34,16 @@ var GameScene = function(window, undefined) {
     var particleSystem
     var pSystemExpansion
 
-    /******************************************\
-    | Functions                                |
-    \******************************************/
+    /*------------------------------------*
+     :: Public methods
+     *------------------------------------*/
 
+    /**
+     * Initializes the game scene. Must be
+     * called before anything else.
+     * @memberOf GameScene
+     * @access public
+     */
     function init() {
 
         scene = new THREE.Scene()
@@ -238,21 +245,24 @@ var GameScene = function(window, undefined) {
 
     }
 
-    function onWindowResize() {
-
-        camera.aspect = window.innerWidth / window.innerHeight
-        camera.updateProjectionMatrix()
-
-        renderer.setSize(window.innerWidth, window.innerHeight)
-
-    }
-
+    /**
+     * Renders the scene
+     * @memberOf GameScene
+     * @access public
+     */
     function render() {
 
         renderer.render(scene, camera)
 
     }
 
+    /**
+     * Moves the region select plane based on
+     * the given intersect
+     * @memberOf GameScene
+     * @access public
+     * @param  {THREE.Intersect} planeIntx Intersection with the voxelPlane
+     */
     function moveRegionSelectPlane(planeIntx) {
 
         regionSelectPlane.position.copy(planeIntx.point).add(planeIntx.face.normal).initWorldPos()
@@ -262,14 +272,44 @@ var GameScene = function(window, undefined) {
 
     }
 
+    /**
+     * Turn the delete mesh visibility on or off
+     * @memberOf GameScene
+     * @access public
+     * @param {Boolean} visible set visiblity
+     */
     function setDeleteMeshVis(visible) {
         deleteMesh.material.visible = visible
     }
 
+    /**
+     * Turn the ghost mesh visibility on or off
+     * @memberOf GameScene
+     * @access public
+     * @param {Boolean} visible set visibility
+     */
     function setGhostMeshVis(visible) {
         ghostMesh.material.visible = visible
     }
 
+    /**
+     * Set the color of the ghost mesh
+     * @memberOf GameScene
+     * @access public
+     * @param {Number} hColor Hex color to set
+     */
+    function setGhostMeshColor(hColor) {
+        ghostMesh.material.color.setHex(hColor)
+    }
+
+    /**
+     * Update the position / visibility of the ghost mesh
+     * based on the given intersect
+     * @memberOf GameScene
+     * @access public
+     * @param  {THREE.Intersect} intersect The intersect used to
+     * set the position
+     */
     function updateGhostMesh(intersect) {
 
         var gPos = intersect.point.clone().initWorldPos()
@@ -292,10 +332,14 @@ var GameScene = function(window, undefined) {
 
     }
 
-    function setGhostMeshColor(hColor) {
-        ghostMesh.material.color.setHex(hColor)
-    }
-
+    /**
+     * Update the position and visibility of the
+     * delete mesh based on the given intersect
+     * @memberOf GameScene
+     * @access public
+     * @param  {THREE.Intersect} intersect The intersect
+     * used to set the position
+     */
     function updateDeleteMesh(intersect) {
 
         if (intersect.object.name === 'plane' ||
@@ -315,47 +359,25 @@ var GameScene = function(window, undefined) {
 
     }
 
+    /**
+     * Adds an object to the scene
+     * @memberOf GameScene
+     * @access public
+     * @param {THREE.Object} obj The object to add
+     */
     function addToScene(obj) {
         scene.add(obj)
     }
 
+    /**
+     * Remove an object from the scene
+     * @param  {THREE.Object} obj The object to remove
+     */
     function removeFromScene(obj) {
         scene.remove(obj)
     }
 
     /******************Getters *************/
-
-    function getScene() {
-        return scene
-    }
-
-    function getCamera() {
-        return camera
-    }
-
-    function getRenderer() {
-        return renderer
-    }
-
-    function getMapControlsPlane() {
-        return mapControlsPlane
-    }
-
-    function getVoxelPlane() {
-        return voxelPlane
-    }
-
-    function getRegionSelectPlane() {
-        return regionSelectPlane
-    }
-
-    function getGhostMesh() {
-        return ghostMesh
-    }
-
-    function getDeleteMesh() {
-        return deleteMesh
-    }
 
     function getPSystem() {
         return particleSystem
@@ -365,7 +387,26 @@ var GameScene = function(window, undefined) {
         return pSystemExpansion
     }
 
-    /*************Public module elements ***********/
+    /*------------------------------------*
+     :: Private methods
+     *------------------------------------*/
+
+    /**
+     * Resizes on the scene when the window
+     * is resized
+     * @memberOf GameScene
+     * @access private
+     */
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+
+        renderer.setSize(window.innerWidth, window.innerHeight)
+
+    }
+
+    /*********** expose public methods *************/
 
     return {
 
@@ -377,12 +418,6 @@ var GameScene = function(window, undefined) {
         setGhostMeshColor: setGhostMeshColor,
         updateGhostMesh: updateGhostMesh,
         updateDeleteMesh: updateDeleteMesh,
-        getScene: getScene,
-        getCamera: getCamera,
-        getRenderer: getRenderer,
-        getMapControlsPlane: getMapControlsPlane,
-        getVoxelPlane: getVoxelPlane,
-        getRegionSelectPlane: getRegionSelectPlane,
         moveRegionSelectPlane: moveRegionSelectPlane,
         getGhostMesh: getGhostMesh,
         getDeleteMesh: getDeleteMesh,
