@@ -5,7 +5,7 @@ const mongoCols = require('./server/MongoDb.js')()
 
 const worldData = require('./server/worldData.js')
 
-worldData.init(mongoCols.opsCol, mongoCols.dataCol, function() {
+worldData.init(function() {
 
     const io = require('socket.io')(app.server)
     const socketHandler = require('./server/socketHandler.js')(io, worldData)

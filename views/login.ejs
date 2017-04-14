@@ -14,25 +14,36 @@
             margin: 0px;
             overflow: hidden;
         }
+        #messages {
+            float: left;
+            background-color: #ff6666;
+            width: 100%;
+        }
+        .message {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0px 5px 0px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 
     <link rel="stylesheet" type="text/css" href="/css/login.css"></link>
-
     <link rel="icon" type="image/png" href="/images/favicon.png">
-
     <script src="/js/lib/jquery-1.11.1.min.js"></script>
 
 </head>
 
 <body style="margin: 0px">
 
-<%- messages('my_message_template', locals) %>
+    <%- messages('message_template', locals) %>
 
     <div class="login-page">
         <div class="form">
             <form class="register-form" method="POST" action="/signup">
-                <input type="text" name="first" placeholder="First" />
-                <input type="text" name="last" placeholder="Last" />
+                <input type="text" name="firstName" placeholder="First" />
+                <input type="text" name="lastName" placeholder="Last" />
+                <input type="text" name="username" placeholder="username" />
                 <input type="password" name="password" placeholder="password" />
                 <input type="email" name="email" placeholder="email address" />
                 <button>create</button>
@@ -46,27 +57,6 @@
             </form>
         </div>
     </div>
-
-    <script type="text/javascript">
-        $('.message a').click(function() {
-            $('form').animate({
-                height: "toggle",
-                opacity: "toggle"
-            }, "slow");
-        });
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-86951-7']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
-        })();
-    </script>
 
 </body>
 

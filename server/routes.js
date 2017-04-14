@@ -2,51 +2,56 @@ const express = require('express')
 const router = express.Router()
 
 var isAuthenticated = function(req, res, next) {
+
+    if (process.env.NODE_ENV === 'dev') return next()
+
     if (req.isAuthenticated())
         return next()
-    res.redirect('/')
+    res.redirect('/login')
 }
 
 module.exports = function(passport) {
 
     /* GET login page. */
-    router.get('/', function(req, res) {
+    router.get('/login', function(req, res) {
         // Display the Login page with any flash message, if any
         res.render('login', {
             layout: false
         })
     })
 
-    /*router.post('/login', function(req, res) {
-        req.flash('info', 'test')
-        res.render('/')
-    })*/
-
     /* Handle Login POST */
     router.post('/login', passport.authenticate('login', {
-        successRedirect: '/game',
-        failureRedirect: '/',
+        successRedirect: '/',
+        failureRedirect: '/login',
         failureFlash: true
     }))
 
     /* Handle Registration POST */
     router.post('/signup', passport.authenticate('signup', {
-        successRedirect: '/game',
-        failureRedirect: '/',
+        successRedirect: '/',
+        failureRedirect: '/login',
         failureFlash: true
     }))
 
     /* Handle Logout */
     router.get('/signout', function(req, res) {
         req.logout()
-        res.redirect('/')
+        res.redirect('/login')
     })
 
     /* GET Home Page */
-    router.get('/game', isAuthenticated, function(req, res) {
-        res.render('game', {
-            user: req.user
-        })
+    router.get('/', isAuthenticated, function(req, res) {
+
+        if (process.env.NODE_ENV === 'dev') {
+            res.render('dev/devGame', {
+                user: req.user
+            })
+        } else {
+            res.render('game', {
+                user: req.user
+            })
+        }
     })
 
     return router

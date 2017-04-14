@@ -8,7 +8,6 @@ const devEnv = process.env.NODE_ENV === 'dev'
 const express = require('express')
 const app = express()
 const httpServer = require('http').Server(app)
-const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const expressSession = require('express-session')
 const passport = require('passport')
@@ -35,7 +34,6 @@ app.use(passport.session())
 app.use(flash())
 app.use(function(req, res, next) {
     res.locals.messages = require('express-messages')(req, res)
-    //res.locals.message = req.flash('message')
     next()
 })
 
@@ -53,16 +51,8 @@ passport.deserializeUser(function(id, done) {
     })
 })
 
-// Configure express to use handlebars templates
-;
-(function handlebars() {
-
-    /*const hbs = exphbs.create()
-
-    app.engine('handlebars', hbs.engine)*/
-    app.set('view engine', 'ejs')
-
-})()
+// Configure express to use ejs templates
+app.set('view engine', 'ejs')
 
 module.exports = {
     // start the server

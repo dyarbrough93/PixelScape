@@ -1,9 +1,13 @@
 <div id="messages">
-<% Object.keys(messages).forEach(function (type) { %>
-  <ul class="<%= type %>">
-  <% messages[type].forEach(function (message) { %>
-    <li><%= message %></li>
-  <% }) %>
-  </ul>
-<% }) %>
+    <% Object.keys(messages).forEach(function (type) { %>
+        <ul class="message">
+            <% messages[type].forEach(function (message) { %>
+                <li>
+                    <%= type.charAt(0).toUpperCase() + type.substring(1) %>
+                    :
+                    <%= message %>
+                </li>
+                <% }) %>
+        </ul>
+        <% }) %>
 </div>

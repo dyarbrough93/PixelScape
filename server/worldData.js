@@ -1,9 +1,6 @@
 const config = require('./config.js')
-
-'use strict'
-
-var mongoOpsCol
-var mongoDataCol
+const VoxelData = require('./models/VoxelData')
+const Operation = require('./models/Operation')
 
 var numVoxels = 0
 
@@ -55,24 +52,27 @@ WorldData.add = function(info, cb) {
     if (WorldData.voxels.hasOwnProperty(getPosStr(pos)))
         return cb(false)
 
-    // insert into the
-    // operations collection
-    mongoOpsCol.insertOne({
+    var op = new Operation({
         operation: 'add',
         data: {
             color: parseInt(info.color),
             position: info.position
         }
-    }, function(err) {
+    })
+
+    var vox = new VoxelData({
+        key: getPosStr(pos),
+        data: {
+            c: parseInt(info.color)
+        }
+    })
+
+    // insert into the
+    // operations collection
+    op.save(function(err) {
         if (dbErr(err)) return cb(false)
 
-        // insert into the data collection
-        mongoDataCol.insertOne({
-            key: getPosStr(pos),
-            data: {
-                c: parseInt(info.color)
-            }
-        }, function(err2) {
+        vox.save(function(err2) {
             if (dbErr(err2)) return cb(false)
 
             // add the voxel to worldData
@@ -88,6 +88,7 @@ WorldData.add = function(info, cb) {
     })
 }
 
+
 /*
  * Remove object at position from the worldData object
  * @param position Position of the voxel to remove
@@ -100,21 +101,25 @@ WorldData.remove = function(pos, cb) {
     // make sure it exists
     if (WorldData.voxels[getPosStr(pos)]) {
 
-        // insert into the
-        // operations collection
-        mongoOpsCol.insertOne({
+        var op = new Operation({
             operation: 'remove',
             data: {
                 position: pos
             }
-        }, function(err) {
+        })
+
+        var vox = new VoxelData({
+            key: getPosStr(pos)
+        })
+
+        // insert into the
+        // operations collection
+        op.save(function(err) {
             if (dbErr(err)) return cb(false)
 
             // remove from the
             // data collection
-            mongoDataCol.remove({
-                key: getPosStr(pos),
-            }, function(err2) {
+            vox.remove(function(err2) {
                 if (dbErr(err2)) return cb(false)
 
                 // remove it from worldData and
@@ -129,15 +134,11 @@ WorldData.remove = function(pos, cb) {
 
 }
 
-WorldData.init = function(opsCol, dataCol, done) {
+WorldData.init = function(done) {
 
-    mongoOpsCol = opsCol
-    mongoDataCol = dataCol
-
-    dataCol.find({}, function(err, data) {
+    VoxelData.find({}, function(err, data) {
 
         if (dbErr(err)) {
-            console.log(err)
             process.exit()
         }
 

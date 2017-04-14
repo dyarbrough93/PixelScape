@@ -9,6 +9,8 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) {
 
+            console.log('signup')
+
             findOrCreateUser = function() {
                 // find a user in Mongo with provided username
                 User.findOne({
