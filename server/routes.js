@@ -13,22 +13,26 @@ module.exports = function(passport) {
     router.get('/', function(req, res) {
         // Display the Login page with any flash message, if any
         res.render('login', {
-            layout: false,
-            message: req.flash('message')
+            layout: false
         })
     })
 
+    /*router.post('/login', function(req, res) {
+        req.flash('info', 'test')
+        res.render('/')
+    })*/
+
     /* Handle Login POST */
     router.post('/login', passport.authenticate('login', {
-        successRedirect: '/home',
-        failureRedirect: '/login',
+        successRedirect: '/game',
+        failureRedirect: '/',
         failureFlash: true
     }))
 
     /* Handle Registration POST */
     router.post('/signup', passport.authenticate('signup', {
         successRedirect: '/game',
-        failureRedirect: '/signup',
+        failureRedirect: '/',
         failureFlash: true
     }))
 

@@ -20,15 +20,17 @@
 
     <link rel="icon" type="image/png" href="/images/favicon.png">
 
-    <script src="/js/lib/jquery-1.11.1.js"></script>
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
 
 </head>
 
 <body style="margin: 0px">
 
+<%- messages('my_message_template', locals) %>
+
     <div class="login-page">
         <div class="form">
-            <form class="register-form" method="POST" action="/login">
+            <form class="register-form" method="POST" action="/signup">
                 <input type="text" name="first" placeholder="First" />
                 <input type="text" name="last" placeholder="Last" />
                 <input type="password" name="password" placeholder="password" />
@@ -36,9 +38,9 @@
                 <button>create</button>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
-            <form class="login-form" method="POST" action="/register">
-                <input type="text" placeholder="username" />
-                <input type="password" placeholder="password" />
+            <form class="login-form" method="POST" action="/login">
+                <input type="text" name="username" placeholder="username" />
+                <input type="password" name="password" placeholder="password" />
                 <button>login</button>
                 <p class="message">Not registered? <a href="#">Create an account</a></p>
             </form>
