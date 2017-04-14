@@ -57,14 +57,19 @@ var WorldData = function(window, undefined) {
                 var tColor = new THREE.Color(color)
 
                 var gPos = VoxelUtils.coordStrParse(coordStr)
-                var wPos = gPos.clone().gridToWorld()
 
-                var sid = VoxelUtils.getSectionIndices(gPos)
+                if (VoxelUtils.withinGridBoundaries(gPos)) {
 
-                // add a pixel to the particle system,
-                // then add a voxel to worldData
-                var pIdx = particleSystem.addPixel(sid, wPos, tColor)
-                addVoxel(sid, coordStr, color, pIdx, false)
+                    var wPos = gPos.clone().gridToWorld()
+
+                    var sid = VoxelUtils.getSectionIndices(gPos)
+
+                    // add a pixel to the particle system,
+                    // then add a voxel to worldData
+                    var pIdx = particleSystem.addPixel(sid, wPos, tColor)
+                    addVoxel(sid, coordStr, color, pIdx, false)
+
+                }
 
             }
         }

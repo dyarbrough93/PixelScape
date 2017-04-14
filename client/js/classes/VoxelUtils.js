@@ -247,6 +247,20 @@ var VoxelUtils = (function(window, undefined) {
             validHeight(gPos)
     }
 
+    function withinGridBoundaries(gPos) {
+
+        var spsg = Config.getGrid().sqPerSideOfGrid
+
+        var minxz = -(spsg / 2)
+        var maxxz = spsg / 2
+
+        return (gPos.x >= minxz &&
+            gPos.z >= minxz &&
+            gPos.x <= maxxz &&
+            gPos.z <= maxxz)
+
+    }
+
     /**
      * Initializes a voxel mesh with the specified position
      * @memberOf! VoxelUtils.
@@ -302,6 +316,7 @@ var VoxelUtils = (function(window, undefined) {
     /*********** expose public methods *************/
 
     return {
+        withinGridBoundaries: withinGridBoundaries,
         withinSelectionBounds: withinSelectionBounds,
         validBlockLocation: validBlockLocation,
         coordStrParse: coordStrParse,
