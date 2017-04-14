@@ -63,7 +63,7 @@ var SocketHandler = function(window, undefined) {
      * @access public
      * @param  {VoxelUtils.GridVector3} gPos The grid
      * position of the voxel to add
-     * @param {Number} hColor Hex color of the voxel
+     * @param {number} hColor Hex color of the voxel
      * we are adding
      * @param  {Function} cb Callback to call with
      * a boolean indicating success

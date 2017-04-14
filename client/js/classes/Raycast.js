@@ -61,7 +61,7 @@ var Raycast = function(window, undefined) {
      * position and camera
      * @memberOf Raycast
      * @access public
-     * @param  {Number} pos    The position
+     * @param  {number} pos    The position
      * @param  {THREE.Camera} camera The camera
      * @return {Object[]} Array of intersects
      */

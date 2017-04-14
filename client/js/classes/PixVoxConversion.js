@@ -226,7 +226,7 @@ var PixVoxConversion = function(window, undefined) {
       * @access private
       * @param  {number} numConverting Number of voxels
       * we are attempting to convert
-      * @return {Boolean}
+      * @return {boolean}
       */
      function validNumConverting(numConverting) {
 
@@ -289,9 +289,9 @@ var PixVoxConversion = function(window, undefined) {
              var hColor = currVox.c
              var tColor = new THREE.Color(hColor)
 
-             // vvv black magic, don't touch
+             /*// vvv black magic, don't touch
              if (i === 0) console.log(wPos)
-             // ^^^ somehow fixes raycast lag
+             // ^^^ somehow fixes raycast lag*/
 
              BufMeshMgr.addVoxel(i, wPos, tColor)
              hidePixel(currVox, sid)

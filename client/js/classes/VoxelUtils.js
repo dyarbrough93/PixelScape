@@ -111,9 +111,9 @@ var VoxelUtils = (function(window, undefined) {
      * Tuple object.
      * @memberOf VoxelUtils
      * @class Tuple
-     * @type {Object}
-     * @property {Number} a First value
-     * @property {Number} b Second value
+     * @type {object}
+     * @property {number} a First value
+     * @property {number} b Second value
      */
     function Tuple(a, b) {
         return {
@@ -213,7 +213,7 @@ var VoxelUtils = (function(window, undefined) {
      * Check if the given position is within
      * the global height limit
      * @param  {VoxelUtils.GridVector3} gPos The position
-     * @return {Boolean}
+     * @return {boolean}
      */
     function validHeight(gPos) {
 
@@ -240,19 +240,33 @@ var VoxelUtils = (function(window, undefined) {
      * than the global height limit
      * @param  {VoxelUtils.GridVector3} gPos The position
      * we are checking
-     * @return {Boolean}
+     * @return {boolean}
      */
     function validBlockLocation(gPos) {
         return withinSelectionBounds(gPos) &&
             validHeight(gPos)
     }
 
+    function withinGridBoundaries(gPos) {
+
+        var spsg = Config.getGrid().sqPerSideOfGrid
+
+        var minxz = -(spsg / 2)
+        var maxxz = spsg / 2
+
+        return (gPos.x >= minxz &&
+            gPos.z >= minxz &&
+            gPos.x <= maxxz &&
+            gPos.z <= maxxz)
+
+    }
+
     /**
      * Initializes a voxel mesh with the specified position
      * @memberOf! VoxelUtils.
-     * @param {Object} args  Voxel parameters
+     * @param {object} args  Voxel parameters
      * @param {GridVector3} args.gPos Grid position
-     * @param {Number} args.color Hex color
+     * @param {number} args.color Hex color
      * @return {THREE.Mesh} The threejs voxel mesh
      */
     function initVoxel(args) {
@@ -288,8 +302,8 @@ var VoxelUtils = (function(window, undefined) {
      * object.
      *
      * @memberOf! VoxelUtils
-     * @param {Object} obj The object
-     * @returns {Number}
+     * @param {object} obj The object
+     * @returns {number}
      */
     function countObjAttrs(obj) {
         var num = 0
@@ -302,6 +316,7 @@ var VoxelUtils = (function(window, undefined) {
     /*********** expose public methods *************/
 
     return {
+        withinGridBoundaries: withinGridBoundaries,
         withinSelectionBounds: withinSelectionBounds,
         validBlockLocation: validBlockLocation,
         coordStrParse: coordStrParse,

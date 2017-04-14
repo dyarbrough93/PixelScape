@@ -69,3 +69,4 @@ textures/
 client/js/classes/Config\.js
 
 jsdoc/
+build/

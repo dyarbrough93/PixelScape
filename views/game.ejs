@@ -20,16 +20,13 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
 
     <!-- libs -->
-    <script src="/js/lib/jquery-1.11.1.js"></script>
-    <script src="/js/lib/threejsR83.js"></script>
-    <script src="/js/lib/Detector.js"></script>
-    <script src="/js/lib/socket.io-1.4.5.js"></script>
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+    <script src="/js/lib/threejsR83.min.js"></script>
+    <script src="/js/lib/Detector.min.js"></script>
+    <script src="/js/lib/socket.io-1.4.5.min.js"></script>
     <script src="/js/lib/dat.gui.min.js"></script>
     <script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
     <!-- end libs -->
-
-    <!-- game runner -->
-    <script src="/js/Main.js"></script>
 
 </head>
 
@@ -81,46 +78,33 @@
     </script>
 
     <!-- game classes -->
-    <script src="/js/classes/WorldData.js"></script>
-    <script src="/js/classes/SocketHandler.js"></script>
-    <script src="/js/classes/ParticleSystems.js"></script>
-    <script src="/js/classes/GUI.js"></script>
-    <script src="/js/classes/Raycast.js"></script>
-    <script src="/js/classes/GameScene.js"></script>
-    <script src="/js/classes/VoxelUtils.js"></script>
-    <script src="/js/classes/Config.js"></script>
-    <script src="/js/classes/Mouse.js"></script>
-    <script src="/js/classes/Keys.js"></script>
-    <script src="/js/classes/MapControls.js"></script>
-    <script src="/js/classes/UserState.js"></script>
-    <script src="/js/classes/PixVoxConversion.js"></script>
-    <script src="/js/classes/BufMeshMgr.js"></script>
-    <script src="/js/classes/ParticleSystems.js"></script>
-    <script src="/js/classes/VoxelActions.js"></script>
-    <script src="/js/classes/GUI.js"></script>
+    <script src="/js/classes/WorldData.obs.js"></script>
+    <script src="/js/classes/SocketHandler.obs.js"></script>
+    <script src="/js/classes/ParticleSystems.obs.js"></script>
+    <script src="/js/classes/GUI.obs.js"></script>
+    <script src="/js/classes/Raycast.obs.js"></script>
+    <script src="/js/classes/GameScene.obs.js"></script>
+    <script src="/js/classes/VoxelUtils.obs.js"></script>
+    <script src="/js/classes/Config.obs.js"></script>
+    <script src="/js/classes/Mouse.obs.js"></script>
+    <script src="/js/classes/Keys.obs.js"></script>
+    <script src="/js/classes/MapControls.obs.js"></script>
+    <script src="/js/classes/UserState.obs.js"></script>
+    <script src="/js/classes/PixVoxConversion.obs.js"></script>
+    <script src="/js/classes/BufMeshMgr.obs.js"></script>
+    <script src="/js/classes/ParticleSystems.obs.js"></script>
+    <script src="/js/classes/VoxelActions.obs.js"></script>
+    <script src="/js/classes/GUI.obs.js"></script>
+
+    <!-- game runner -->
+    <script src="/js/Main.obs.js"></script>
 
     <!-- css -->
     <link href="css/modal.css"></link>
     <link rel="stylesheet" type="text/css" href="/css/dat.gui.css"></link>
 
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-86951-7']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
-        })();
-    </script>
-
     <!-- game container -->
     <div id="container"></div>
-
-    <!-- <script src="/VoxelWorld.min.js"></script> -->
 
 </body>
 

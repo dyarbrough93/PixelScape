@@ -31,20 +31,6 @@ var Mouse = function(window, undefined) {
     }
 
     /**
-     * Route a mouse down event
-     * @memberOf Mouse
-     * @access public
-     * @param  {Event} e
-     */
-    function mouseDown(e) {
-        if (GUI.wasClicked()) {
-            GUI.setClicked(false)
-            return
-        }
-        if (e.which === 1) leftDown(e)
-    }
-
-    /**
      * Force trigger a mouse move event. This is
      * needed when certain changes are made that
      * require the specific functionality of the
@@ -66,6 +52,20 @@ var Mouse = function(window, undefined) {
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
+
+     /**
+      * Route a mouse down event
+      * @memberOf Mouse
+      * @access private
+      * @param  {Event} e
+      */
+     function mouseDown(e) {
+         if (GUI.wasClicked()) {
+             GUI.setClicked(false)
+             return
+         }
+         if (e.which === 1) leftDown(e)
+     }
 
     /**
      * Handle a left mouse button
@@ -134,6 +134,9 @@ var Mouse = function(window, undefined) {
 
         e.preventDefault()
 
+        Keys.setCtrlDown(e.ctrlKey)
+        Keys.setShiftDown(e.shiftKey)
+
         pos.clientX = e.clientX
         pos.clientY = e.clientY
 
@@ -171,7 +174,7 @@ var Mouse = function(window, undefined) {
      * @memberOf Mouse
      * @access private
      * @param  {Event} e
-     * @return {Object}
+     * @return {object}
      * @return {{closestIntx: THREE.Intersect, planeIntx: THREE.Intersect}} closestIntx is
      * the object the mouse intersected that the is closest to the raycast origin. planeIntx
      * is the voxelPlane intersect, if there is one

@@ -43,7 +43,7 @@ var GUI = function(window, undefined) {
                     for (var i = 0; i < worldData.length; i++) {
                         for (var j = 0; j < worldData[i].length; j++) {
                             for (var voxPos in worldData[i][j]) {
-                                console.log(`voxPos: ${voxPos}`)
+                                console.log('voxPos: ' + voxPos)
                             }
                         }
                     }
@@ -69,7 +69,7 @@ var GUI = function(window, undefined) {
      * Set the specified saved color to the block color
      * @memberOf GUI
      * @access public
-     * @param {Number} cNum The saved color number
+     * @param {number} cNum The saved color number
      */
     function setSavedColor(cNum) {
         settings.colors.saved[cNum] = settings.colors.blockColor
@@ -79,7 +79,7 @@ var GUI = function(window, undefined) {
      * Set the block color to the specified saved color
      * @memberOf GUI
      * @access public
-     * @param {Number} cNum The saved color number
+     * @param {number} cNum The saved color number
      */
     function loadSavedColor(cNum) {
         settings.colors.blockColor = settings.colors.saved[cNum]
@@ -129,7 +129,7 @@ var GUI = function(window, undefined) {
      * Get the current block color
      * @memberOf GUI
      * @access public
-     * @return {Number} The block color
+     * @return {number} The block color
      */
     function getBlockColor() {
         return settings.colors.blockColor
@@ -140,7 +140,7 @@ var GUI = function(window, undefined) {
      * before the mouse click event was received
      * @memberOf GUI
      * @access public
-     * @return {Number} The block color
+     * @return {number} The block color
      */
     function wasClicked() {
         return guiClicked
@@ -196,6 +196,7 @@ var GUI = function(window, undefined) {
         })()
 
         debug.add(settings.debug, 'logWorldData')
+        debug.open()
 
     }
 
@@ -225,7 +226,7 @@ var GUI = function(window, undefined) {
      * Get a random hex color
      * @memberOf GUI
      * @access private
-     * @return {Number} The random hex color
+     * @return {number} The random hex color
      */
     function randomHexColor() {
         return 0xffffff * Math.random()

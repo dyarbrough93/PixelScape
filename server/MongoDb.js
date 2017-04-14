@@ -1,35 +1,32 @@
-const MongoClient = require('mongodb').MongoClient
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const dbUrl = "***REMOVED***"
-
-function handleErr(err) {
-    if (err) {
-        console.log(err)
-        process.exit()
-    }
-}
+const dbUrl = '***REMOVED***'
 
 function init(done) {
 
-    MongoClient.connect(dbUrl, function(err, db) {
-
-        handleErr(err)
-        console.log('Connected to mongodb')
-
-        // get the ops collection
-        db.collection('testops', function(err, opsCol) {
-
-            handleErr(err)
-
-            // get the worldData collection
-            db.collection('testworldData', function(err, dataCol) {
-
-                handleErr(err)
-                done(opsCol, dataCol)
-
-            })
-        })
-    })
+    mongoose.connect(dbUrl)
+    var opsCol = mongoose.model('testops', new Schema({
+        operation: String,
+        data: {
+            color: Number,
+            position: {
+                x: Number,
+                y: Number,
+                z: Number,
+            }
+        }
+    }))
+    var dataCol = mongoose.model('testworldData', new Schema({
+        key: String,
+        data: {
+            c: Number
+        }
+    }))
+    return {
+        opsCol: opsCol,
+        dataCol: dataCol
+    }
 
 }
 
