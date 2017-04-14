@@ -77,6 +77,8 @@
 
     function onMouseDown(event) {
 
+        event.preventDefault()
+
         if (!enabled) {
             return
         }

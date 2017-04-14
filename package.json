@@ -4,10 +4,18 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
+        "bcrypt-nodejs": "^0.0.3",
+        "body-parser": "^1.17.1",
+        "connect-flash": "^0.1.1",
         "express": "4.13.4",
         "express-handlebars": "3.0.0",
+        "express-session": "^1.15.2",
         "lodash": "^4.17.4",
         "mongodb": "^2.2.25",
+        "mongoose": "^4.9.4",
+        "passport": "^0.3.2",
+        "passport-http": "^0.3.0",
+        "passport-local": "^1.0.0",
         "socket.io": "1.5.1"
     },
     "scripts": {

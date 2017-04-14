@@ -1,0 +1,71 @@
+<!-- views/home.handlebars -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>PixelScape - Login</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <style>
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/css/login.css"></link>
+
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+
+    <script src="/js/lib/jquery-1.11.1.js"></script>
+
+</head>
+
+<body style="margin: 0px">
+
+    <div class="login-page">
+        <div class="form">
+            <form class="register-form" method="POST" action="/login">
+                <input type="text" name="first" placeholder="First" />
+                <input type="text" name="last" placeholder="Last" />
+                <input type="password" name="password" placeholder="password" />
+                <input type="email" name="email" placeholder="email address" />
+                <button>create</button>
+                <p class="message">Already registered? <a href="#">Sign In</a></p>
+            </form>
+            <form class="login-form" method="POST" action="/register">
+                <input type="text" placeholder="username" />
+                <input type="password" placeholder="password" />
+                <button>login</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('.message a').click(function() {
+            $('form').animate({
+                height: "toggle",
+                opacity: "toggle"
+            }, "slow");
+        });
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-86951-7']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+        })();
+    </script>
+
+</body>
+
+</html>

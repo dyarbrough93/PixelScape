@@ -289,9 +289,9 @@ var PixVoxConversion = function(window, undefined) {
              var hColor = currVox.c
              var tColor = new THREE.Color(hColor)
 
-             // vvv black magic, don't touch
+             /*// vvv black magic, don't touch
              if (i === 0) console.log(wPos)
-             // ^^^ somehow fixes raycast lag
+             // ^^^ somehow fixes raycast lag*/
 
              BufMeshMgr.addVoxel(i, wPos, tColor)
              hidePixel(currVox, sid)

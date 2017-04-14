@@ -134,14 +134,14 @@ WorldData.init = function(opsCol, dataCol, done) {
     mongoOpsCol = opsCol
     mongoDataCol = dataCol
 
-    dataCol.find({}, function(err, cursorData) {
+    dataCol.find({}, function(err, data) {
 
         if (dbErr(err)) {
             console.log(err)
             process.exit()
         }
 
-        loadData(cursorData, function() {
+        loadData(data, function() {
             done()
         })
 
@@ -152,25 +152,17 @@ WorldData.init = function(opsCol, dataCol, done) {
  * Loads data at the specified path into coords
  * @param path The file's path, including file name
  */
-function loadData(cursorData, done) {
+function loadData(data, done) {
 
     console.log('loading world data from mongodb.worldData...')
 
-    cursorData.each(function(err, item) {
-        if (err) {
-            console.log(err)
-            process.exit()
-        } else if (item) {
-            WorldData.voxels[item.key] = item.data
-        } else { // done
-
-            WorldData.numVoxels = WorldData.count()
-            console.log('loaded worldData from mongodb')
-
-            done()
-
-        }
-
+    data.forEach(function(item) {
+        WorldData.voxels[item.key] = item.data
     })
+
+    WorldData.numVoxels = WorldData.count()
+    console.log('loaded worldData from mongodb')
+
+    done()
 
 }
