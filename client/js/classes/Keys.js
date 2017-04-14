@@ -198,7 +198,6 @@ var Keys = function(window, undefined) {
      * @access private
      */
     function shiftDown() {
-        console.log('shiftDown')
         keyStates.shiftDown = true
         Mouse.forceTriggerMouseMove()
     }
