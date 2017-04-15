@@ -24,7 +24,9 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "grunt && node index.js",
         "dev": "NODE_ENV=dev node index.js",
-        "devw": "set NODE_ENV=dev&& node index.js",
+        "devl": "NODE_ENV=dev&& USE_LOGIN=y&& node index.js",
+        "devw": "set NODE_ENV=dev&& set USE_LOGIN=n&& node index.js",
+        "devwl": "set NODE_ENV=dev&& set USE_LOGIN=y&& node index.js",
         "lint": "eslint .",
         "clean": "rm -rf build",
         "jsdoc": "jsdoc ./server ./client ./README.md -r -a all -c ./jsdocconf.json -d jsdoc"
