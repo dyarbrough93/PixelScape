@@ -53,6 +53,7 @@ passport.deserializeUser(function(id, done) {
 
 // Configure express to use ejs templates
 app.set('view engine', 'ejs')
+app.engine('ejs', require('express-ejs-extend'))
 
 module.exports = {
     // start the server

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>PixelScape
+        <% if (typeof pagename !== 'undefined') { %>
+            -
+            <%= pagename %>
+                <% } %>
+    </title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+
+    <link rel="stylesheet" type="text/css" href="/css/login.css"></link>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+
+    <style>
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <% if (locals.dev) { %>
+        <style>
+            #banner {
+                background-color: #ff4b51;
+                text-align: center;
+                position: absolute;
+                width: 100%;
+            }
+        </style>
+        <div id="banner">
+
+            <% for (var i = 0; i < 10; i++) { %>
+                DEV MODE
+                <% } %>
+
+        </div>
+        <% } %>
+
+            <%- content %>
+
+</body>
+
+</html>

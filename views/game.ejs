@@ -1,38 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<% extend('layout') %>
 
-<head>
-
-    <title>PixelScape</title>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-
-    <style>
-        body {
-            margin: 0px;
-            overflow: hidden;
-        }
-    </style>
-    <!-- end css -->
-
-    <link rel="icon" type="image/png" href="/images/favicon.png">
-
-    <!-- libs -->
-    <script src="/js/lib/jquery-1.11.1.min.js"></script>
-    <script src="/js/lib/threejsR83.min.js"></script>
-    <script src="/js/lib/Detector.min.js"></script>
-    <script src="/js/lib/socket.io-1.4.5.min.js"></script>
-    <script src="/js/lib/dat.gui.min.js"></script>
-    <script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
-    <!-- end libs -->
-
-</head>
-
-<body style="margin: 0px">
-
-    <!-- modal content -->
-    <!--<div id="basic-modal-content">
+<!-- modal content -->
+<!--<div id="basic-modal-content">
         <h2>PixelScape</h2>
         <p>Welcome to PixelScape! In PixelScape, you can collaboratively (or destructively) edit a 3d environment of voxels with other players.</p>
         <h3>Controls</h3>
@@ -58,53 +27,52 @@
         <p><code>View Only</code>Raycasting a large number of blocks is performance heavy, so you are only allowed to convert a certain number of blocks for editing. Selecting this option will disable raycasting in edit mode, allowing you to convert more
             pixels to voxels; however, you will not be able to add or remove voxels.</p>
     </div>-->
-    <!-- end modal -->
+<!-- end modal -->
 
-    <style>
-        html {
-            /*cursor:  url(/img/eyedropper.cur), auto;*/
+<script>
+    // open the modal on page load
+    /*$('#basic-modal-content').modal({
+        onClose: function() {
+            modalClosed()
+            $.modal.impl.close()
         }
-    </style>
+    })*/
+</script>
 
-    <script>
-        // open the modal on page load
-        /*$('#basic-modal-content').modal({
-            onClose: function() {
-                modalClosed()
-                $.modal.impl.close()
-            }
-        })*/
-    </script>
+<!-- libs -->
+<script src="/js/lib/jquery-1.11.1.min.js"></script>
+<script src="/js/lib/threejsR83.min.js"></script>
+<script src="/js/lib/Detector.min.js"></script>
+<script src="/js/lib/socket.io-1.4.5.min.js"></script>
+<script src="/js/lib/dat.gui.min.js"></script>
+<script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
+<!-- end libs -->
 
-    <!-- game classes -->
-    <script src="/js/classes/WorldData.js"></script>
-    <script src="/js/classes/SocketHandler.js"></script>
-    <script src="/js/classes/ParticleSystems.js"></script>
-    <script src="/js/classes/GUI.js"></script>
-    <script src="/js/classes/Raycast.js"></script>
-    <script src="/js/classes/GameScene.js"></script>
-    <script src="/js/classes/VoxelUtils.js"></script>
-    <script src="/js/classes/Config.js"></script>
-    <script src="/js/classes/Mouse.js"></script>
-    <script src="/js/classes/Keys.js"></script>
-    <script src="/js/classes/MapControls.js"></script>
-    <script src="/js/classes/UserState.js"></script>
-    <script src="/js/classes/PixVoxConversion.js"></script>
-    <script src="/js/classes/BufMeshMgr.js"></script>
-    <script src="/js/classes/ParticleSystems.js"></script>
-    <script src="/js/classes/VoxelActions.js"></script>
-    <script src="/js/classes/GUI.js"></script>
+<!-- game classes -->
+<script src="/js/classes/WorldData.js"></script>
+<script src="/js/classes/SocketHandler.js"></script>
+<script src="/js/classes/ParticleSystems.js"></script>
+<script src="/js/classes/GUI.js"></script>
+<script src="/js/classes/Raycast.js"></script>
+<script src="/js/classes/GameScene.js"></script>
+<script src="/js/classes/VoxelUtils.js"></script>
+<script src="/js/classes/Config.js"></script>
+<script src="/js/classes/Mouse.js"></script>
+<script src="/js/classes/Keys.js"></script>
+<script src="/js/classes/MapControls.js"></script>
+<script src="/js/classes/UserState.js"></script>
+<script src="/js/classes/PixVoxConversion.js"></script>
+<script src="/js/classes/BufMeshMgr.js"></script>
+<script src="/js/classes/ParticleSystems.js"></script>
+<script src="/js/classes/VoxelActions.js"></script>
+<script src="/js/classes/GUI.js"></script>
 
-    <!-- game runner -->
-    <script src="/js/Main.js"></script>
+<!-- game runner -->
+<script src="/js/Main.js"></script>
 
-    <!-- css -->
-    <link href="css/modal.css"></link>
-    <link rel="stylesheet" type="text/css" href="/css/dat.gui.css"></link>
+<!-- css -->
+<link href="css/modal.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/dat.gui.css"></link>
 
-    <!-- game container -->
-    <div id="container"></div>
-
-</body>
-
-</html>
+<!-- game container -->
+<div id="container"></div>
