@@ -75,7 +75,7 @@ var GameScene = function(window, undefined) {
             var clearColor = Config.getGeneral().clearColor
 
             renderer = new THREE.WebGLRenderer({
-                antialias: false
+                antialias: true
             })
             renderer.setClearColor(clearColor)
             renderer.sortObjects = false

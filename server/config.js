@@ -59,7 +59,7 @@ const clientConfig = {
         zoomSpeed: 1.0,
         // How far you can orbit vertically, upper and lower limits.
         minPolarAngle: 0.05, // radians
-        maxPolarAngle: Math.PI / 2.15 // radians
+        maxPolarAngle: Math.PI / 2.1 // radians
     }
 }
 

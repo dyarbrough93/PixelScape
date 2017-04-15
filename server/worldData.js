@@ -151,7 +151,7 @@ WorldData.init = function(done) {
  */
 function loadData(data, done) {
 
-    console.log('loading world data from mongodb.worldData...')
+    console.log('loading world data from mongodb.worldData ...')
 
     data.forEach(function(item) {
         WorldData.voxels[item.key] = item.data
