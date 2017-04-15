@@ -70,3 +70,5 @@ client/js/classes/Config\.js
 
 jsdoc/
 build/
+
+server/local\.js

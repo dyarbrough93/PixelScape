@@ -1,7 +1,12 @@
+const local = require('./local.js')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const dbUrl = '***REMOVED***'
+var dbUrl = 'mongodb://'
+dbUrl += local.mongo.username + ':' + local.mongo.password
+dbUrl += '@' + local.mongo.url
+dbUrl += ':' + local.mongo.port
+dbUrl += '/' + local.mongo.db
 
 function init(done) {
 

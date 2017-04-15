@@ -83,6 +83,8 @@ var GUI = function(window, undefined) {
      */
     function loadSavedColor(cNum) {
         settings.colors.blockColor = settings.colors.saved[cNum]
+        GameScene.setGhostMeshColor(settings.colors.saved[cNum])
+        GameScene.render()
     }
 
     /**
