@@ -13,14 +13,12 @@ var isAuthenticated = function(req, res, next) {
 
 }
 
-const dev = process.env.NODE_ENV === 'dev' ? 'dev/' : ''
-
 module.exports = function(passport) {
 
     /* GET login page. */
     router.get('/login', function(req, res) {
         // Display the Login page with any flash message, if any
-        res.render(dev + 'login', {
+        res.render('login', {
             layout: false
         })
     })
@@ -48,7 +46,7 @@ module.exports = function(passport) {
     /* GET Home Page */
     router.get('/', isAuthenticated, function(req, res) {
 
-        res.render(dev + 'game', {
+        res.render('game', {
             user: req.user
         })
     })

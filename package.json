@@ -22,11 +22,11 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "grunt && node index.js",
-        "dev": "grunt regex && NODE_ENV=dev node index.js",
-        "devl": "grunt regex && NODE_ENV=dev&& USE_LOGIN=y&& node index.js",
-        "devw": "grunt regex && set NODE_ENV=dev&& set USE_LOGIN=n&& node index.js",
-        "devwl": "grunt regex && set NODE_ENV=dev&& set USE_LOGIN=y&& node index.js",
+        "start": "grunt && && set USE_LOGIN=y&& node index.js",
+        "dev": "NODE_ENV=dev node index.js",
+        "devl": "NODE_ENV=dev&& USE_LOGIN=y&& node index.js",
+        "devw": "set NODE_ENV=dev&& set USE_LOGIN=n&& node index.js",
+        "devwl": "set NODE_ENV=dev&& set USE_LOGIN=y&& node index.js",
         "lint": "eslint .",
         "clean": "rm -rf build",
         "jsdoc": "jsdoc ./server ./client ./README.md -r -a all -c ./jsdocconf.json -d jsdoc"
@@ -43,7 +43,6 @@
         "grunt-contrib-obfuscator": "^2.0.1",
         "grunt-contrib-uglify": "^2.3.0",
         "grunt-newer": "^1.3.0",
-        "grunt-regex-replace": "^0.4.0",
         "jsdoc": "^3.4.3"
     }
 }
