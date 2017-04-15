@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 <head>
 
     <title>PixelScape - Login</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 
     <style>
         body {
@@ -29,32 +29,32 @@
         }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="/css/login.css"></link>
-    <link rel="icon" type="image/png" href="/images/favicon.png">
-    <script src="/js/lib/jquery-1.11.1.js"></script>
+    <link rel='stylesheet' type='text/css' href='/css/login.css'></link>
+    <link rel='icon' type='image/png' href='/images/favicon.png'>
+    <script src='/js/lib/jquery-1.11.1.min.js'></script>
 
 </head>
 
-<body style="margin: 0px">
+<body style='margin: 0px'>
 
     <%- messages('message_template', locals) %>
 
-        <div class="login-page">
-            <div class="form">
-                <form class="register-form" method="POST" action="/signup">
-                    <input type="text" name="firstName" placeholder="First" />
-                    <input type="text" name="lastName" placeholder="Last" />
-                    <input type="text" name="username" placeholder="username" />
-                    <input type="password" name="password" placeholder="password" />
-                    <input type="email" name="email" placeholder="email address" />
+        <div class='login-page'>
+            <div class='form'>
+                <form class='register-form' method='POST' action='/signup'>
+                    <input type='text' name='firstName' placeholder='First' />
+                    <input type='text' name='lastName' placeholder='Last' />
+                    <input type='text' name='username' placeholder='username' />
+                    <input type='password' name='password' placeholder='password' />
+                    <input type='email' name='email' placeholder='email address' />
                     <button>create</button>
-                    <p class="message">Already registered? <a href="#">Sign In</a></p>
+                    <p class='message'>Already registered? <a href='#'>Sign In</a></p>
                 </form>
-                <form class="login-form" method="POST" action="/login">
-                    <input type="text" name="username" placeholder="username" />
-                    <input type="password" name="password" placeholder="password" />
+                <form class='login-form' method='POST' action='/login'>
+                    <input type='text' name='username' placeholder='username' />
+                    <input type='password' name='password' placeholder='password' />
                     <button>login</button>
-                    <p class="message">Not registered? <a href="#">Create an account</a></p>
+                    <p class='message'>Not registered? <a href='#'>Create an account</a></p>
                 </form>
             </div>
         </div>
@@ -62,9 +62,9 @@
         <script>
             $('.message a').click(function() {
                 $('form').animate({
-                    height: "toggle",
-                    opacity: "toggle"
-                }, "slow")
+                    height: 'toggle',
+                    opacity: 'toggle'
+                }, 'slow')
             })
         </script>
 

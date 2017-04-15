@@ -12,8 +12,6 @@ module.exports = function(grunt) {
                     cwd: 'client/js/lib/', // Src matches are relative to this path.
                     src: ['*.js'], // Actual pattern(s) to match.
                     dest: 'build/js/lib/', // Destination path prefix.
-                    ext: '.min.js', // Dest filepaths will have this extension.
-                    extDot: 'last' // Extensions in filenames begin after the last dot
                 }]
             }
         },
@@ -48,6 +46,25 @@ module.exports = function(grunt) {
                     filter: 'isFile'
                 }]
             }
+        },
+        'regex-replace': {
+            views: { //specify a target with any name
+                src: ['views/game.ejs', 'views/login.ejs'],
+                dest: ['views/dev/game.ejs', 'views/dev/login.ejs'],
+                actions: [{
+                        name: 'rename-dependencies',
+                        search: '\.obs\.',
+                        replace: '\.',
+                        flags: 'g'
+                    },
+                    {
+                        name: 'force-file-copy',
+                        search: '"',
+                        replace: '\'',
+                        flags: 'g'
+                    }
+                ]
+            }
         }
     })
 
@@ -55,8 +72,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy')
     grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.loadNpmTasks('grunt-contrib-obfuscator')
+    grunt.loadNpmTasks('grunt-regex-replace')
 
     // Default task(s).
     grunt.registerTask('default', ['newer:obfuscator', 'newer:uglify', 'newer:copy'])
+    grunt.registerTask('regex', ['regex-replace'])
 
 };
