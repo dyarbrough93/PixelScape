@@ -108,10 +108,6 @@ WorldData.remove = function(pos, cb) {
             }
         })
 
-        var vox = new VoxelData({
-            key: getPosStr(pos)
-        })
-
         // insert into the
         // operations collection
         op.save(function(err) {
@@ -119,7 +115,7 @@ WorldData.remove = function(pos, cb) {
 
             // remove from the
             // data collection
-            vox.remove(function(err2) {
+            VoxelData.remove({ key: getPosStr(pos) }, function(err2) {
                 if (dbErr(err2)) return cb(false)
 
                 // remove it from worldData and
