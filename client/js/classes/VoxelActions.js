@@ -60,7 +60,7 @@ var VoxelActions = function(window, undefined) {
         SocketHandler.emitBlockAdded(gPos, hColor, function(success) {
             if (success) {
                 createVoxelAtGridPos(gPos, hColor)
-                done()
+                done(success)
             }
         })
 
