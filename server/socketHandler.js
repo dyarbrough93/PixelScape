@@ -61,7 +61,7 @@ function handleBlockOperations(socket) {
                 // clients a block was removed
                 actionDelay[socket.id] = new Date()
                 socket.broadcast.emit('block removed', position)
-                callback('success')
+                return callback('success')
 
             }
 

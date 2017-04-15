@@ -3,12 +3,17 @@ const router = express.Router()
 
 var isAuthenticated = function(req, res, next) {
 
-    if (process.env.NODE_ENV === 'dev') return next()
+    if (process.env.USE_LOGIN === 'y') {
 
-    if (req.isAuthenticated())
-        return next()
-    res.redirect('/login')
+        if (req.isAuthenticated())
+            return next()
+        res.redirect('/login')
+
+    } else return next()
+
 }
+
+const dev = process.env.NODE_ENV === 'dev'
 
 module.exports = function(passport) {
 
@@ -16,7 +21,7 @@ module.exports = function(passport) {
     router.get('/login', function(req, res) {
         // Display the Login page with any flash message, if any
         res.render('login', {
-            layout: false
+            dev: dev
         })
     })
 
@@ -43,15 +48,12 @@ module.exports = function(passport) {
     /* GET Home Page */
     router.get('/', isAuthenticated, function(req, res) {
 
-        if (process.env.NODE_ENV === 'dev') {
-            res.render('dev/devGame', {
-                user: req.user
-            })
-        } else {
-            res.render('game', {
-                user: req.user
-            })
-        }
+        console.log(req.user)
+
+        res.render('game', {
+            user: req.user,
+            dev: dev
+        })
     })
 
     return router

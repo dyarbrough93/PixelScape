@@ -48,6 +48,9 @@ var GUI = function(window, undefined) {
                         }
                     }
                 }
+            },
+            logout: function() {
+                window.location = window.location.href + 'signout'
             }
         }
 
@@ -199,6 +202,8 @@ var GUI = function(window, undefined) {
 
         debug.add(settings.debug, 'logWorldData')
         debug.open()
+
+        gui.add(settings, 'logout')
 
     }
 

@@ -12,8 +12,6 @@ module.exports = function(grunt) {
                     cwd: 'client/js/lib/', // Src matches are relative to this path.
                     src: ['*.js'], // Actual pattern(s) to match.
                     dest: 'build/js/lib/', // Destination path prefix.
-                    ext: '.min.js', // Dest filepaths will have this extension.
-                    extDot: 'last' // Extensions in filenames begin after the last dot
                 }]
             }
         },
@@ -24,8 +22,6 @@ module.exports = function(grunt) {
                     cwd: 'client/js/', // Src matches are relative to this path.
                     src: ['*.js', 'classes/*.js'], // Actual pattern(s) to match.
                     dest: 'build/js/', // Destination path prefix.
-                    ext: '.obs.js', // Dest filepaths will have this extension.
-                    extDot: 'last' // Extensions in filenames begin after the last dot
                 }]
             }
         },
@@ -48,7 +44,7 @@ module.exports = function(grunt) {
                     filter: 'isFile'
                 }]
             }
-        }
+        },
     })
 
     grunt.loadNpmTasks('grunt-newer')

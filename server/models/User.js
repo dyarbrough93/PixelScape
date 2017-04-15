@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const dev = process.env.NODE_ENV === 'dev' ? 'test' : ''
+
 var userSchema = new Schema({
     username: String,
     firstName: String,
     lastName: String,
     password: String,
     email: String
-})
+}, {collection: dev + 'users'})
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = mongoose.model('User', userSchema)

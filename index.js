@@ -1,15 +1,17 @@
 'use strict'
 
 const app = require('./server/app.js')
-const mongoCols = require('./server/MongoDb.js')()
+require('./server/MongoDb.js')(function() {
 
-const worldData = require('./server/worldData.js')
+    const worldData = require('./server/worldData.js')
 
-worldData.init(function() {
+    worldData.init(function() {
 
-    const io = require('socket.io')(app.server)
-    const socketHandler = require('./server/socketHandler.js')(io, worldData)
+        const io = require('socket.io')(app.server)
+        const socketHandler = require('./server/socketHandler.js')(io, worldData)
 
-    app.start()
+        app.start()
+
+    })
 
 })

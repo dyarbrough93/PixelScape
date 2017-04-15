@@ -1,63 +1,55 @@
-<!-- views/home.handlebars -->
-<!DOCTYPE html>
-<html lang="en">
+<% extend('layout', {pagename: 'Login'}) %>
 
-<head>
+<style>
+    body {
+        margin: 0px;
+        overflow: hidden;
+    }
 
-    <title>PixelScape - Login</title>
+    #flash_messages {
+        float: left;
+        background-color: #ff6666;
+        width: 100%;
+    }
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    .flash_message {
+        list-style: none;
+        padding: 0;
+        margin: 5px 0px 5px 0px;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
 
-    <style>
-        body {
-            margin: 0px;
-            overflow: hidden;
-        }
-        #messages {
-            float: left;
-            background-color: #ff6666;
-            width: 100%;
-        }
-        .message {
-            list-style: none;
-            padding: 0;
-            margin: 5px 0px 5px 0px;
-            font-weight: bold;
-            text-align: center;
-        }
-    </style>
+<link rel="stylesheet" type="text/css" href="/css/login.css"></link>
 
-    <link rel="stylesheet" type="text/css" href="/css/login.css"></link>
-    <link rel="icon" type="image/png" href="/images/favicon.png">
-    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+<%- messages('message_template', locals) %>
 
-</head>
-
-<body style="margin: 0px">
-
-    <%- messages('message_template', locals) %>
-
-    <div class="login-page">
-        <div class="form">
-            <form class="register-form" method="POST" action="/signup">
-                <input type="text" name="firstName" placeholder="First" />
-                <input type="text" name="lastName" placeholder="Last" />
-                <input type="text" name="username" placeholder="username" />
-                <input type="password" name="password" placeholder="password" />
-                <input type="email" name="email" placeholder="email address" />
-                <button>create</button>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
-            </form>
-            <form class="login-form" method="POST" action="/login">
-                <input type="text" name="username" placeholder="username" />
-                <input type="password" name="password" placeholder="password" />
-                <button>login</button>
-                <p class="message">Not registered? <a href="#">Create an account</a></p>
-            </form>
-        </div>
+<div class="login-page">
+    <div class="form">
+        <form class="register-form" method="POST" action="/signup">
+            <input type="text" name="firstName" placeholder="First" />
+            <input type="text" name="lastName" placeholder="Last" />
+            <input type="text" name="username" placeholder="username" />
+            <input type="password" name="password" placeholder="password" />
+            <input type="email" name="email" placeholder="email address" />
+            <button>create</button>
+            <p class="message">Already registered? <a href="#">Sign In</a></p>
+        </form>
+        <form class="login-form" method="POST" action="/login">
+            <input type="text" name="username" placeholder="username" />
+            <input type="password" name="password" placeholder="password" />
+            <button>login</button>
+            <p class="message">Not registered? <a href="#">Create an account</a></p>
+        </form>
     </div>
+</div>
 
-</body>
-
-</html>
+<script>
+    $('.message a').click(function() {
+        $('form').animate({
+            height: "toggle",
+            opacity: "toggle"
+        }, "slow")
+    })
+</script>

@@ -106,7 +106,7 @@ var SocketHandler = function(window, undefined) {
         // we get the number of chunks we are
         // about to receive
         socket.on('chunking size', function(size) {
-            console.log('receiving data from server')
+            console.log('receiving data from server ...')
             numChunks = size
         })
 
