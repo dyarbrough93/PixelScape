@@ -84,8 +84,24 @@ io.use(passportSocketIo.authorize({
     cookieParser: cookieParser,
     key: 'express.sid',
     secret: 'sMkIWZ7n!#2C7Kd5mVUF',
-    store: sessionStore
+    store: sessionStore,
+    success: onAuthorizeSuccess,
+    fail: onAuthorizeFail
 }))
+
+function onAuthorizeSuccess(data, accept){
+  console.log('successful connection to socket.io')
+  accept(null, true)
+}
+
+function onAuthorizeFail(data, message, error, accept){
+  if(error)
+    throw new Error(message);
+  console.log('failed connection to socket.io:', message);
+
+  accept(null, false);
+
+}
 
 /*------------------------------------*
  :: Init and start server

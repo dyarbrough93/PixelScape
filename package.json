@@ -26,7 +26,8 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "grunt && node app.js",
+        "prestart": "grunt",
+        "start": "node app.js",
         "dev": "NODE_ENV=dev node app.js",
         "devl": "NODE_ENV=dev&& USE_LOGIN=y&& node app.js",
         "devw": "set NODE_ENV=dev&& set USE_LOGIN=n&& node app.js",

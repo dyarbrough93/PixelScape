@@ -39,6 +39,10 @@ module.exports = function(passport) {
         failureFlash: true
     }))
 
+    router.get('/guest', function(req, res) {
+        res.render('game')
+    })
+
     /* Handle Logout */
     router.get('/signout', function(req, res) {
         req.logout()
