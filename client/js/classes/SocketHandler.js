@@ -142,7 +142,7 @@ var SocketHandler = function(window, undefined) {
     /**
      * Initialize socket.on events
      * @memberOf SocketHandler
-     * @access public
+     * @access private
      */
     function initSocketOns() {
 
