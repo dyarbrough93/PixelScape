@@ -375,6 +375,10 @@ var GameScene = function(window, undefined) {
         scene.remove(obj)
     }
 
+    function destroy() {
+        container.removeChild(container.getElementsByTagName('canvas')[0])
+    }
+
     /******************Getters *************/
 
     function getPSystem() {
@@ -421,6 +425,7 @@ var GameScene = function(window, undefined) {
     return {
 
         init: init,
+        destroy: destroy,
         addToScene: addToScene,
         removeFromScene: removeFromScene,
         setDeleteMeshVis: setDeleteMeshVis,

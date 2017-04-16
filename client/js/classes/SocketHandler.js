@@ -146,6 +146,14 @@ var SocketHandler = function(window, undefined) {
      */
     function initSocketOns() {
 
+        socket.on('multiple logins', function() {
+
+            alert('You are already logged in!')
+            GameScene.destroy()
+            GUI.destroy()
+
+        })
+
         socket.on('block added', function(block) {
 
             var pos = block.position

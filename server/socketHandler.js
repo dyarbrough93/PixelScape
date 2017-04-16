@@ -3,6 +3,7 @@
 const config = require('./config.js')
 
 const actionDelay = {}
+const connectedUsers = {}
 
 var worldData
 
@@ -147,7 +148,13 @@ function IOHandler(io, _worldData) {
 			return
 		}
 
-		console.log(socket.request.user)
+		// prevent multiple logins per user
+		const uname = socket.request.user.username
+		if (connectedUsers[uname]) {
+			socket.emit('multiple logins')
+			socket.disconnect()
+		}
+		connectedUsers[uname] = true
 
 		console.log('connection')
 		console.log("connections: " + io.engine.clientsCount)
@@ -161,6 +168,9 @@ function IOHandler(io, _worldData) {
 
 		// client disconnected
 		socket.on('disconnect', function() {
+
+			connectedUsers[uname] = false
+			delete connectedUsers[uname]
 
 			// tell all the clients a client disconnected
 			io.sockets.emit('update clients', io.engine.clientsCount)
