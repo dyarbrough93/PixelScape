@@ -3,7 +3,8 @@ const _ = require('lodash')
 
 const sharedConfig = {
     maxVoxelHeight: 75,
-    actionDelay: 250, // ms
+    actionDelay: 125, // ms
+    guestActionDelay: 3000, // ms
     chatDelay: 3, // s
     maxGlobalBlocks: 1000000,
 }

@@ -3,20 +3,37 @@
 const config = require('./config.js')
 
 const actionDelay = {}
+const connectedUsers = {}
 
 var worldData
+
+function enoughTimePassed(socket) {
+
+	const uname = socket.request.user.username
+
+	const actDelayKey = uname ? uname : socket.id
+	const delay = uname ? config.actionDelay : config.guestActionDelay
+
+	// only allow add if user hasn't
+	// added for actionDelay
+	if (actionDelay[actDelayKey]) {
+		var msPassed = (new Date() - actionDelay[actDelayKey])
+		if (msPassed <= delay) return false
+		actionDelay[actDelayKey] = new Date()
+		return true
+	} else {
+		actionDelay[actDelayKey] = new Date()
+		return true
+	}
+
+}
 
 function handleBlockOperations(socket) {
 
     // handle block add
     socket.on('block added', function(block, callback) {
 
-        // only allow add if user hasn't
-        // added for delayTime
-        if (actionDelay[socket.id]) {
-            var secondsPassed = (new Date() - actionDelay[socket.id]) / 1000
-            if (secondsPassed <= config.delayTime) return callback('failure')
-        }
+		if (!enoughTimePassed(socket)) return callback('failure')
 
         // try to add the block
         worldData.add(block, function(response) {
@@ -27,9 +44,8 @@ function handleBlockOperations(socket) {
             // success
             if (response) {
 
-                // reset timer and tell everyone
+                // tell everyone
                 // a block was added
-                actionDelay[socket.id] = new Date()
                 socket.broadcast.emit('block added', block)
                 return callback('success')
 
@@ -45,21 +61,15 @@ function handleBlockOperations(socket) {
     // handle block remove
     socket.on('block removed', function(position, callback) {
 
-        // only allow user to remove
-        // if user hasn't acted for delayTime
-        if (actionDelay[socket.id]) {
-            var secondsPassed = (new Date() - actionDelay[socket.id]) / 1000
-            if (secondsPassed <= config.delayTime) return callback('failure')
-        }
+        if (!enoughTimePassed(socket)) return callback('failure')
 
         // try to remove block
         worldData.remove(position, function(success) {
 
             if (success) { // add block
 
-                // reset action delay and tell all
+                // tell all
                 // clients a block was removed
-                actionDelay[socket.id] = new Date()
                 socket.broadcast.emit('block removed', position)
                 return callback('success')
 
@@ -147,6 +157,19 @@ function IOHandler(io, _worldData) {
             return
         }
 
+        // prevent multiple logins per user
+        const uname = socket.request.user.username
+
+        if (uname) {
+
+            if (connectedUsers[uname]) {
+                socket.emit('multiple logins')
+                socket.disconnect()
+            }
+            connectedUsers[uname] = true
+
+        } // else guest
+
         console.log('connection')
         console.log("connections: " + io.engine.clientsCount)
 
@@ -159,6 +182,9 @@ function IOHandler(io, _worldData) {
 
         // client disconnected
         socket.on('disconnect', function() {
+
+            connectedUsers[uname] = false
+            delete connectedUsers[uname]
 
             // tell all the clients a client disconnected
             io.sockets.emit('update clients', io.engine.clientsCount)

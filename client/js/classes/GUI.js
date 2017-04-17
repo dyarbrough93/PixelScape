@@ -161,6 +161,10 @@ var GUI = function(window, undefined) {
         guiClicked = clicked
     }
 
+    function destroy() {
+        gui.destroy()
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -243,6 +247,7 @@ var GUI = function(window, undefined) {
 
     return {
         init: init,
+        destroy: destroy,
         getBlockColor: getBlockColor,
         wasClicked: wasClicked,
         setClicked: setClicked,
