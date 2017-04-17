@@ -177,7 +177,7 @@ var GUI = function(window, undefined) {
     function addGUIEls() {
 
         var colors = gui.addFolder('Colors')
-        var debug = gui.addFolder('_debug')
+        //var debug = gui.addFolder('_debug')
 
         ;
         (function initColorsFolder() {
@@ -204,10 +204,10 @@ var GUI = function(window, undefined) {
 
         })()
 
-        debug.add(settings.debug, 'logWorldData')
-        debug.open()
+        //debug.add(settings.debug, 'logWorldData')
+        //debug.open()
 
-        gui.add(settings, 'logout')
+        gui.add(settings, 'logout').name('Log Out')
 
     }
 
