@@ -1,4 +1,3 @@
-const generateClientConfig = require('./generateClientConfig.js')
 const _ = require('lodash')
 
 const sharedConfig = {
@@ -32,7 +31,7 @@ const clientConfig = {
         blockSize: 50, // even
         sqPerSideOfSelectPlane: 51, // must be odd
         sqPerSideOfSection: 151, // must be odd
-        sectionsPerSide: 15,
+        sectionsPerSide: 17,
         init: function() {
             // must be odd
             this.sqPerSideOfGrid = this.sqPerSideOfSection *
@@ -67,6 +66,7 @@ const clientConfig = {
 _.merge(serverConfig, sharedConfig)
 _.merge(clientConfig.general, sharedConfig)
 
-module.exports = serverConfig
-
-generateClientConfig(clientConfig)
+module.exports = {
+    server: serverConfig,
+    client: clientConfig
+}

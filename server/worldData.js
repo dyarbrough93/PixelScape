@@ -1,4 +1,4 @@
-const config = require('./config.js')
+const config = require('./config.js').server
 const VoxelData = require('./models/VoxelData')
 const Operation = require('./models/Operation')
 
