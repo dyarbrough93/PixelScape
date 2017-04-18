@@ -313,7 +313,7 @@ var GameScene = function(window, undefined) {
         var gPos = intersect.point.clone().initWorldPos()
         gPos.add(intersect.face.normal).worldToGrid()
 
-        if (!VoxelUtils.withinSelectionBounds(gPos) ||
+        if (!VoxelUtils.validBlockLocation(gPos) ||
             Keys.isShiftDown() || UserState.stateIsPick()) {
             setGhostMeshVis(false)
             return
