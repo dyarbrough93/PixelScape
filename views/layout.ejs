@@ -28,6 +28,12 @@
 
 <body>
 
+    <div id="user" style="display: none;">
+        <% if (locals.user) { %>
+            <p id="username"><%= user.username %>
+        <% } %>
+    </div>
+
     <% if (locals.dev) { %>
         <style>
             #banner {

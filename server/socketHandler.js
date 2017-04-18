@@ -1,5 +1,3 @@
-'use strict'
-
 const config = require('./config.js').server
 
 const actionDelay = {}
@@ -10,7 +8,6 @@ var worldData
 function enoughTimePassed(socket) {
 
 	const uname = socket.request.user.username
-
 	const actDelayKey = uname ? uname : socket.id
 	const delay = uname ? config.actionDelay : config.guestActionDelay
 
@@ -35,8 +32,11 @@ function handleBlockOperations(socket) {
 
 		if (!enoughTimePassed(socket)) return callback('failure')
 
+		var uname = socket.request.user.username
+		if (!uname) uname = 'Guest'
+
         // try to add the block
-        worldData.add(block, function(response) {
+        worldData.add(block, uname, function(response) {
 
             // too many blocks
             if (response === 'max') return callback('max')

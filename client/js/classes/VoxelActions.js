@@ -20,7 +20,7 @@ var VoxelActions = function(window, undefined) {
      * to create the voxel at
      * @param  {number} hColor Hex color of the voxel
      */
-    function createVoxelAtGridPos(gPos, hColor) {
+    function createVoxelAtGridPos(gPos, hColor, username) {
 
         var voxelMesh = VoxelUtils.initVoxel({
             color: hColor,
@@ -30,7 +30,7 @@ var VoxelActions = function(window, undefined) {
         var sid = VoxelUtils.getSectionIndices(gPos)
 
         var coordStr = VoxelUtils.getCoordStr(gPos)
-        WorldData.addMesh(sid, coordStr, voxelMesh)
+        WorldData.addMesh(sid, coordStr, voxelMesh, username)
 
         Raycast.add(voxelMesh)
         PixVoxConversion.addToConvertedVoxels(sid, coordStr)
@@ -59,7 +59,7 @@ var VoxelActions = function(window, undefined) {
 
         SocketHandler.emitBlockAdded(gPos, hColor, function(success) {
             if (success) {
-                createVoxelAtGridPos(gPos, hColor)
+                createVoxelAtGridPos(gPos, hColor, UserState.getUName())
                 done(success)
             }
         })

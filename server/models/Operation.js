@@ -11,7 +11,8 @@ var opSchema = new Schema({
             x: Number,
             y: Number,
             z: Number
-        }
+        },
+        username: String
     }
 }, {collection: dev + 'ops'})
 

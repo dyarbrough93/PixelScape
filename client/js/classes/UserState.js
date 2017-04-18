@@ -213,11 +213,18 @@ var UserState = function(window, undefined) {
         return selectedRegion
     }
 
+    function getUName() {
+        var username = $('#user #username').html()
+        if (!username) username = 'Guest'
+        return username
+    }
+
     /*********** expose public methods *************/
 
     return {
         init: init,
         canAct: canAct,
+        getUName: getUName,
         resetActionTimer: resetActionTimer,
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,

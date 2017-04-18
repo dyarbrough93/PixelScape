@@ -55,6 +55,7 @@ var WorldData = function(window, undefined) {
 
                 var color = data[coordStr].c
                 var tColor = new THREE.Color(color)
+                var username = data[coordStr].username
 
                 var gPos = VoxelUtils.coordStrParse(coordStr)
 
@@ -67,7 +68,7 @@ var WorldData = function(window, undefined) {
                     // add a pixel to the particle system,
                     // then add a voxel to worldData
                     var pIdx = particleSystem.addPixel(sid, wPos, tColor)
-                    addVoxel(sid, coordStr, color, pIdx, false)
+                    addVoxel(sid, coordStr, color, username, pIdx, false)
 
                 }
 
@@ -88,16 +89,17 @@ var WorldData = function(window, undefined) {
      * @memberOf WorldData
      * @access public
      * @param {VoxelUtils.Tuple} sid Section indices
-     * @param {number} tColor THREE.Color
+     * @param {number} hColor Hex color
      * @param {number} pIdx Index in the particle system geometry
      * @param {boolean} exp Part of particle system expansion?
      * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
      */
-    function addVoxel(sid, coordStr, tColor, pIdx, exp) {
+    function addVoxel(sid, coordStr, hColor, username, pIdx, exp) {
 
         worldData[sid.a][sid.b][coordStr] = {
-            c: tColor,
+            c: hColor,
             pIdx: pIdx,
+            username: username,
             exp: exp
         }
 
@@ -111,7 +113,8 @@ var WorldData = function(window, undefined) {
      * @param {VoxelUtils.coordStr} coordStr coordinate string of the voxel
      * @param {THREE.Mesh} mesh The mesh to add
      */
-    function addMesh(sid, coordStr, mesh) {
+    function addMesh(sid, coordStr, mesh, uname) {
+        mesh.userData.username = uname
         worldData[sid.a][sid.b][coordStr] = mesh
     }
 

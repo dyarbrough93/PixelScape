@@ -35,14 +35,14 @@ function dbErr(err) {
 
 /*
  * Add a voxel to the worldData object
- * @param info Info from client emit
+ * @param voxel Voxel info from client emit
  *
  * @return {boolean} Whether or not the voxel
  * was successfully aded
  */
-WorldData.add = function(info, cb) {
+WorldData.add = function(voxel, username, cb) {
 
-    var pos = info.position
+    var pos = voxel.position
 
     // check constraints
     if (numVoxels >= config.maxGlobalBlocks) return cb('max')
@@ -55,15 +55,17 @@ WorldData.add = function(info, cb) {
     var op = new Operation({
         operation: 'add',
         data: {
-            color: parseInt(info.color),
-            position: info.position
+            color: parseInt(voxel.color),
+            position: voxel.position,
+            username: username
         }
     })
 
     var vox = new VoxelData({
         key: getPosStr(pos),
         data: {
-            c: parseInt(info.color)
+            c: parseInt(voxel.color),
+            username: username
         }
     })
 
@@ -78,7 +80,8 @@ WorldData.add = function(info, cb) {
             // add the voxel to worldData
             // and return success
             WorldData.voxels[getPosStr(pos)] = {
-                c: info.color
+                c: voxel.color,
+                username: username
             }
 
             numVoxels++
@@ -91,20 +94,20 @@ WorldData.add = function(info, cb) {
 
 /*
  * Remove object at position from the worldData object
- * @param position Position of the voxel to remove
+ * @param gPos Grid position of the voxel to remove
  *
  * @return {boolean} Whether or not the voxel
  * was successfully removed
  */
-WorldData.remove = function(pos, cb) {
+WorldData.remove = function(gPos, cb) {
 
     // make sure it exists
-    if (WorldData.voxels[getPosStr(pos)]) {
+    if (WorldData.voxels[getPosStr(gPos)]) {
 
         var op = new Operation({
             operation: 'remove',
             data: {
-                position: pos
+                position: gPos
             }
         })
 
@@ -115,12 +118,12 @@ WorldData.remove = function(pos, cb) {
 
             // remove from the
             // data collection
-            VoxelData.remove({ key: getPosStr(pos) }, function(err2) {
+            VoxelData.remove({ key: getPosStr(gPos) }, function(err2) {
                 if (dbErr(err2)) return cb(false)
 
                 // remove it from worldData and
                 // return success
-                delete WorldData.voxels[getPosStr(pos)]
+                delete WorldData.voxels[getPosStr(gPos)]
                 numVoxels--
                 return cb(true)
             })

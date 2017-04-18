@@ -87,8 +87,11 @@ var PixVoxConversion = function(window, undefined) {
                     // add to particle system expo
                     var pIdx = pSystemExpo.addPixel(gPos, tColor)
                     var coordStr = VoxelUtils.getCoordStr(gPos)
+
+                    var username = UserState.getUName()
+
                     // overwrite mesh with voxel entry
-                    WorldData.addVoxel(sid, coordStr, tColor.getHex(), pIdx, true)
+                    WorldData.addVoxel(sid, coordStr, tColor.getHex(), username, pIdx, true)
 
                     // remove from scene and stop
                     // raycasting against it

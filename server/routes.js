@@ -17,39 +17,21 @@ const dev = process.env.NODE_ENV === 'dev'
 
 module.exports = function(passport) {
 
-    /* GET login page. */
     router.get('/login', function(req, res) {
-        // Display the Login page with any flash message, if any
         res.render('login', {
             dev: dev
         })
     })
 
-    /* Handle Login POST */
-    router.post('/login', passport.authenticate('login', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    }))
-
-    /* Handle Registration POST */
-    router.post('/signup', passport.authenticate('signup', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    }))
-
     router.get('/guest', function(req, res) {
         res.render('game')
     })
 
-    /* Handle Logout */
     router.get('/signout', function(req, res) {
         req.logout()
         res.redirect('/login')
     })
 
-    /* GET Home Page */
     router.get('/', isAuthenticated, function(req, res) {
 
         res.render('game', {
@@ -57,6 +39,18 @@ module.exports = function(passport) {
             dev: dev
         })
     })
+
+    router.post('/login', passport.authenticate('login', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    }))
+
+    router.post('/signup', passport.authenticate('signup', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    }))
 
     return router
 }

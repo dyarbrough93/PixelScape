@@ -160,9 +160,10 @@ var SocketHandler = function(window, undefined) {
 
             var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
             var tColor = new THREE.Color(block.color)
+            var username = block.username
 
             if (UserState.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
-                VoxelActions.createVoxelAtGridPos(gPos, tColor.getHex())
+                VoxelActions.createVoxelAtGridPos(gPos, tColor.getHex(), username)
             } else {
                 var sid = VoxelUtils.getSectionIndices(gPos)
                 var coordStr = VoxelUtils.getCoordStr(gPos)
