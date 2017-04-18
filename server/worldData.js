@@ -8,6 +8,7 @@ var WorldData = {}
 module.exports = WorldData
 
 WorldData.voxels = {} // worldData
+WorldData.userData = {} // indexed by user, each attr holds an array of all voxels that user owns
 WorldData.count = function() {
 
     if (!numVoxels) {
@@ -22,7 +23,7 @@ WorldData.count = function() {
 }
 
 function getPosStr(pos) {
-    return "x" + pos.x + "y" + pos.y + "z" + pos.z
+    return 'x' + pos.x + 'y' + pos.y + 'z' + pos.z
 }
 
 function dbErr(err) {
@@ -83,6 +84,11 @@ WorldData.add = function(voxel, username, cb) {
                 c: voxel.color,
                 username: username
             }
+
+            // give the user ownership of the voxel
+            var uarr = WorldData.userData[username]
+            if (!uarr || uarr.length === 0) WorldData.userData[username] = []
+            WorldData.userData[username].push(getPosStr(pos))
 
             numVoxels++
             return cb(true)
@@ -148,6 +154,23 @@ WorldData.init = function(done) {
     })
 }
 
+function initUserData() {
+
+    for (var voxel in WorldData.voxels) {
+
+        if (WorldData.voxels.hasOwnProperty(voxel)) {
+
+            var uname = WorldData.voxels[voxel].username
+
+            if (!WorldData.userData[uname]) WorldData.userData[uname] = []
+            WorldData.userData[uname].push(voxel)
+
+        }
+
+    }
+
+}
+
 /*
  * Loads data at the specified path into coords
  * @param path The file's path, including file name
@@ -162,6 +185,8 @@ function loadData(data, done) {
 
     WorldData.numVoxels = WorldData.count()
     console.log('loaded worldData from mongodb')
+
+    initUserData()
 
     done()
 

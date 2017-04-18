@@ -81,6 +81,12 @@ function handleBlockOperations(socket) {
 
     })
 
+	socket.on('get user blocks', function(username, callback) {
+
+		return callback(worldData.userData[username])
+
+	})
+
 }
 
 function handleChunking(socket) {
@@ -171,7 +177,7 @@ function IOHandler(io, _worldData) {
         } // else guest
 
         console.log('connection')
-        console.log("connections: " + io.engine.clientsCount)
+        console.log('connections: ' + io.engine.clientsCount)
 
         // tell the clients there is a new connection
         io.sockets.emit('update clients', io.engine.clientsCount)
@@ -189,7 +195,7 @@ function IOHandler(io, _worldData) {
             // tell all the clients a client disconnected
             io.sockets.emit('update clients', io.engine.clientsCount)
             console.log('user disconnected')
-            console.log("connections: " + io.engine.clientsCount)
+            console.log('connections: ' + io.engine.clientsCount)
 
         })
 
