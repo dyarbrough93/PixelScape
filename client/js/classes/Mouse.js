@@ -149,6 +149,7 @@ var Mouse = function(window, undefined) {
 
                 GameScene.updateGhostMesh(intersect)
                 GameScene.updateDeleteMesh(intersect)
+                GameScene.highlightUserVoxels(intersect)
 
             } else if (User.modeIsSelect()) {
 

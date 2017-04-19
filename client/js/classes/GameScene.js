@@ -357,6 +357,78 @@ var GameScene = function(window, undefined) {
 
     }
 
+    function highlightUserVoxels(intersect) {
+
+        // return and reset if shouldn't highlight
+        if (intersect.object.name === 'plane' ||
+            Keys.isShiftDown()) {
+            removeOutlines()
+            return
+        }
+
+        // get grid pos
+        var gPos = intersect.point.clone().initWorldPos()
+        gPos.sub(intersect.face.normal).worldToGrid()
+
+        var voxel = WorldData.getVoxel(gPos)
+
+        // get uname
+        var username
+        if (voxel.isMesh) username = voxel.userData.username
+        else username = voxel.username
+
+        if (!username || username === 'Guest') {
+            removeOutlines()
+            return
+        }
+
+        // avoid redundant calls
+        var currentHoveredUser = User.getCurrentHoveredUser()
+        if (currentHoveredUser && username === currentHoveredUser) return
+
+        // set some vars
+        User.setCurrentHoveredUser(username)
+        GUI.displayString(username)
+
+        // request the user data from the server
+        SocketHandler.getUserBlocks(username, function(userBlocks) {
+
+            var mergedGeo = new THREE.Geometry()
+
+            userBlocks.forEach(function(coordStr) {
+
+                // mat / geom / mesh
+                var blockSize = Config.getGrid().blockSize
+                var cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
+                var outlineMesh = new THREE.Mesh(cubeGeo)
+
+                // mesh config
+                var wPos = VoxelUtils.coordStrParse(coordStr).gridToWorld()
+                outlineMesh.position.x = wPos.x
+                outlineMesh.position.y = wPos.y
+                outlineMesh.position.z = wPos.z
+                outlineMesh.scale.multiplyScalar(1.1)
+
+                // merge geoms
+                outlineMesh.updateMatrix()
+                mergedGeo.merge(outlineMesh.geometry, outlineMesh.matrix)
+
+            })
+
+            var outlineMaterial = new THREE.MeshBasicMaterial({
+                color: '#7c00cc',
+                side: THREE.BackSide
+            })
+
+            var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
+            mergedMesh.name = 'outlineMesh'
+
+            scene.add(mergedMesh)
+
+        })
+
+    }
+
     /**
      * Adds an object to the scene
      * @memberOf GameScene
@@ -420,6 +492,16 @@ var GameScene = function(window, undefined) {
 
     }
 
+    function removeOutlines() {
+        User.setCurrentHoveredUser(undefined)
+        for (var i = scene.children.length - 1; i >= 0; i--) {
+            var obj = scene.children[i]
+            if (obj.name === 'outlineMesh') {
+                scene.remove(obj)
+            }
+        }
+    }
+
     /*********** expose public methods *************/
 
     return {
@@ -428,6 +510,7 @@ var GameScene = function(window, undefined) {
         destroy: destroy,
         addToScene: addToScene,
         removeFromScene: removeFromScene,
+        highlightUserVoxels: highlightUserVoxels,
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
         setGhostMeshColor: setGhostMeshColor,

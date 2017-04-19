@@ -63,8 +63,11 @@ function handleBlockOperations(socket) {
 
         if (!enoughTimePassed(socket)) return callback('failure')
 
+		var uname = socket.request.user.username
+		if (!uname) uname = 'Guest'
+
         // try to remove block
-        worldData.remove(position, function(success) {
+        worldData.remove(position, uname, function(success) {
 
             if (success) { // add block
 
@@ -166,7 +169,7 @@ function IOHandler(io, _worldData) {
         // prevent multiple logins per user
         const uname = socket.request.user.username
 
-        if (uname) {
+        /*if (uname) {
 
             if (connectedUsers[uname]) {
                 socket.emit('multiple logins')
@@ -174,7 +177,7 @@ function IOHandler(io, _worldData) {
             }
             connectedUsers[uname] = true
 
-        } // else guest
+        } // else guest*/
 
         console.log('connection')
         console.log('connections: ' + io.engine.clientsCount)

@@ -35,6 +35,7 @@ var User = function(window, undefined) {
     var mode
     var selectedRegion
     var actionTimer
+    var currentHoveredUser
 
     /*------------------------------------*
      :: Public Methods
@@ -171,6 +172,10 @@ var User = function(window, undefined) {
         selectedRegion = undefined
     }
 
+    function setCurrentHoveredUser(user) {
+        currentHoveredUser = user
+    }
+
     /*********** getters *************/
 
     /**
@@ -216,7 +221,13 @@ var User = function(window, undefined) {
     function getUName() {
         var username = $('#user #username').html()
         if (!username) username = 'Guest'
+        var res = /[a-zA-Z0-9_]+/.exec(username)
+        if (res) username = res[0]
         return username
+    }
+
+    function getCurrentHoveredUser() {
+        return currentHoveredUser
     }
 
     /*********** expose public methods *************/
@@ -235,7 +246,9 @@ var User = function(window, undefined) {
         setPickState: setPickState,
         getSelectedRegion: getSelectedRegion,
         setSelectedRegion: setSelectedRegion,
-        resetSelectedRegion: resetSelectedRegion
+        resetSelectedRegion: resetSelectedRegion,
+        getCurrentHoveredUser: getCurrentHoveredUser,
+        setCurrentHoveredUser: setCurrentHoveredUser
     }
 
 }(window)

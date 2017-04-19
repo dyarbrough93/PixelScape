@@ -85,10 +85,14 @@ WorldData.add = function(voxel, username, cb) {
                 username: username
             }
 
-            // give the user ownership of the voxel
-            var uarr = WorldData.userData[username]
-            if (!uarr || uarr.length === 0) WorldData.userData[username] = []
-            WorldData.userData[username].push(getPosStr(pos))
+            if (username !== 'Guest') {
+
+                // give the user ownership of the voxel
+                var uarr = WorldData.userData[username]
+                if (!uarr) WorldData.userData[username] = []
+                WorldData.userData[username].push(getPosStr(pos))
+
+            }
 
             numVoxels++
             return cb(true)
@@ -105,15 +109,18 @@ WorldData.add = function(voxel, username, cb) {
  * @return {boolean} Whether or not the voxel
  * was successfully removed
  */
-WorldData.remove = function(gPos, cb) {
+WorldData.remove = function(gPos, username, cb) {
+
+    var coordStr = getPosStr(gPos)
 
     // make sure it exists
-    if (WorldData.voxels[getPosStr(gPos)]) {
+    if (WorldData.voxels[coordStr]) {
 
         var op = new Operation({
             operation: 'remove',
             data: {
-                position: gPos
+                position: gPos,
+                username: username
             }
         })
 
@@ -124,13 +131,24 @@ WorldData.remove = function(gPos, cb) {
 
             // remove from the
             // data collection
-            VoxelData.remove({ key: getPosStr(gPos) }, function(err2) {
+            VoxelData.remove({
+                key: coordStr
+            }, function(err2) {
                 if (dbErr(err2)) return cb(false)
 
                 // remove it from worldData and
                 // return success
                 delete WorldData.voxels[getPosStr(gPos)]
                 numVoxels--
+
+                console.log(coordStr)
+
+                var idx = WorldData.userData[username].indexOf(coordStr)
+                console.log(idx)
+                if (idx > -1) WorldData.userData[username].splice(idx, 1)
+
+                console.log(WorldData.userData)
+
                 return cb(true)
             })
         })
@@ -147,9 +165,9 @@ WorldData.init = function(done) {
             process.exit()
         }
 
-        loadData(data, function() {
-            done()
-        })
+        loadData(data)
+        initUserData()
+        done()
 
     })
 }
@@ -175,7 +193,7 @@ function initUserData() {
  * Loads data at the specified path into coords
  * @param path The file's path, including file name
  */
-function loadData(data, done) {
+function loadData(data) {
 
     console.log('loading world data from mongodb.worldData ...')
 
@@ -185,9 +203,5 @@ function loadData(data, done) {
 
     WorldData.numVoxels = WorldData.count()
     console.log('loaded worldData from mongodb')
-
-    initUserData()
-
-    done()
 
 }
