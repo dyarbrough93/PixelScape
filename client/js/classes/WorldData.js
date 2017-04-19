@@ -122,21 +122,25 @@ var WorldData = function(window, undefined) {
      * Remove a voxel from worldData
      * @memberOf WorldData
      * @access public
-     * @param {VoxelUtils.Tuple} sid Section indices
-     * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
+     * @param  {VoxelUtils.GridVector3} gPos Grid position of
+     * the voxel to remove
      */
-    function removeVoxel(sid, coordStr) {
+    function removeVoxel(gPos) {
+        var coordStr = VoxelUtils.getCoordStr(gPos)
+        var sid = VoxelUtils.getSectionIndices(gPos)
         delete worldData[sid.a][sid.b][coordStr]
     }
 
     /**
      * Retrieve a voxel with the specified
      * section indices and coordStr
-     * @param  {VoxelUtils.Tuple} sid Section indices
-     * @param  {VoxelUtils.coordStr} coordStr Coordinate string
+     * @param  {VoxelUtils.GridVector3} gPos Grid position of
+     * the voxel to get
      * @return {object} The mesh or object
      */
-    function getVoxel(sid, coordStr) {
+    function getVoxel(gPos) {
+        var coordStr = VoxelUtils.getCoordStr(gPos)
+        var sid = VoxelUtils.getSectionIndices(gPos)
         return worldData[sid.a][sid.b][coordStr]
     }
 

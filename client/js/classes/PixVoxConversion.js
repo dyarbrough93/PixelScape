@@ -76,7 +76,7 @@ var PixVoxConversion = function(window, undefined) {
             var wPos = gPos.clone().gridToWorld()
 
             var sid = VoxelUtils.getSectionIndices(gPos)
-            var vox = WorldData.getVoxel(sid, voxPos)
+            var vox = WorldData.getVoxel(gPos)
 
             if (vox) {
 

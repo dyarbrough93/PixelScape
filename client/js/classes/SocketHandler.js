@@ -30,9 +30,9 @@ var SocketHandler = function(window, undefined) {
 
     }
 
-    function getUserBlocks(username) {
+    function getUserBlocks(username, cb) {
         socket.emit('get user blocks', username, function(userBlocks) {
-            console.log(userBlocks)
+            return cb(userBlocks)
         })
     }
 
@@ -174,7 +174,7 @@ var SocketHandler = function(window, undefined) {
                 var sid = VoxelUtils.getSectionIndices(gPos)
                 var coordStr = VoxelUtils.getCoordStr(gPos)
                 var pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
-                WorldData.addVoxel(sid, coordStr, tColor, pIdx, true)
+                WorldData.addVoxel(sid, coordStr, tColor, username, pIdx, true)
             }
 
             GameScene.render()

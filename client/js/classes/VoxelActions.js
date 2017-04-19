@@ -76,9 +76,7 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteVoxelAtGridPos(gPos) {
 
-        var sid = VoxelUtils.getSectionIndices(gPos)
-        var coordStr = VoxelUtils.getCoordStr(gPos)
-        var voxel = WorldData.getVoxel(sid, coordStr)
+        var voxel = WorldData.getVoxel(gPos)
 
         // newly created, delete mesh
         if (voxel.isMesh) deleteNewVoxel(gPos)
@@ -142,16 +140,14 @@ var VoxelActions = function(window, undefined) {
      */
     function deletePixelAtGridPos(gPos) {
 
-        var sid = VoxelUtils.getSectionIndices(gPos)
-        var coordStr = VoxelUtils.getCoordStr(gPos)
-        var vox = WorldData.getVoxel(sid, coordStr)
+        var vox = WorldData.getVoxel(gPos)
 
         // part of expansion
         if (vox.exp) GameScene.getPSystemExpo().hidePixel(vox.pIdx)
         // part of original
         else GameScene.getPSystem().hidePixel(sid, vox.pIdx)
 
-        WorldData.removeVoxel(sid, coordStr)
+        WorldData.removeVoxel(gPos)
 
         GameScene.render()
 
@@ -170,12 +166,12 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteNewVoxel(gPos) {
 
-        var sid = VoxelUtils.getSectionIndices(gPos)
+        var vox = WorldData.getVoxel(gPos)
+
         var coordStr = VoxelUtils.getCoordStr(gPos)
-        var vox = WorldData.getVoxel(sid, coordStr)
 
         GameScene.removeFromScene(vox)
-        WorldData.removeVoxel(sid, coordStr)
+        WorldData.removeVoxel(gPos)
         Raycast.remove(vox)
         PixVoxConversion.removeFromConvertedVoxels(coordStr)
 
@@ -196,13 +192,12 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteMergedVoxel(gPos) {
 
-        var sid = VoxelUtils.getSectionIndices(gPos)
+        var vox = WorldData.getVoxel(gPos)
         var coordStr = VoxelUtils.getCoordStr(gPos)
-        var vox = WorldData.getVoxel(sid, coordStr)
 
         BufMeshMgr.removeVoxel(vox.bIdx)
         PixVoxConversion.removeFromConvertedVoxels(coordStr)
-        WorldData.removeVoxel(sid, coordStr)
+        WorldData.removeVoxel(gPos)
 
         if (vox.exp) {
             GameScene.getPSystemExpo().hidePixel(vox.pIdx)
