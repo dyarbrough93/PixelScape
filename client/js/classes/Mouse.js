@@ -85,16 +85,16 @@ var Mouse = function(window, undefined) {
             var intxGPos = intersect.point.clone().initWorldPos()
             intxGPos = intxGPos.add(intersect.face.normal).worldToGrid()
 
-            if (UserState.modeIsEdit()) {
+            if (User.modeIsEdit()) {
 
                 if (VoxelUtils.validBlockLocation(intxGPos)) {
 
-                    if (UserState.stateIsPick())
+                    if (User.stateIsPick())
                         GUI.setPickColor(intersect)
                     else { // create or delete
 
-                        if (!UserState.canAct()) return
-                        UserState.resetActionTimer()
+                        if (!User.canAct()) return
+                        User.resetActionTimer()
 
                         if (Keys.isShiftDown()) { // delete voxel
                             VoxelActions.deleteVoxelAtIntersect(intersect, function(success) {
@@ -110,13 +110,13 @@ var Mouse = function(window, undefined) {
 
                 }
 
-            } else if (UserState.modeIsSelect()) {
+            } else if (User.modeIsSelect()) {
 
                 // switch to edit mode
-                UserState.setSelectedRegion(intersect)
-                var region = UserState.getSelectedRegion()
+                User.setSelectedRegion(intersect)
+                var region = User.getSelectedRegion()
                 PixVoxConversion.convertToVoxels(region)
-                UserState.setEditMode()
+                User.setEditMode()
 
             }
 
@@ -145,12 +145,12 @@ var Mouse = function(window, undefined) {
 
         if (intersect) { // only act if we intersected something
 
-            if (UserState.modeIsEdit()) {
+            if (User.modeIsEdit()) {
 
                 GameScene.updateGhostMesh(intersect)
                 GameScene.updateDeleteMesh(intersect)
 
-            } else if (UserState.modeIsSelect()) {
+            } else if (User.modeIsSelect()) {
 
                 var planeIntx = intersects.planeIntx
 

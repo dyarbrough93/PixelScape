@@ -123,7 +123,7 @@ var GUI = function(window, undefined) {
             var hColor = pickColor.getHex()
 
             settings.colors.blockColor = hColor
-            UserState.setDefaultState()
+            User.setDefaultState()
             GameScene.setGhostMeshColor(hColor ^ 0x4C000000)
 
         }
@@ -218,8 +218,8 @@ var GUI = function(window, undefined) {
      * @access private
      */
     function pickColor() {
-        if (UserState.modeIsEdit())
-            UserState.setPickState()
+        if (User.modeIsEdit())
+            User.setPickState()
     }
 
     /**

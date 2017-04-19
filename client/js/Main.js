@@ -16,7 +16,7 @@ var Main = function() {
         WorldData.init()
         Mouse.init()
         Keys.init()
-        UserState.init()
+        User.init()
         MapControls.init()
         PixVoxConversion.init()
         BufMeshMgr.init()

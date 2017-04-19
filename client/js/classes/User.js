@@ -4,7 +4,7 @@
  * Manages and stores the user's current state
  * @namespace UserState
  */
-var UserState = function(window, undefined) {
+var User = function(window, undefined) {
 
     /*------------------------------------*
      :: Private Classes
@@ -207,7 +207,7 @@ var UserState = function(window, undefined) {
      * Get the currently selected region
      * @memberOf UserState
      * @access public
-     * @return {UserState.RegionSelection}
+     * @return {User.RegionSelection}
      */
     function getSelectedRegion() {
         return selectedRegion

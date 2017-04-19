@@ -200,7 +200,7 @@ var VoxelUtils = (function(window, undefined) {
      */
     function withinSelectionBounds(gPos) {
 
-        var selectedRegion = UserState.getSelectedRegion()
+        var selectedRegion = User.getSelectedRegion()
 
         return (gPos.x >= selectedRegion.corner1.x &&
             gPos.z >= selectedRegion.corner1.z &&
@@ -220,7 +220,7 @@ var VoxelUtils = (function(window, undefined) {
         // too high?
         if (gPos.y >= Config.get().maxVoxelHeight) {
 
-            if (!Keys.shiftDown() && !UserState.stateIsPick()) {
+            if (!Keys.shiftDown() && !User.stateIsPick()) {
                 alert('Max height reached.')
                 return false
             }

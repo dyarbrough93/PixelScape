@@ -88,7 +88,7 @@ var PixVoxConversion = function(window, undefined) {
                     var pIdx = pSystemExpo.addPixel(gPos, tColor)
                     var coordStr = VoxelUtils.getCoordStr(gPos)
 
-                    var username = UserState.getUName()
+                    var username = User.getUName()
 
                     // overwrite mesh with voxel entry
                     WorldData.addVoxel(sid, coordStr, tColor.getHex(), username, pIdx, true)
@@ -244,7 +244,7 @@ var PixVoxConversion = function(window, undefined) {
          } else if (numConverting >= errThresh) {
 
              alert("error: converting " + numConverting + " voxels would cause performance issues")
-             UserState.setSelectMode()
+             User.setSelectMode()
              convertedVoxels = {}
              return false
 

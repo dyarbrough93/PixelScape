@@ -177,14 +177,14 @@ var Keys = function(window, undefined) {
      */
     function escDown() {
 
-        if (UserState.stateIsPick())
-            UserState.setDefaultState()
+        if (User.stateIsPick())
+            User.setDefaultState()
 
 
-        if (UserState.modeIsEdit()) {
+        if (User.modeIsEdit()) {
 
-            UserState.setSelectMode()
-            UserState.resetSelectedRegion()
+            User.setSelectMode()
+            User.resetSelectedRegion()
             PixVoxConversion.convertToPixels()
             GameScene.setGhostMeshVis(false)
 
