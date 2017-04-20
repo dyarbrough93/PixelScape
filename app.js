@@ -18,13 +18,20 @@ const flash = require('connect-flash')
 
 const routes = require('./server/routes.js')(passport)
 const initPassport = require('./server/passport/init.js')
+const local = require('./server/local.js')
 
 /*------------------------------------*
  :: Express config
  *------------------------------------*/
 
+ var dbUrl = 'mongodb://'
+ dbUrl += local.mongo.username + ':' + local.mongo.password
+ dbUrl += '@' + local.mongo.url
+ dbUrl += ':' + local.mongo.port
+ dbUrl += '/' + local.mongo.db
+
 const sessionStore = new MongoStore({
-    url: ***REMOVED***
+    url: dbUrl
 })
 
 // static client folder
