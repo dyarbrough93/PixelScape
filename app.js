@@ -8,6 +8,7 @@ const devEnv = process.env.NODE_ENV === 'dev'
 const express = require('express')
 const app = express()
 const httpServer = require('http').Server(app)
+const io = require('socket.io').listen(httpServer)
 const bodyParser = require('body-parser')
 const expressSession = require('express-session')
 const MongoStore = require('connect-mongo')(expressSession)
@@ -25,50 +26,39 @@ const dbUrl = require('./server/local.js').mongo.dbUrl
  *------------------------------------*/
 
 const sessionStore = new MongoStore({
-    url: dbUrl
+	url: dbUrl
 })
 
 // static client folder
 const staticFolder = devEnv ? '/client' : '/build'
 app.use(express.static(__dirname + staticFolder))
 
-
 // body / cookie parser
 app.use(cookieParser())
 app.use(bodyParser.json()) // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
-    extended: true
+	extended: true
 }))
 
 // express session
 app.use(expressSession({
-    secret: 'sMkIWZ7n!#2C7Kd5mVUF',
-    resave: true,
-    saveUninitialized: true,
-    key: 'express.sid',
-    store: sessionStore
+	key: 'express.sid',
+	secret: 'sMkIWZ7n!#2C7Kd5mVUF',
+	store: sessionStore,
+	resave: true,
+	saveUninitialized: true
 }))
 
 // passport
 app.use(passport.initialize())
 app.use(passport.session())
-
 initPassport(passport)
-passport.serializeUser(function(user, done) {
-    done(null, user._id)
-})
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user)
-    })
-})
-// end passport
 
 // messages
 app.use(flash())
 app.use(function(req, res, next) {
-    res.locals.messages = require('express-messages')(req, res)
-    next()
+	res.locals.messages = require('express-messages')(req, res)
+	next()
 })
 
 // routes
@@ -78,29 +68,28 @@ app.use('/', routes)
 app.set('view engine', 'ejs')
 app.engine('ejs', require('express-ejs-extend'))
 
-const io = require('socket.io').listen(httpServer)
-
 // passport socket.io init
 io.use(passportSocketIo.authorize({
-    cookieParser: cookieParser,
-    key: 'express.sid',
-    secret: 'sMkIWZ7n!#2C7Kd5mVUF',
-    store: sessionStore,
-    success: onAuthorizeSuccess,
-    fail: onAuthorizeFail
+	key: 'express.sid',
+	secret: 'sMkIWZ7n!#2C7Kd5mVUF',
+	store: sessionStore,
+	cookieParser: cookieParser,
+	success: onAuthorizeSuccess,
+	fail: onAuthorizeFail
 }))
 
-function onAuthorizeSuccess(data, accept){
-  console.log('successful connection to socket.io')
-  accept(null, true)
+function onAuthorizeSuccess(data, accept) {
+	console.log('User socketio connection')
+
+    return accept(null, true)
 }
 
-function onAuthorizeFail(data, message, error, accept){
-  if(error)
-    throw new Error(message);
-  console.log('failed connection to socket.io:', message);
+function onAuthorizeFail(data, message, error, accept) {
+    if (error) console.log('Passport err: ', message)
 
-  accept(null, false);
+    console.log('Guest socketio connection')
+
+	return accept(null, false)
 
 }
 
@@ -110,16 +99,16 @@ function onAuthorizeFail(data, message, error, accept){
 
 require('./server/MongoDb.js')(function() {
 
-    const worldData = require('./server/worldData.js')
+	const worldData = require('./server/worldData.js')
 
-    worldData.init(function() {
+	worldData.init(function() {
 
-        const socketHandler = require('./server/socketHandler.js')(io, worldData)
+		const socketHandler = require('./server/socketHandler.js')(io, worldData)
 
-        httpServer.listen(port, function() {
-            console.log('listening on *:' + port)
-        })
+		httpServer.listen(port, function() {
+			console.log('listening on *:' + port)
+		})
 
-    })
+	})
 
 })
