@@ -388,6 +388,8 @@ var GameScene = function(window, undefined) {
         var currentHoveredUser = User.getCurrentHoveredUser()
         if (currentHoveredUser && username === currentHoveredUser) return
 
+        removeOutlines()
+
         // set some vars
         User.setCurrentHoveredUser(username)
         GUI.displayString(username)
