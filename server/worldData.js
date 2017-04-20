@@ -142,8 +142,10 @@ WorldData.remove = function(gPos, username, cb) {
                 delete WorldData.voxels[getPosStr(gPos)]
                 numVoxels--
 
-                var idx = WorldData.userData[username].indexOf(coordStr)
-                if (idx > -1) WorldData.userData[username].splice(idx, 1)
+                if (!username || username !== 'Guest') {
+                    var idx = WorldData.userData[username].indexOf(coordStr)
+                    if (idx > -1) WorldData.userData[username].splice(idx, 1)
+                }
 
                 return cb(true)
             })
