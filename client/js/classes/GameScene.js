@@ -363,6 +363,7 @@ var GameScene = function(window, undefined) {
         if (intersect.object.name === 'plane' ||
             Keys.isShiftDown()) {
             removeOutlines()
+            GUI.displayString('')
             return
         }
 
@@ -379,6 +380,7 @@ var GameScene = function(window, undefined) {
 
         if (!username || username === 'Guest') {
             removeOutlines()
+            GUI.displayString('Guest')
             return
         }
 
@@ -415,15 +417,20 @@ var GameScene = function(window, undefined) {
 
             })
 
-            var outlineMaterial = new THREE.MeshBasicMaterial({
-                color: '#7c00cc',
-                side: THREE.BackSide
+            SocketHandler.getUserSettings(username, function(settings) {
+
+                // create the merged mesh and add it to the scene
+                var outlineMaterial = new THREE.MeshBasicMaterial({
+                    color: settings.voxelOutlineColor || 0xffffff * Math.random(),
+                    side: THREE.BackSide
+                })
+
+                var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
+                mergedMesh.name = 'outlineMesh'
+
+                scene.add(mergedMesh)
+
             })
-
-            var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
-            mergedMesh.name = 'outlineMesh'
-
-            scene.add(mergedMesh)
 
         })
 

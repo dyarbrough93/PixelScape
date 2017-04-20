@@ -36,6 +36,12 @@ var SocketHandler = function(window, undefined) {
         })
     }
 
+    function getUserSettings(username, cb) {
+        socket.emit('get user settings', username, function(settings) {
+            return cb(settings)
+        })
+    }
+
     /**
      * Send a "block removed" socket emit
      * with the given grid position
@@ -207,7 +213,8 @@ var SocketHandler = function(window, undefined) {
         retrieveData: retrieveData,
         emitBlockAdded: emitBlockAdded,
         emitBlockRemoved: emitBlockRemoved,
-        getUserBlocks: getUserBlocks
+        getUserBlocks: getUserBlocks,
+        getUserSettings: getUserSettings
     }
 
 }()

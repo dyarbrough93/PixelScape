@@ -8,7 +8,10 @@ var userSchema = new Schema({
     firstName: String,
     lastName: String,
     password: String,
-    email: String
+    email: String,
+    settings: {
+        voxelOutlineColor: Number
+    }
 }, {collection: dev + 'users'})
 
 module.exports = mongoose.model('User', userSchema)

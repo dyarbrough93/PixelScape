@@ -36,6 +36,7 @@ module.exports = function(passport) {
                         newUser.email = req.params.email
                         newUser.firstName = req.params.firstName
                         newUser.lastName = req.params.lastName
+                        newUser.settings.voxelOutlineColor = 0xffffff * Math.random()
 
                         // save the user
                         newUser.save(function(err) {

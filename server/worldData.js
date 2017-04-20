@@ -1,6 +1,7 @@
 const config = require('./config.js').server
 const VoxelData = require('./models/VoxelData')
 const Operation = require('./models/Operation')
+const User = require('./models/User')
 
 var numVoxels = 0
 
@@ -150,6 +151,13 @@ WorldData.remove = function(gPos, username, cb) {
 
     } else return cb(false) // doesn't exist
 
+}
+
+WorldData.getUserSettings = function(username, cb) {
+    User.findOne({username: username}, function(err, user) {
+        if (dbErr(err)) return false
+        return cb(user.settings)
+    })
 }
 
 WorldData.init = function(done) {

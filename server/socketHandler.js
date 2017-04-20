@@ -90,6 +90,14 @@ function handleBlockOperations(socket) {
 
 	})
 
+	socket.on('get user settings', function(username, callback) {
+
+		worldData.getUserSettings(username, function(settings) {
+			return callback(settings)
+		})
+
+	})
+
 }
 
 function handleChunking(socket) {
