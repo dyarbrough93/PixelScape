@@ -60,8 +60,8 @@ var User = function(window, undefined) {
             EDIT: 1
         }
 
-        state = states.DEFAULT
-        mode = modes.SELECT
+        setDefaultState()
+        setSelectMode()
 
         selectedRegion = new RegionSelection(0, 0)
 
@@ -133,7 +133,7 @@ var User = function(window, undefined) {
     function setDefaultState() {
         state = states.DEFAULT
         GameScene.removeOutlines()
-        $('body').css('cursor', 'default')
+        $('body').css('cursor', 'url(/img/default.cur), auto')
     }
 
     /**
@@ -143,12 +143,12 @@ var User = function(window, undefined) {
      */
     function setPickState() {
         state = states.PICKCOLOR
-        $('body').css('cursor', 'url(/img/eyedropper2.cur), auto')
+        $('body').css('cursor', 'url(/img/picker.cur), auto')
     }
 
     function setHighlightState() {
         state = states.HIGHLIGHT
-        $('body').css('cursor', 'pointer')
+        $('body').css('cursor', 'url(/img/highlight.cur), auto')
     }
 
     /**
