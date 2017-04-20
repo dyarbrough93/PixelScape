@@ -1,13 +1,7 @@
-const local = require('./local.js')
+const dbUrl = require('./local.js').mongo.dbUrl
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
 const Schema = mongoose.Schema
-
-var dbUrl = 'mongodb://'
-dbUrl += local.mongo.username + ':' + local.mongo.password
-dbUrl += '@' + local.mongo.url
-dbUrl += ':' + local.mongo.port
-dbUrl += '/' + local.mongo.db
 
 function init(done) {
 
