@@ -158,6 +158,7 @@ var User = function(window, undefined) {
      */
     function setEditMode() {
         mode = modes.EDIT
+        GameScene.setRegionSelectPlaneVis(false)
     }
 
     /**
@@ -167,6 +168,7 @@ var User = function(window, undefined) {
      */
     function setSelectMode() {
         mode = modes.SELECT
+        GameScene.setRegionSelectPlaneVis(true)
     }
 
     /**

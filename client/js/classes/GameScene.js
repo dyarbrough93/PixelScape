@@ -270,6 +270,17 @@ var GameScene = function(window, undefined) {
 
     }
 
+    function setRegionSelectPlaneVis(visible) {
+
+        if (!visible) {
+            regionSelectPlane.material.opacity = 0.085
+            regionSelectPlane.material.color.set(0xb1b1b1)
+        } else {
+            regionSelectPlane.material.opacity = 0.10
+            regionSelectPlane.material.color.set(0x008cff)
+        }
+    }
+
     /**
      * Turn the delete mesh visibility on or off
      * @memberOf GameScene
@@ -518,6 +529,7 @@ var GameScene = function(window, undefined) {
         highlightUserVoxels: highlightUserVoxels,
         setDeleteMeshVis: setDeleteMeshVis,
         setGhostMeshVis: setGhostMeshVis,
+        setRegionSelectPlaneVis: setRegionSelectPlaneVis,
         setGhostMeshColor: setGhostMeshColor,
         updateGhostMesh: updateGhostMesh,
         updateDeleteMesh: updateDeleteMesh,
