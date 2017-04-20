@@ -177,11 +177,10 @@ var Keys = function(window, undefined) {
      */
     function escDown() {
 
-        if (User.stateIsPick())
+        if (!User.stateIsDefault())
             User.setDefaultState()
 
-
-        if (User.modeIsEdit()) {
+        else if (User.modeIsEdit()) {
 
             User.setSelectMode()
             User.resetSelectedRegion()

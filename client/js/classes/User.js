@@ -51,7 +51,8 @@ var User = function(window, undefined) {
 
         states = {
             DEFAULT: 0,
-            PICKCOLOR: 1
+            PICKCOLOR: 1,
+            HIGHLIGHT: 2
         }
 
         modes = {
@@ -131,6 +132,7 @@ var User = function(window, undefined) {
      */
     function setDefaultState() {
         state = states.DEFAULT
+        GameScene.removeOutlines()
         $('body').css('cursor', 'default')
     }
 
@@ -142,6 +144,11 @@ var User = function(window, undefined) {
     function setPickState() {
         state = states.PICKCOLOR
         $('body').css('cursor', 'url(/img/eyedropper2.cur), auto')
+    }
+
+    function setHighlightState() {
+        state = states.HIGHLIGHT
+        $('body').css('cursor', 'pointer')
     }
 
     /**
@@ -208,6 +215,14 @@ var User = function(window, undefined) {
         return state === states.PICKCOLOR
     }
 
+    function stateIsHighlight() {
+        return state === states.HIGHLIGHT
+    }
+
+    function stateIsDefault() {
+        return state === states.DEFAULT
+    }
+
     /**
      * Get the currently selected region
      * @memberOf UserState
@@ -240,7 +255,10 @@ var User = function(window, undefined) {
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
         stateIsPick: stateIsPick,
+        stateIsHighlight: stateIsHighlight,
+        stateIsDefault: stateIsDefault,
         setDefaultState: setDefaultState,
+        setHighlightState: setHighlightState,
         setEditMode: setEditMode,
         setSelectMode: setSelectMode,
         setPickState: setPickState,

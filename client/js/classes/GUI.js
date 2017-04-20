@@ -49,6 +49,7 @@ var GUI = function(window, undefined) {
                     }
                 }
             },
+            highlight: highlight,
             logout: function() {
                 window.location = window.location.href + 'signout'
             }
@@ -208,6 +209,7 @@ var GUI = function(window, undefined) {
         //debug.open()
 
         gui.add(settings, 'logout').name('Log Out')
+        gui.add(settings, 'highlight').name('Highlight')
 
     }
 
@@ -220,6 +222,11 @@ var GUI = function(window, undefined) {
     function pickColor() {
         if (User.modeIsEdit())
             User.setPickState()
+    }
+
+    function highlight() {
+        if (User.modeIsEdit())
+            User.setHighlightState()
     }
 
     /**

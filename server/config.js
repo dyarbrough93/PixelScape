@@ -29,7 +29,7 @@ const clientConfig = {
     },
     grid: {
         blockSize: 50, // even
-        sqPerSideOfSelectPlane: 51, // must be odd
+        sqPerSideOfSelectPlane: 41, // must be odd
         sqPerSideOfSection: 151, // must be odd
         sectionsPerSide: 17,
         init: function() {

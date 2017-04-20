@@ -314,7 +314,7 @@ var GameScene = function(window, undefined) {
         gPos.add(intersect.face.normal).worldToGrid()
 
         if (!VoxelUtils.validBlockLocation(gPos) ||
-            Keys.isShiftDown() || User.stateIsPick()) {
+            Keys.isShiftDown() || !User.stateIsDefault()) {
             setGhostMeshVis(false)
             return
         }
@@ -521,6 +521,7 @@ var GameScene = function(window, undefined) {
         updateDeleteMesh: updateDeleteMesh,
         moveRegionSelectPlane: moveRegionSelectPlane,
         getMapControlsPlane: getMapControlsPlane,
+        removeOutlines: removeOutlines,
         getScene: getScene,
         getCamera: getCamera,
         getPSystem: getPSystem,
