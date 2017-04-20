@@ -17,6 +17,8 @@ var GameScene = function(window, undefined) {
     var scene
     var camera
     var renderer
+    var noaarenderer
+    var aarenderer // with antialiasing
 
     // the game scene div
     var container
@@ -72,14 +74,27 @@ var GameScene = function(window, undefined) {
         ;
         (function _initRenderer() {
 
-            var clearColor = Config.getGeneral().clearColor
+            function setSharedConfig(r) {
+                var clearColor = Config.getGeneral().clearColor
+                r.setClearColor(clearColor)
+                r.sortObjects = false
+                r.setSize(window.innerWidth, window.innerHeight)
+            }
 
-            renderer = new THREE.WebGLRenderer({
+            aarenderer = new THREE.WebGLRenderer({
                 antialias: true
             })
-            renderer.setClearColor(clearColor)
-            renderer.sortObjects = false
-            renderer.setSize(window.innerWidth, window.innerHeight)
+
+            noaarenderer = new THREE.WebGLRenderer({
+                antialias: false
+            })
+
+            setSharedConfig(aarenderer)
+            setSharedConfig(noaarenderer)
+
+            if (Config.getGeneral().aaOnByDefault) renderer = aarenderer
+            else renderer = noaarenderer
+
             container.appendChild(renderer.domElement)
 
         })()
@@ -445,6 +460,18 @@ var GameScene = function(window, undefined) {
 
     }
 
+    function switchRenderer() {
+
+        removeRenderer()
+
+        if (renderer === aarenderer)
+            renderer = noaarenderer
+        else renderer = aarenderer
+
+        container.appendChild(renderer.domElement)
+
+    }
+
     /**
      * Adds an object to the scene
      * @memberOf GameScene
@@ -463,7 +490,7 @@ var GameScene = function(window, undefined) {
         scene.remove(obj)
     }
 
-    function destroy() {
+    function removeRenderer() {
         container.removeChild(container.getElementsByTagName('canvas')[0])
     }
 
@@ -523,7 +550,8 @@ var GameScene = function(window, undefined) {
     return {
 
         init: init,
-        destroy: destroy,
+        removeRenderer: removeRenderer,
+        switchRenderer: switchRenderer,
         addToScene: addToScene,
         removeFromScene: removeFromScene,
         highlightUserVoxels: highlightUserVoxels,

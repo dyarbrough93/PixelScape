@@ -21,7 +21,8 @@ const clientConfig = {
         maxVoxelHeight: serverConfig.maxVoxelHeight,
         actionDelay: serverConfig.actionDelay,
         chatDelay: serverConfig.chatDelay,
-        clearColor: 0xffffff
+        clearColor: 0xffffff,
+        aaOnByDefault: false
     },
     convert: {
         warnThreshold: 15000,

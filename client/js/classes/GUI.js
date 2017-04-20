@@ -49,6 +49,9 @@ var GUI = function(window, undefined) {
                     }
                 }
             },
+            userSettings: {
+                useAA: Config.getGeneral().aaOnByDefault
+            },
             highlight: highlight,
             logout: function() {
                 window.location = window.location.href + 'signout'
@@ -178,7 +181,8 @@ var GUI = function(window, undefined) {
     function addGUIEls() {
 
         var colors = gui.addFolder('Colors')
-        //var debug = gui.addFolder('_debug')
+        var debug = gui.addFolder('_debug')
+        var userSettings = gui.addFolder('Settings')
 
         ;
         (function initColorsFolder() {
@@ -205,8 +209,12 @@ var GUI = function(window, undefined) {
 
         })()
 
-        //debug.add(settings.debug, 'logWorldData')
-        //debug.open()
+        userSettings.add(settings.userSettings, 'useAA').name('Antialiasing').onChange(function(value) {
+            GameScene.switchRenderer()
+        })
+
+        debug.add(settings.debug, 'logWorldData')
+        debug.open()
 
         gui.add(settings, 'logout').name('Log Out')
         gui.add(settings, 'highlight').name('Highlight')
