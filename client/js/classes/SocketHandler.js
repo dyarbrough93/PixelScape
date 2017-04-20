@@ -30,15 +30,9 @@ var SocketHandler = function(window, undefined) {
 
     }
 
-    function getUserBlocks(username, cb) {
-        socket.emit('get user blocks', username, function(userBlocks) {
-            return cb(userBlocks)
-        })
-    }
-
-    function getUserSettings(username, cb) {
-        socket.emit('get user settings', username, function(settings) {
-            return cb(settings)
+    function getUserData(username, cb) {
+        socket.emit('get user data', username, function(data) {
+            return cb(data)
         })
     }
 
@@ -213,8 +207,7 @@ var SocketHandler = function(window, undefined) {
         retrieveData: retrieveData,
         emitBlockAdded: emitBlockAdded,
         emitBlockRemoved: emitBlockRemoved,
-        getUserBlocks: getUserBlocks,
-        getUserSettings: getUserSettings
+        getUserData: getUserData
     }
 
 }()

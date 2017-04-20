@@ -155,7 +155,7 @@ WorldData.remove = function(gPos, username, cb) {
 
 WorldData.getUserSettings = function(username, cb) {
     User.findOne({username: username}, function(err, user) {
-        if (dbErr(err)) return false
+        if (dbErr(err) || !user) return false
         return cb(user.settings)
     })
 }

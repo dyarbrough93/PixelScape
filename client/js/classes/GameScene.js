@@ -393,11 +393,11 @@ var GameScene = function(window, undefined) {
         GUI.displayString(username)
 
         // request the user data from the server
-        SocketHandler.getUserBlocks(username, function(userBlocks) {
+        SocketHandler.getUserData(username, function(data) {
 
             var mergedGeo = new THREE.Geometry()
 
-            userBlocks.forEach(function(coordStr) {
+            data.voxels.forEach(function(coordStr) {
 
                 // mat / geom / mesh
                 var blockSize = Config.getGrid().blockSize
@@ -417,20 +417,16 @@ var GameScene = function(window, undefined) {
 
             })
 
-            SocketHandler.getUserSettings(username, function(settings) {
-
-                // create the merged mesh and add it to the scene
-                var outlineMaterial = new THREE.MeshBasicMaterial({
-                    color: settings.voxelOutlineColor || 0xffffff * Math.random(),
-                    side: THREE.BackSide
-                })
-
-                var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
-                mergedMesh.name = 'outlineMesh'
-
-                scene.add(mergedMesh)
-
+            // create the merged mesh and add it to the scene
+            var outlineMaterial = new THREE.MeshBasicMaterial({
+                color: data.settings.voxelOutlineColor || 0xffffff * Math.random(),
+                side: THREE.BackSide
             })
+
+            var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
+            mergedMesh.name = 'outlineMesh'
+
+            scene.add(mergedMesh)
 
         })
 
