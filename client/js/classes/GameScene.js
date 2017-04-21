@@ -395,17 +395,19 @@ var GameScene = function(window, undefined) {
             return
         }
 
-        // get grid pos
+        // get grid / world pos
         var wPos = intersect.point.clone().sub(intersect.face.normal)
+        var gPos = intersect.point.clone().sub(intersect.face.normal)
         wPos.initWorldPos().snapToGrid()
+        gPos.initWorldPos().worldToGrid()
 
-        var gPos = intersect.point.clone().sub(intersect.face.normal).worldToGrid()
-
+        // voxel at intersect
         var voxel = WorldData.getVoxel(gPos)
 
         // get uname
         var username = voxel.isMesh ? voxel.userData.username : voxel.username
 
+        // guest voxel
         if (!username || username === 'Guest') {
             GUI.displayString('Guest')
             return
@@ -415,6 +417,8 @@ var GameScene = function(window, undefined) {
         var currentHoveredUser = User.getCurrentHoveredUser()
         if (currentHoveredUser && username === currentHoveredUser) return
 
+        // remove existing
+        // outlines
         removeOutlines()
 
         // set some vars
@@ -422,9 +426,7 @@ var GameScene = function(window, undefined) {
         GUI.displayString(username)
 
         // get the user voxels
-        var voxels = WorldData.getUserVoxels(username)
-
-        var mergedGeo = buildOutlineMesh(voxels)
+        var mergedGeo = VoxelUtils.buildOutlineGeom(username)
 
         // create the merged mesh and add it to the scene
         var outlineMaterial = new THREE.MeshBasicMaterial({
@@ -499,73 +501,6 @@ var GameScene = function(window, undefined) {
     /*------------------------------------*
      :: Private methods
      *------------------------------------*/
-
-     function checkNeighbor(x, y, z, voxels) {
-
-         if (!voxels[x]) return false
-         if (!voxels[x][y]) return false
-         if (!voxels[x][y][z]) return false
-         return true
-
-     }
-
-     function removeFace(geom, nVec) {
-
-         for (var i = 0; i < geom.faces.length; i++) {
-
-             var face = geom.faces[i]
-
-             var n = face.normal
-             if (n.x === nVec.x && n.y === nVec.y && n.z === nVec.z)
-                 delete geom.faces[i]
-
-         }
-
-         geom.faces = geom.faces.filter( function(v) { return v })
-         geom.elementsNeedUpdate = true // update faces
-
-     }
-
-     function buildOutlineMesh(voxels) {
-
-         var mergedGeo = new THREE.Geometry()
-         var blockSize = Config.getGrid().blockSize
-
-         for (var x in voxels) {
-             for (var y in voxels[x]) {
-                 for (var z in voxels[x][y]) {
-
-                     var wPos = new THREE.Vector3(x, y, z).gridToWorld()
-
-                     // geom / mesh
-                     var cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
-                     var outlineMesh = new THREE.Mesh(cubeGeo)
-
-                     // mesh config
-                     outlineMesh.position.x = wPos.x
-                     outlineMesh.position.y = wPos.y
-                     outlineMesh.position.z = wPos.z
-                     outlineMesh.scale.multiplyScalar(1.25)
-
-                     // delete inner faces
-                     if (checkNeighbor(x - 1, y, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(-1, 0, 0))
-                     if (checkNeighbor(x + 1, y, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(1, 0, 0))
-                     if (checkNeighbor(x, y - 1, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, -1, 0))
-                     if (checkNeighbor(x, y + 1, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 1, 0))
-                     if (checkNeighbor(x, y, z - 1, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 0, -1))
-                     if (checkNeighbor(x, y, z + 1, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 0, 1))
-
-                     // merge geoms
-                     outlineMesh.updateMatrix()
-                     mergedGeo.merge(outlineMesh.geometry, outlineMesh.matrix)
-
-                 }
-             }
-         }
-
-         return mergedGeo
-
-     }
 
     /**
      * Resizes on the scene when the window

@@ -30,6 +30,10 @@ var VoxelUtils = (function(window, undefined) {
      * @typedef {THREE.Vector3} WorldVector3
      */
 
+     /*------------------------------------*
+      :: Public methods
+      *------------------------------------*/
+
     String.prototype.isCoordStr = function() {
         var formatReg = /x[-]*\d+y[-]*\d+z[-]*\d+/
         return !!formatReg.exec(this)
@@ -313,6 +317,86 @@ var VoxelUtils = (function(window, undefined) {
         return num
     }
 
+    /**
+     * Build and return an outline geometry for the
+     * given username.
+     * @param  {string} username The username we are building the geom for
+     * @return {THREE.Geomtetry} The outline geometry
+     * @memberOf! VoxelUtils
+     */
+    function buildOutlineGeom(username) {
+
+        var voxels = WorldData.getUserVoxels(username)
+
+        var mergedGeo = new THREE.Geometry()
+        var blockSize = Config.getGrid().blockSize
+
+        for (var x in voxels) {
+            for (var y in voxels[x]) {
+                for (var z in voxels[x][y]) {
+
+                    var wPos = new THREE.Vector3(x, y, z).gridToWorld()
+
+                    // geom / mesh
+                    var cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
+                    var outlineMesh = new THREE.Mesh(cubeGeo)
+
+                    // mesh config
+                    outlineMesh.position.x = wPos.x
+                    outlineMesh.position.y = wPos.y
+                    outlineMesh.position.z = wPos.z
+                    outlineMesh.scale.multiplyScalar(1.25)
+
+                    // delete inner faces
+                    if (checkNeighbor(x - 1, y, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(-1, 0, 0))
+                    if (checkNeighbor(x + 1, y, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(1, 0, 0))
+                    if (checkNeighbor(x, y - 1, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, -1, 0))
+                    if (checkNeighbor(x, y + 1, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 1, 0))
+                    if (checkNeighbor(x, y, z - 1, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 0, -1))
+                    if (checkNeighbor(x, y, z + 1, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 0, 1))
+
+                    // merge geoms
+                    outlineMesh.updateMatrix()
+                    mergedGeo.merge(outlineMesh.geometry, outlineMesh.matrix)
+
+                }
+            }
+        }
+
+        return mergedGeo
+
+    }
+
+    /*------------------------------------*
+     :: Private methods
+     *------------------------------------*/
+
+     function checkNeighbor(x, y, z, voxels) {
+
+         if (!voxels[x]) return false
+         if (!voxels[x][y]) return false
+         if (!voxels[x][y][z]) return false
+         return true
+
+     }
+
+     function removeFace(geom, nVec) {
+
+         for (var i = 0; i < geom.faces.length; i++) {
+
+             var face = geom.faces[i]
+
+             var n = face.normal
+             if (n.x === nVec.x && n.y === nVec.y && n.z === nVec.z)
+                 delete geom.faces[i]
+
+         }
+
+         geom.faces = geom.faces.filter( function(v) { return v })
+         geom.elementsNeedUpdate = true // update faces
+
+     }
+
     /*********** expose public methods *************/
 
     return {
@@ -325,6 +409,7 @@ var VoxelUtils = (function(window, undefined) {
         countObjAttrs: countObjAttrs,
         Tuple: Tuple,
         getSectionIndices: getSectionIndices,
+        buildOutlineGeom: buildOutlineGeom,
 
     }
 
