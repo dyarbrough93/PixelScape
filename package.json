@@ -31,8 +31,8 @@
         "startw": "node server/generateClientConfig.js && grunt && set USE_LOGIN=y&& node app.js",
         "dev": "node server/generateClientConfig.js && NODE_ENV=dev node app.js",
         "devl": "node server/generateClientConfig.js && NODE_ENV=dev USE_LOGIN=y node app.js",
-        "devw": "set NODE_ENV=dev&& set USE_LOGIN=n&& node app.js",
-        "devwl": "set NODE_ENV=dev&& set USE_LOGIN=y&& node app.js",
+        "devw": "node server/generateClientConfig.js && set NODE_ENV=dev&& set USE_LOGIN=n&& node app.js",
+        "devwl": "node server/generateClientConfig.js && set NODE_ENV=dev&& set USE_LOGIN=y&& node app.js",
         "lint": "eslint .",
         "clean": "rm -rf build",
         "jsdoc": "jsdoc ./server ./client ./README.md -r -a all -c ./jsdocconf.json -d jsdoc"
