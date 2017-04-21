@@ -47,7 +47,9 @@ var GUI = function(window, undefined) {
                             }
                         }
                     }
-                }
+                },
+                anyString: '',
+                userName: User.getUName()
             },
             userSettings: {
                 useAA: Config.getGeneral().aaOnByDefault
@@ -169,6 +171,10 @@ var GUI = function(window, undefined) {
         gui.destroy()
     }
 
+    function displayString(string) {
+        settings.debug.anyString = string
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -214,6 +220,8 @@ var GUI = function(window, undefined) {
         })
 
         debug.add(settings.debug, 'logWorldData')
+        debug.add(settings.debug, 'anyString').listen()
+        debug.add(settings.debug, 'userName').listen()
         debug.open()
 
         gui.add(settings, 'logout').name('Log Out')
@@ -263,6 +271,7 @@ var GUI = function(window, undefined) {
     return {
         init: init,
         destroy: destroy,
+        displayString: displayString,
         getBlockColor: getBlockColor,
         wasClicked: wasClicked,
         setClicked: setClicked,
