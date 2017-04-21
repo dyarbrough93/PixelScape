@@ -7,7 +7,7 @@
 var User = function(window, undefined) {
 
     /*------------------------------------*
-     :: Private Classes
+     :: Classes
      *------------------------------------*/
 
     /**

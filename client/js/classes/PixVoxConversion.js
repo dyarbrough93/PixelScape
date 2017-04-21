@@ -289,7 +289,7 @@ var PixVoxConversion = function(window, undefined) {
              sid = VoxelUtils.getSectionIndices(gPos)
              currVox = convertedVoxels[voxPos]
 
-             var hColor = currVox.c
+             var hColor = currVox.hColor
              var tColor = new THREE.Color(hColor)
 
              /*// vvv black magic, don't touch

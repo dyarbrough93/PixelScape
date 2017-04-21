@@ -7,6 +7,77 @@
  */
 var WorldData = function(window, undefined) {
 
+    /**
+     * An object containing information on voxel
+     * ownership, with keys being usernames and values
+     * being Objects containing the owned voxels in a
+     * coordinate tree (for fast indexing), with the following format:
+     *<pre><code>
+     * {
+     *     'username': {
+     *         1 : {
+     *             5 : {
+     *                 3 {}
+     *             },
+     *             4 : {
+     *                 2 : {}
+     *             }
+     *         },
+     *         6 : {
+     *             2 : {
+     *                 1 : {}
+     *             }
+     *         }
+     *     }
+     * }
+     *</code></pre>
+     * with the first level as the x coordinate, the second level as
+     * the y coordinate, and the third level as the z coordinate. So,
+     * in the above example, "username" owns voxels {1, 5, 3}, {1, 4, 2}, and {6, 2, 1}
+     * @memberOf! WorldData
+     * @typedef {Object} userData
+     */
+
+    /**
+     * An object containing information on all of the
+     * voxels currently in the world, where keys are
+     * {@link VoxelUtils.coordStr} and values can be either
+     * a THREE.Mesh (a newly placed voxel) or a {@link WorldData.VoxelInfo}
+     * The structure looks like this:
+     *<pre><code>
+     * {
+     *     'x12y10z-5': {@link WorldData.VoxelInfo}
+     *     'x-5y4z3': {@link WorldData.VoxelInfo}
+     *     'x7y1z8': {THREE.Mesh}
+     * }
+     *</code></pre>
+     * @memberOf! WorldData
+     * @typedef {Object} worldData
+     */
+
+    /*------------------------------------*
+     :: Classes
+     *------------------------------------*/
+
+    /**
+     * @class VoxelInfo
+     * @param {number} hColor Hex color
+     * @param {string} username Username of the user that owns this voxel
+     * @param {number} pIdx Index in the particle system geometry
+     * @param {number} bIdx Buffer index. used with BufMeshMgr
+     * @param {boolean} exp Part of particle system expansion?
+     * @memberOf! WorldData
+     */
+    function VoxelInfo(hColor, username, pIdx, bIdx, exp) {
+
+        this.hColor = hColor
+        this.username = username
+        this.pIdx = pIdx
+        this.bIdx = bIdx
+        this.exp = exp
+
+    }
+
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
@@ -55,8 +126,8 @@ var WorldData = function(window, undefined) {
         for (var coordStr in data) {
             if (data.hasOwnProperty(coordStr)) {
 
-                var color = data[coordStr].c
-                var tColor = new THREE.Color(color)
+                var hColor = data[coordStr].c
+                var tColor = new THREE.Color(hColor)
                 var username = data[coordStr].username
 
                 var gPos = VoxelUtils.coordStrParse(coordStr)
@@ -73,7 +144,10 @@ var WorldData = function(window, undefined) {
                     // add a pixel to the particle system,
                     // then add a voxel to worldData
                     var pIdx = particleSystem.addPixel(sid, wPos, tColor)
-                    addVoxel(sid, coordStr, color, username, pIdx, false)
+
+                    // add to worldData
+                    var voxInfo = new VoxelInfo(hColor, username, pIdx, null, false)
+                    addVoxel(sid, coordStr, voxInfo)
 
                 }
 
@@ -95,25 +169,17 @@ var WorldData = function(window, undefined) {
     }
 
     /**
-     * Creates an entry in the worldData object with the specified
+     * Creates a VoxelInfo entry in the worldData object with the specified
      * parameters.
      * @memberOf WorldData
      * @access public
      * @param {VoxelUtils.Tuple} sid Section indices
-     * @param {number} hColor Hex color
-     * @param {number} pIdx Index in the particle system geometry
-     * @param {boolean} exp Part of particle system expansion?
      * @param {VoxelUtils.coordStr} coordStr Coordinate string (grid coords)
+     * @param {WorldData.VoxelInfo} voxInfo Object containing the voxel information
      */
-    function addVoxel(sid, coordStr, hColor, username, pIdx, exp) {
+    function addVoxel(sid, coordStr, voxInfo) {
 
-        worldData[sid.a][sid.b][coordStr] = {
-            c: hColor,
-            pIdx: pIdx,
-            username: username,
-            exp: exp
-        }
-
+        worldData[sid.a][sid.b][coordStr] = voxInfo
     }
 
     /**
