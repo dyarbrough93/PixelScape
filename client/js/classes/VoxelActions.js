@@ -35,6 +35,8 @@ var VoxelActions = function(window, undefined) {
         Raycast.add(voxelMesh)
         PixVoxConversion.addToConvertedVoxels(sid, coordStr)
 
+        WorldData.addToUserData(username, gPos)
+
         GameScene.addToScene(voxelMesh)
         GameScene.render()
 
@@ -147,6 +149,8 @@ var VoxelActions = function(window, undefined) {
         // part of original
         else GameScene.getPSystem().hidePixel(sid, vox.pIdx)
 
+        var username = vox.isMesh ? vox.userData.username : vox.username
+        WorldData.removeFromUserData(username, gPos)
         WorldData.removeVoxel(gPos)
 
         GameScene.render()
@@ -171,7 +175,11 @@ var VoxelActions = function(window, undefined) {
         var coordStr = VoxelUtils.getCoordStr(gPos)
 
         GameScene.removeFromScene(vox)
+
+        var username = vox.isMesh ? vox.userData.username : vox.username
+        WorldData.removeFromUserData(username, gPos)
         WorldData.removeVoxel(gPos)
+
         Raycast.remove(vox)
         PixVoxConversion.removeFromConvertedVoxels(coordStr)
 
@@ -197,6 +205,9 @@ var VoxelActions = function(window, undefined) {
 
         BufMeshMgr.removeVoxel(vox.bIdx)
         PixVoxConversion.removeFromConvertedVoxels(coordStr)
+
+        var username = vox.isMesh ? vox.userData.username : vox.username
+        WorldData.removeFromUserData(username, gPos)
         WorldData.removeVoxel(gPos)
 
         if (vox.exp) {

@@ -163,19 +163,27 @@ var WorldData = function(window, undefined) {
         return worldData
     }
 
-    /*------------------------------------*
-     :: Private methods
-     *------------------------------------*/
+    function addToUserData(username, gPos) {
 
-     function addToUserData(username, gPos) {
+        if (!userData.hasOwnProperty(username)) userData[username] = {}
 
-         if (!userData.hasOwnProperty(username)) userData[username] = {}
+        if (!userData[username][gPos.x]) userData[username][gPos.x] = {}
+        if (!userData[username][gPos.x][gPos.y]) userData[username][gPos.x][gPos.y] = {}
+        if (!userData[username][gPos.x][gPos.y][gPos.z]) userData[username][gPos.x][gPos.y][gPos.z] = {}
 
-         if (!userData[username][gPos.x]) userData[username][gPos.x] = {}
-         if (!userData[username][gPos.x][gPos.y]) userData[username][gPos.x][gPos.y] = {}
-         if (!userData[username][gPos.x][gPos.y][gPos.z]) userData[username][gPos.x][gPos.y][gPos.z] = {}
+    }
 
-     }
+    function removeFromUserData(username, gPos) {
+
+        if (userData.hasOwnProperty(username)) {
+
+            if (!userData[username][gPos.x]) return
+            if (!userData[username][gPos.x][gPos.y]) return
+            delete userData[username][gPos.x][gPos.y][gPos.z]
+
+        }
+
+    }
 
     /*********** expose public methods *************/
 
@@ -187,7 +195,9 @@ var WorldData = function(window, undefined) {
         addMesh: addMesh,
         getUserVoxels: getUserVoxels,
         getWorldData: getWorldData,
-        removeVoxel: removeVoxel
+        removeVoxel: removeVoxel,
+        addToUserData: addToUserData,
+        removeFromUserData: removeFromUserData
     }
 
 }()

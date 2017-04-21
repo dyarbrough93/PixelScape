@@ -404,11 +404,12 @@ var GameScene = function(window, undefined) {
         var voxel = WorldData.getVoxel(gPos)
 
         // get uname
-        var username
-        if (voxel.isMesh) username = voxel.userData.username
-        else username = voxel.username
+        var username = voxel.isMesh ? voxel.userData.username : voxel.username
 
-        if (!username || username === 'Guest') return
+        if (!username || username === 'Guest') {
+            GUI.displayString('Guest')
+            return
+        }
 
         // avoid redundant calls
         var currentHoveredUser = User.getCurrentHoveredUser()
@@ -422,17 +423,8 @@ var GameScene = function(window, undefined) {
 
         // get the user voxels
         var voxels = WorldData.getUserVoxels(username)
-        var mergedGeo
 
-        if (username === 'Guest') {
-
-            // create one outline at the hovered
-            // voxel to indicate guest voxel
-            //createOutlineMesh(wPos)
-
-        } else {
-            mergedGeo = buildOutlineMesh(voxels)
-        }
+        var mergedGeo = buildOutlineMesh(voxels)
 
         // create the merged mesh and add it to the scene
         var outlineMaterial = new THREE.MeshBasicMaterial({
