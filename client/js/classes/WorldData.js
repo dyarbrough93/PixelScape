@@ -12,6 +12,7 @@ var WorldData = function(window, undefined) {
      *------------------------------------*/
 
     var worldData
+    var userData
 
     /*------------------------------------*
      :: Public Methods
@@ -28,6 +29,7 @@ var WorldData = function(window, undefined) {
         var secPerSide = Config.getGrid().sectionsPerSide
 
         worldData = []
+        userData = {}
         for (var i = 0, len1 = secPerSide; i < len1; i++) {
             worldData[i] = []
             for (var j = 0, len2 = secPerSide; j < len2; j++) {
@@ -59,6 +61,9 @@ var WorldData = function(window, undefined) {
 
                 var gPos = VoxelUtils.coordStrParse(coordStr)
 
+                if (username && username !== 'Guest')
+                    addToUserData(username, gPos)
+
                 if (VoxelUtils.withinGridBoundaries(gPos)) {
 
                     var wPos = gPos.clone().gridToWorld()
@@ -80,6 +85,12 @@ var WorldData = function(window, undefined) {
         console.log('done loading pixels')
 
         GameScene.render()
+
+    }
+
+    function getUserVoxels(username) {
+
+        return userData[username]
 
     }
 
@@ -152,6 +163,20 @@ var WorldData = function(window, undefined) {
         return worldData
     }
 
+    /*------------------------------------*
+     :: Private methods
+     *------------------------------------*/
+
+     function addToUserData(username, gPos) {
+
+         if (!userData.hasOwnProperty(username)) userData[username] = {}
+
+         if (!userData[username][gPos.x]) userData[username][gPos.x] = {}
+         if (!userData[username][gPos.x][gPos.y]) userData[username][gPos.x][gPos.y] = {}
+         if (!userData[username][gPos.x][gPos.y][gPos.z]) userData[username][gPos.x][gPos.y][gPos.z] = {}
+
+     }
+
     /*********** expose public methods *************/
 
     return {
@@ -160,6 +185,7 @@ var WorldData = function(window, undefined) {
         getVoxel: getVoxel,
         addVoxel: addVoxel,
         addMesh: addMesh,
+        getUserVoxels: getUserVoxels,
         getWorldData: getWorldData,
         removeVoxel: removeVoxel
     }

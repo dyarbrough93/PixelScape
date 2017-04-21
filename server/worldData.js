@@ -157,13 +157,6 @@ WorldData.remove = function(gPos, username, cb) {
 
 }
 
-WorldData.getUserSettings = function(username, cb) {
-    User.findOne({username: username}, function(err, user) {
-        if (dbErr(err) || !user) return cb(false)
-        return cb(user.settings)
-    })
-}
-
 WorldData.init = function(done) {
 
     VoxelData.find({}, function(err, data) {
@@ -173,28 +166,9 @@ WorldData.init = function(done) {
         }
 
         loadData(data)
-        initUserData()
         done()
 
     })
-}
-
-function initUserData() {
-
-    for (var voxel in WorldData.voxels) {
-
-        if (WorldData.voxels.hasOwnProperty(voxel)) {
-
-            var uname = WorldData.voxels[voxel].username
-            if (!uname) uname = 'Guest'
-
-            if (!WorldData.userData[uname]) WorldData.userData[uname] = []
-            WorldData.userData[uname].push(voxel)
-
-        }
-
-    }
-
 }
 
 /*

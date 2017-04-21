@@ -84,14 +84,6 @@ function handleBlockOperations(socket) {
 
     })
 
-	socket.on('get user data', function(username, callback) {
-
-		worldData.getUserSettings(username, function(settings) {
-			return callback({ settings: settings, voxels: worldData.userData[username]})
-		})
-
-	})
-
 }
 
 function handleChunking(socket) {

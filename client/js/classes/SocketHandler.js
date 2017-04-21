@@ -30,12 +30,6 @@ var SocketHandler = function(window, undefined) {
 
     }
 
-    function getUserData(username, cb) {
-        socket.emit('get user data', username, function(data) {
-            return cb(data)
-        })
-    }
-
     /**
      * Send a "block removed" socket emit
      * with the given grid position
@@ -206,8 +200,7 @@ var SocketHandler = function(window, undefined) {
         init: init,
         retrieveData: retrieveData,
         emitBlockAdded: emitBlockAdded,
-        emitBlockRemoved: emitBlockRemoved,
-        getUserData: getUserData
+        emitBlockRemoved: emitBlockRemoved
     }
 
 }()
