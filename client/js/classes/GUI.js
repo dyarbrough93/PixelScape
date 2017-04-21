@@ -56,7 +56,8 @@ var GUI = function(window, undefined) {
             },
             highlight: highlight,
             logout: function() {
-                window.location = window.location.href + 'signout'
+                var url = window.location.protocol + '//' + window.location.host
+                window.location = url + '/signout'
             }
         }
 
