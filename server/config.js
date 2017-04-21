@@ -22,7 +22,7 @@ const clientConfig = {
         actionDelay: serverConfig.actionDelay,
         chatDelay: serverConfig.chatDelay,
         clearColor: 0xffffff,
-        aaOnByDefault: false
+        aaOnByDefault: true
     },
     convert: {
         warnThreshold: 15000,

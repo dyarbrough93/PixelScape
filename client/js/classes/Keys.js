@@ -186,6 +186,7 @@ var Keys = function(window, undefined) {
             User.resetSelectedRegion()
             PixVoxConversion.convertToPixels()
             GameScene.setGhostMeshVis(false)
+            GameScene.render()
 
         }
 
