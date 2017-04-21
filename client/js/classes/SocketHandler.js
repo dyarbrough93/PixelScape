@@ -149,7 +149,7 @@ var SocketHandler = function(window, undefined) {
         socket.on('multiple logins', function() {
 
             alert('You are already logged in!')
-            GameScene.removeRenderer()
+            GameScene.removeCanvas()
             GUI.destroy()
 
         })

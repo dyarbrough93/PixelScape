@@ -285,6 +285,12 @@ var GameScene = function(window, undefined) {
 
     }
 
+    /**
+     * Turn the region select plane visibility on or off
+     * @memberOf GameScene
+     * @access public
+     * @param {boolean} visible set visiblity
+     */
     function setRegionSelectPlaneVis(visible) {
 
         if (!visible) {
@@ -385,6 +391,13 @@ var GameScene = function(window, undefined) {
 
     }
 
+    /**
+     * Highlight all voxels owned by the voxel
+     * that is currently intersected
+     * @access public
+     * @memberOf GameScene
+     * @param  {THREE.Intersect} intersect The intersect
+     */
     function highlightUserVoxels(intersect) {
 
         // return and reset if shouldn't highlight
@@ -442,9 +455,15 @@ var GameScene = function(window, undefined) {
 
     }
 
+    /**
+     * Switch between the antialiasing
+     * renderer and the non-antialiasing renderer
+     * @access public
+     * @memberOf GameScene
+     */
     function switchRenderer() {
 
-        removeRenderer()
+        removeCanvas()
 
         if (renderer === aarenderer)
             renderer = noaarenderer
@@ -466,13 +485,20 @@ var GameScene = function(window, undefined) {
 
     /**
      * Remove an object from the scene
+     * @memberOf GameScene
+     * @access public
      * @param  {THREE.Object} obj The object to remove
      */
     function removeFromScene(obj) {
         scene.remove(obj)
     }
 
-    function removeRenderer() {
+    /**
+     * Remove the canvas from the game container
+     * @memberOf GameScene
+     * @access public
+     */
+    function removeCanvas() {
         container.removeChild(container.getElementsByTagName('canvas')[0])
     }
 
@@ -518,6 +544,11 @@ var GameScene = function(window, undefined) {
 
     }
 
+    /**
+     * Remove the outlineMesh from the scene
+     * @memberOf GameScene
+     * @access private
+     */
     function removeOutlines() {
         User.setCurrentHoveredUser(undefined)
         for (var i = scene.children.length - 1; i >= 0; i--) {
@@ -533,7 +564,7 @@ var GameScene = function(window, undefined) {
     return {
 
         init: init,
-        removeRenderer: removeRenderer,
+        removeCanvas: removeCanvas,
         switchRenderer: switchRenderer,
         addToScene: addToScene,
         removeFromScene: removeFromScene,

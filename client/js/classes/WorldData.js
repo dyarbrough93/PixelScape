@@ -34,7 +34,7 @@ var WorldData = function(window, undefined) {
      * with the first level as the x coordinate, the second level as
      * the y coordinate, and the third level as the z coordinate. So,
      * in the above example, "username" owns voxels {1, 5, 3}, {1, 4, 2}, and {6, 2, 1}
-     * @memberOf! WorldData
+     * @memberOf WorldData
      * @typedef {Object} userData
      */
 
@@ -51,7 +51,7 @@ var WorldData = function(window, undefined) {
      *     'x7y1z8': {THREE.Mesh}
      * }
      *</code></pre>
-     * @memberOf! WorldData
+     * @memberOf WorldData
      * @typedef {Object} worldData
      */
 
@@ -66,7 +66,7 @@ var WorldData = function(window, undefined) {
      * @param {number} pIdx Index in the particle system geometry
      * @param {number} bIdx Buffer index. used with BufMeshMgr
      * @param {boolean} exp Part of particle system expansion?
-     * @memberOf! WorldData
+     * @memberOf WorldData
      */
     function VoxelInfo(hColor, username, pIdx, bIdx, exp) {
 
@@ -162,12 +162,6 @@ var WorldData = function(window, undefined) {
 
     }
 
-    function getUserVoxels(username) {
-
-        return userData[username]
-
-    }
-
     /**
      * Creates a VoxelInfo entry in the worldData object with the specified
      * parameters.
@@ -214,6 +208,8 @@ var WorldData = function(window, undefined) {
      * @param  {VoxelUtils.GridVector3} gPos Grid position of
      * the voxel to get
      * @return {object} The mesh or object
+     * @access public
+     * @memberOf WorldData
      */
     function getVoxel(gPos) {
         var coordStr = VoxelUtils.getCoordStr(gPos)
@@ -222,13 +218,13 @@ var WorldData = function(window, undefined) {
     }
 
     /**
-     * Return the worldData object
-     * @return {Ojbect} The world data
+     * Add a coordinate to the attribute of the userData
+     * object with the given username
+     * @param {string} username The username index
+     * @param {VoxelUtils.GridVector3} gPos Grid coordinate to add
+     * @access public
+     * @memberOf WorldData
      */
-    function getWorldData() {
-        return worldData
-    }
-
     function addToUserData(username, gPos) {
 
         if (!userData.hasOwnProperty(username)) userData[username] = {}
@@ -239,6 +235,14 @@ var WorldData = function(window, undefined) {
 
     }
 
+    /**
+     * Remove a coordinate from the attribute of
+     * userData that matches the given
+     * @param  {string} username The username index
+     * @param  {VoxelUtils.GridVector3} gPos Grid coordinate to remove
+     * @access public
+     * @memberOf WorldData
+     */
     function removeFromUserData(username, gPos) {
 
         if (userData.hasOwnProperty(username)) {
@@ -249,6 +253,23 @@ var WorldData = function(window, undefined) {
 
         }
 
+    }
+
+    /**
+     * Return the voxels for the give username
+     * @param  {string} username The username index
+     * @return {Object} Voxels owned by that user
+     */
+    function getUserVoxels(username) {
+        return userData[username]
+    }
+
+    /**
+     * Return the worldData object
+     * @return {Ojbect} The world data
+     */
+    function getWorldData() {
+        return worldData
     }
 
     /*********** expose public methods *************/
