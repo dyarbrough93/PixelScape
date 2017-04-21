@@ -142,9 +142,11 @@ WorldData.remove = function(gPos, username, cb) {
                 delete WorldData.voxels[getPosStr(gPos)]
                 numVoxels--
 
-                if (!username || username !== 'Guest') {
-                    var idx = WorldData.userData[username].indexOf(coordStr)
-                    if (idx > -1) WorldData.userData[username].splice(idx, 1)
+                if (username && username !== 'Guest') {
+                    if (WorldData.userData[username]) {
+                        var idx = WorldData.userData[username].indexOf(coordStr)
+                        if (idx > -1) WorldData.userData[username].splice(idx, 1)
+                    }
                 }
 
                 return cb(true)
@@ -157,7 +159,7 @@ WorldData.remove = function(gPos, username, cb) {
 
 WorldData.getUserSettings = function(username, cb) {
     User.findOne({username: username}, function(err, user) {
-        if (dbErr(err) || !user) return false
+        if (dbErr(err) || !user) return cb(false)
         return cb(user.settings)
     })
 }
@@ -184,6 +186,7 @@ function initUserData() {
         if (WorldData.voxels.hasOwnProperty(voxel)) {
 
             var uname = WorldData.voxels[voxel].username
+            if (!uname) uname = 'Guest'
 
             if (!WorldData.userData[uname]) WorldData.userData[uname] = []
             WorldData.userData[uname].push(voxel)

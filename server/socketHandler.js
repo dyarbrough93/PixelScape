@@ -78,7 +78,7 @@ function handleBlockOperations(socket) {
 
             }
 
-            callback('failure')
+            return callback('failure')
 
         })
 
