@@ -408,7 +408,7 @@ var GameScene = function(window, undefined) {
         if (voxel.isMesh) username = voxel.userData.username
         else username = voxel.username
 
-        if (!username) username = 'Guest'
+        if (!username || username === 'Guest') return
 
         // avoid redundant calls
         var currentHoveredUser = User.getCurrentHoveredUser()
@@ -420,60 +420,31 @@ var GameScene = function(window, undefined) {
         User.setCurrentHoveredUser(username)
         GUI.displayString(username)
 
-        // request the user data from the server
-        SocketHandler.getUserData(username, function(data) {
+        // get the user voxels
+        var voxels = WorldData.getUserVoxels(username)
+        var mergedGeo
 
-            var mergedGeo = new THREE.Geometry()
-            var blockSize = Config.getGrid().blockSize
+        if (username === 'Guest') {
 
-            function createOutlineMesh(worldPos) {
+            // create one outline at the hovered
+            // voxel to indicate guest voxel
+            //createOutlineMesh(wPos)
 
-                // mat / geom / mesh
-                var cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
-                var outlineMesh = new THREE.Mesh(cubeGeo)
+        } else {
+            mergedGeo = buildOutlineMesh(voxels)
+        }
 
-                // mesh config
-                outlineMesh.position.x = worldPos.x
-                outlineMesh.position.y = worldPos.y
-                outlineMesh.position.z = worldPos.z
-                outlineMesh.scale.multiplyScalar(1.2)
-
-                // merge geoms
-                outlineMesh.updateMatrix()
-                mergedGeo.merge(outlineMesh.geometry, outlineMesh.matrix)
-
-            }
-
-            if (username === 'Guest') {
-
-                // create one outline at the hovered
-                // voxel to indicate guest voxel
-                createOutlineMesh(wPos)
-
-            } else {
-
-                data.voxels.forEach(function(coordStr) {
-
-                    var wPos = VoxelUtils.coordStrParse(coordStr).gridToWorld()
-                    createOutlineMesh(wPos)
-
-                })
-
-            }
-
-            // create the merged mesh and add it to the scene
-            var outlineMaterial = new THREE.MeshBasicMaterial({
-                color: (username === 'Guest') ? '#000000' : '#ff8200', /*data.settings.voxelOutlineColor*/
-                side: THREE.BackSide
-            })
-
-            var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
-            mergedMesh.name = 'outlineMesh'
-
-            scene.add(mergedMesh)
-            GameScene.render()
-
+        // create the merged mesh and add it to the scene
+        var outlineMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff * Math.random(), //(username === 'Guest') ? '#000000' : '#ff8200',
+            side: THREE.BackSide
         })
+
+        var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
+        mergedMesh.name = 'outlineMesh'
+
+        scene.add(mergedMesh)
+        GameScene.render()
 
     }
 
@@ -536,6 +507,73 @@ var GameScene = function(window, undefined) {
     /*------------------------------------*
      :: Private methods
      *------------------------------------*/
+
+     function checkNeighbor(x, y, z, voxels) {
+
+         if (!voxels[x]) return false
+         if (!voxels[x][y]) return false
+         if (!voxels[x][y][z]) return false
+         return true
+
+     }
+
+     function removeFace(geom, nVec) {
+
+         for (var i = 0; i < geom.faces.length; i++) {
+
+             var face = geom.faces[i]
+
+             var n = face.normal
+             if (n.x === nVec.x && n.y === nVec.y && n.z === nVec.z)
+                 delete geom.faces[i]
+
+         }
+
+         geom.faces = geom.faces.filter( function(v) { return v })
+         geom.elementsNeedUpdate = true // update faces
+
+     }
+
+     function buildOutlineMesh(voxels) {
+
+         var mergedGeo = new THREE.Geometry()
+         var blockSize = Config.getGrid().blockSize
+
+         for (var x in voxels) {
+             for (var y in voxels[x]) {
+                 for (var z in voxels[x][y]) {
+
+                     var wPos = new THREE.Vector3(x, y, z).gridToWorld()
+
+                     // geom / mesh
+                     var cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
+                     var outlineMesh = new THREE.Mesh(cubeGeo)
+
+                     // mesh config
+                     outlineMesh.position.x = wPos.x
+                     outlineMesh.position.y = wPos.y
+                     outlineMesh.position.z = wPos.z
+                     outlineMesh.scale.multiplyScalar(1.25)
+
+                     // delete inner faces
+                     if (checkNeighbor(x - 1, y, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(-1, 0, 0))
+                     if (checkNeighbor(x + 1, y, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(1, 0, 0))
+                     if (checkNeighbor(x, y - 1, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, -1, 0))
+                     if (checkNeighbor(x, y + 1, z, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 1, 0))
+                     if (checkNeighbor(x, y, z - 1, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 0, -1))
+                     if (checkNeighbor(x, y, z + 1, voxels)) removeFace(cubeGeo, new THREE.Vector3(0, 0, 1))
+
+                     // merge geoms
+                     outlineMesh.updateMatrix()
+                     mergedGeo.merge(outlineMesh.geometry, outlineMesh.matrix)
+
+                 }
+             }
+         }
+
+         return mergedGeo
+
+     }
 
     /**
      * Resizes on the scene when the window
