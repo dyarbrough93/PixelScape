@@ -263,7 +263,8 @@ var WorldData = function(window, undefined) {
         getWorldData: getWorldData,
         removeVoxel: removeVoxel,
         addToUserData: addToUserData,
-        removeFromUserData: removeFromUserData
+        removeFromUserData: removeFromUserData,
+        VoxelInfo: VoxelInfo
     }
 
 }()

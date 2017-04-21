@@ -91,7 +91,8 @@ var PixVoxConversion = function(window, undefined) {
                     var username = User.getUName()
 
                     // overwrite mesh with voxel entry
-                    WorldData.addVoxel(sid, coordStr, tColor.getHex(), username, pIdx, true)
+                    var voxInfo = new WorldData.VoxelInfo(tColor.getHex(), username, pIdx, null, true)
+                    WorldData.addVoxel(sid, coordStr, voxInfo)
 
                     // remove from scene and stop
                     // raycasting against it
