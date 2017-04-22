@@ -471,6 +471,8 @@ var GameScene = function(window, undefined) {
 
         container.appendChild(renderer.domElement)
 
+        onWindowResize()
+
     }
 
     /**
