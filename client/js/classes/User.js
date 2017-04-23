@@ -36,6 +36,7 @@ var User = function(window, undefined) {
     var selectedRegion
     var actionTimer
     var currentHoveredUser
+    var actionDelay
 
     /*------------------------------------*
      :: Public Methods
@@ -67,6 +68,11 @@ var User = function(window, undefined) {
 
         actionTimer = new Date()
 
+        var re = /[\w-]+/
+        var res = re.exec(window.location.pathname)
+        if (res && res[0] === 'guest') actionDelay = Config.getGeneral().guestActionDelay
+        else actionDelay = Config.getGeneral().actionDelay
+
     }
 
     /**
@@ -88,8 +94,8 @@ var User = function(window, undefined) {
      * @return {boolean}
      */
     function canAct() {
-        var actionDelay = Config.getGeneral().actionDelay
-        return new Date(new Date() - actionTimer).getMilliseconds() > actionDelay
+        var msSinceAct = new Date(new Date() - actionTimer).getTime()
+        return msSinceAct > actionDelay
     }
 
     /**
