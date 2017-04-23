@@ -177,7 +177,7 @@ var GUI = function(window, undefined) {
 
         if (planeIntx) {
             var gPos = (planeIntx.point).clone().add(planeIntx.face.normal).worldToGrid()
-            settings.coords = 'x: ' + gPos.x + ', y: ' + gPos.z
+            settings.coords = '(' + gPos.x + ', ' + gPos.z + ')'
             controlKit.update()
         }
     }

@@ -340,6 +340,10 @@ var VoxelUtils = (function(window, undefined) {
             for (var y in voxels[x]) {
                 for (var z in voxels[x][y]) {
 
+                    x = parseInt(x)
+                    y = parseInt(y)
+                    z = parseInt(z)
+
                     var wPos = new THREE.Vector3(x, y, z).gridToWorld()
 
                     // geom / mesh
