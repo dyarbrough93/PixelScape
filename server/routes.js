@@ -24,6 +24,7 @@ module.exports = function(passport) {
     })
 
     router.get('/guest', function(req, res) {
+        req.logout()
         res.render('game')
     })
 
