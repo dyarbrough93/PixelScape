@@ -55,6 +55,11 @@ WorldData.add = function(voxel, username, cb) {
     if (WorldData.voxels.hasOwnProperty(getPosStr(pos)))
         return cb(responses.alreadyExists)
 
+    WorldData.voxels[getPosStr(pos)] = {
+        c: voxel.color,
+        username: username
+    }
+
     var op = new Operation({
         operation: 'add',
         data: {
@@ -75,16 +80,15 @@ WorldData.add = function(voxel, username, cb) {
     // insert into the
     // operations collection
     op.save(function(err) {
-        if (dbErr(err)) return cb(responses.dbErr)
+        if (dbErr(err)) {
+            delete WorldData.voxels[getPosStr(pos)]
+            return cb(responses.dbErr)
+        }
 
         vox.save(function(err2) {
-            if (dbErr(err2)) return cb(responses.dbErr)
-
-            // add the voxel to worldData
-            // and return success
-            WorldData.voxels[getPosStr(pos)] = {
-                c: voxel.color,
-                username: username
+            if (dbErr(err2)) {
+                delete WorldData.voxels[getPosStr(pos)]
+                return cb(responses.dbErr)
             }
 
             if (username !== 'Guest') {
@@ -114,9 +118,12 @@ WorldData.add = function(voxel, username, cb) {
 WorldData.remove = function(gPos, username, cb) {
 
     var coordStr = getPosStr(gPos)
+    var vox = WorldData.voxels[coordStr]
 
     // make sure it exists
-    if (WorldData.voxels[coordStr]) {
+    if (vox) {
+
+        delete WorldData.voxels[getPosStr(gPos)]
 
         var op = new Operation({
             operation: 'remove',
@@ -129,18 +136,21 @@ WorldData.remove = function(gPos, username, cb) {
         // insert into the
         // operations collection
         op.save(function(err) {
-            if (dbErr(err)) return cb(responses.dbErr)
+            if (dbErr(err)) {
+                WorldData.voxels[coordStr] = vox
+                return cb(responses.dbErr)
+            }
 
             // remove from the
             // data collection
             VoxelData.remove({
                 key: coordStr
             }, function(err2) {
-                if (dbErr(err2)) return cb(responses.dbErr)
+                if (dbErr(err2)) {
+                    WorldData.voxels[coordStr] = vox
+                    return cb(responses.dbErr)
+                }
 
-                // remove it from worldData and
-                // return success
-                delete WorldData.voxels[getPosStr(gPos)]
                 numVoxels--
 
                 if (username && username !== 'Guest') {
