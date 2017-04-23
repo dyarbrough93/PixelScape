@@ -52,11 +52,8 @@ var GUI = function(window, undefined) {
             userSettings: {
                 useAA: Config.getGeneral().aaOnByDefault
             },
-            logout: function() {
-                var url = window.location.protocol + '//' + window.location.host
-                window.location = url + '/signout'
-            },
-            coords: ''
+            coords: '',
+            highlightColor: '#000000'
         }
 
         controlKit = new ControlKit()
@@ -182,6 +179,10 @@ var GUI = function(window, undefined) {
         }
     }
 
+    function getHighlightColor() {
+        return settings.highlightColor
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -224,6 +225,11 @@ var GUI = function(window, undefined) {
             .addStringOutput(settings.debug, 'hoveredUser', {
                 label: 'Owner'
             })
+            .addColor(settings, 'highlightColor', {
+                label: 'Highlight Color',
+                onChange: function(newColor) {;
+                }
+            })
 
         mainPanel.addGroup({
                 label: 'Info'
@@ -231,14 +237,14 @@ var GUI = function(window, undefined) {
             .addStringOutput(settings, 'coords', {
                 label: 'Coordinates'
             })
+            .addStringInput(settings.debug, 'userName', {
+                label: 'Username'
+            })
 
         mainPanel.addGroup({
                 label: 'Debug'
             })
             .addButton('Log World Data', settings.debug.logWorldData)
-            .addStringInput(settings.debug, 'userName', {
-                label: 'Username'
-            })
 
         mainPanel.addGroup({
                 label: 'Settings'
@@ -249,7 +255,10 @@ var GUI = function(window, undefined) {
                     GameScene.switchRenderer()
                 }
             })
-            .addButton('Log Out', settings.logout)
+            .addButton('Log Out', function() {
+                var url = window.location.protocol + '//' + window.location.host
+                window.location = url + '/signout'
+            })
 
     }
 
@@ -331,7 +340,8 @@ var GUI = function(window, undefined) {
         setClicked: setClicked,
         setPickColor: setPickColor,
         highlight: highlight,
-        setCoords: setCoords
+        setCoords: setCoords,
+        getHighlightColor: getHighlightColor
     }
 
 }(window)

@@ -354,7 +354,7 @@ var VoxelUtils = (function(window, undefined) {
                     outlineMesh.position.x = wPos.x
                     outlineMesh.position.y = wPos.y
                     outlineMesh.position.z = wPos.z
-                    outlineMesh.scale.multiplyScalar(1.25)
+                    outlineMesh.scale.multiplyScalar(1.5)
 
                     // delete inner faces
                     if (checkNeighbor(x - 1, y, z, voxels)) removeFaces(cubeGeo, new THREE.Vector3(-1, 0, 0))

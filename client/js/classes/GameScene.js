@@ -443,7 +443,7 @@ var GameScene = function(window, undefined) {
 
         // create the merged mesh and add it to the scene
         var outlineMaterial = new THREE.MeshBasicMaterial({
-            color: 0xffffff * Math.random(), //(username === 'Guest') ? '#000000' : '#ff8200',
+            color: GUI.getHighlightColor(),
             side: THREE.BackSide
         })
 
