@@ -59,11 +59,22 @@ var VoxelActions = function(window, undefined) {
 
         var hexString = GUI.getBlockColor()
 
-        SocketHandler.emitBlockAdded(gPos, hexString, function(success) {
-            if (success) {
+        SocketHandler.emitBlockAdded(gPos, hexString, function(response) {
+
+            var responses = SocketResponses.get()
+
+            if (response === responses.success) {
                 createVoxelAtGridPos(gPos, hexString, User.getUName())
-                done(success)
+                return done(true)
+            } else {
+                console.debug(response)
+                if (response === 'max') {
+                    var maxVoxels = Config.getGeneral().maxGlobalBlocks
+                    alert('Maximum voxel limit of ' + maxVoxels + ' reached.')
+                }
+                return done(false)
             }
+
         })
 
     }
@@ -102,40 +113,41 @@ var VoxelActions = function(window, undefined) {
         if (iobj.name !== 'plane') {
 
             var gPos
+            var successFunc
             if (iobj.name === 'voxel') {
 
                 gPos = iobj.position.clone()
                 gPos.initWorldPos()
                 gPos.worldToGrid()
 
-                SocketHandler.emitBlockRemoved(gPos, function(success) {
-                    if (success) {
-                        deleteNewVoxel(gPos)
-                        done(success)
-                    }
-                })
+                successFunc = deleteNewVoxel
 
             } else {
 
                 gPos = (intersect.point).sub(intersect.face.normal)
-                gPos.initWorldPos()
                 gPos.worldToGrid()
 
-                SocketHandler.emitBlockRemoved(gPos, function(success) {
-                    if (success) {
-                        deleteMergedVoxel(gPos)
-                        done(success)
-                    }
-                })
+                successFunc = deleteMergedVoxel
 
             }
+
+            SocketHandler.emitBlockRemoved(gPos, function(response) {
+                var responses = SocketResponses.get()
+                if (response === responses.success) {
+                    successFunc(gPos)
+                    return done(true)
+                } else { // handle errs
+                    console.debug(response)
+                    return done(false)
+                }
+            })
 
         }
 
     }
 
     /**
-     * Deletes a voxel at the specified grid position
+     * Deletes a pixel at the specified grid position
      * @memberOf VoxelActions
      * @access public
      * @param  {VoxelUtils.GridVector3} gPos The grid position

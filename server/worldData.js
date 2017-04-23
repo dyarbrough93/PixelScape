@@ -1,4 +1,5 @@
 const config = require('./config.js').server
+const responses = require('./socketResponses.js')
 const VoxelData = require('./models/VoxelData')
 const Operation = require('./models/Operation')
 const User = require('./models/User')
@@ -47,12 +48,12 @@ WorldData.add = function(voxel, username, cb) {
     var pos = voxel.position
 
     // check constraints
-    if (numVoxels >= config.maxGlobalBlocks) return cb('max')
-    if (pos.y >= config.maxVoxelHeight) return cb(false) // too high
+    if (numVoxels >= config.maxGlobalBlocks) return cb(responses.maxVoxels)
+    if (pos.y >= config.maxVoxelHeight) return cb(responses.tooHigh)
 
     // already exists
     if (WorldData.voxels.hasOwnProperty(getPosStr(pos)))
-        return cb(false)
+        return cb(responses.alreadyExists)
 
     var op = new Operation({
         operation: 'add',
@@ -74,10 +75,10 @@ WorldData.add = function(voxel, username, cb) {
     // insert into the
     // operations collection
     op.save(function(err) {
-        if (dbErr(err)) return cb(false)
+        if (dbErr(err)) return cb(responses.dbErr)
 
         vox.save(function(err2) {
-            if (dbErr(err2)) return cb(false)
+            if (dbErr(err2)) return cb(responses.dbErr)
 
             // add the voxel to worldData
             // and return success
@@ -96,7 +97,7 @@ WorldData.add = function(voxel, username, cb) {
             }
 
             numVoxels++
-            return cb(true)
+            return cb(responses.success)
 
         })
     })
@@ -128,14 +129,14 @@ WorldData.remove = function(gPos, username, cb) {
         // insert into the
         // operations collection
         op.save(function(err) {
-            if (dbErr(err)) return cb(false)
+            if (dbErr(err)) return cb(responses.dbErr)
 
             // remove from the
             // data collection
             VoxelData.remove({
                 key: coordStr
             }, function(err2) {
-                if (dbErr(err2)) return cb(false)
+                if (dbErr(err2)) return cb(responses.dbErr)
 
                 // remove it from worldData and
                 // return success
@@ -149,11 +150,11 @@ WorldData.remove = function(gPos, username, cb) {
                     }
                 }
 
-                return cb(true)
+                return cb(responses.success)
             })
         })
 
-    } else return cb(false) // doesn't exist
+    } else return cb(responses.noExist) // doesn't exist
 
 }
 

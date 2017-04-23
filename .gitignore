@@ -72,3 +72,5 @@ jsdoc/
 build/
 
 server/local\.js
+
+client/js/classes/SocketResponses\.js

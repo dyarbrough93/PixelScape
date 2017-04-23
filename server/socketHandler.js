@@ -1,10 +1,12 @@
 const config = require('./config.js').server
+const responses = require('./socketResponses.js')
 
 const actionDelay = {}
 const connectedUsers = {}
 
 var worldData
 
+var i = 0
 function enoughTimePassed(socket) {
 
 	const uname = socket.request.user.username
@@ -30,7 +32,7 @@ function handleBlockOperations(socket) {
     // handle block add
     socket.on('block added', function(block, callback) {
 
-		if (!enoughTimePassed(socket)) return callback('failure')
+		if (!enoughTimePassed(socket)) return callback(responses.needDelay)
 
 		var uname = socket.request.user.username
 		if (!uname) uname = 'Guest'
@@ -38,21 +40,16 @@ function handleBlockOperations(socket) {
         // try to add the block
         worldData.add(block, uname, function(response) {
 
-            // too many blocks
-            if (response === 'max') return callback('max')
-
             // success
-            if (response) {
+            if (response === responses.success) {
 
                 // tell everyone
                 // a block was added
                 socket.broadcast.emit('block added', block)
-                return callback('success')
 
             }
 
-            // failure
-            return callback('failure')
+			return callback(response)
 
         })
 
@@ -61,24 +58,23 @@ function handleBlockOperations(socket) {
     // handle block remove
     socket.on('block removed', function(position, callback) {
 
-        if (!enoughTimePassed(socket)) return callback('failure')
+        if (!enoughTimePassed(socket)) return callback(responses.needDelay)
 
 		var uname = socket.request.user.username
 		if (!uname) uname = 'Guest'
 
         // try to remove block
-        worldData.remove(position, uname, function(success) {
+        worldData.remove(position, uname, function(response) {
 
-            if (success) { // add block
+            if (response === responses.success) {
 
                 // tell all
                 // clients a block was removed
                 socket.broadcast.emit('block removed', position)
-                return callback('success')
 
             }
 
-            return callback('failure')
+            return callback(response)
 
         })
 

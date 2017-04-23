@@ -46,13 +46,7 @@ var SocketHandler = function(window, undefined) {
             x: gPos.x,
             y: gPos.y,
             z: gPos.z
-        }, function(response) {
-
-            if (response === 'success')
-                return cb(true)
-            else return cb(false)
-
-        })
+        }, cb)
 
     }
 
@@ -77,16 +71,7 @@ var SocketHandler = function(window, undefined) {
                 y: gPos.y,
                 z: gPos.z
             }
-        }, function(response) {
-
-            if (response === 'success')
-                return cb(true)
-            else if (response === 'max') {
-                alert('maximum voxel limit reached.')
-                return cb(false)
-            }
-
-        })
+        }, cb)
 
     }
 
