@@ -146,6 +146,8 @@ var Mouse = function(window, undefined) {
 
         if (intersect) { // only act if we intersected something
 
+            GUI.setCoords(intersects.planeIntx)
+
             if (User.modeIsEdit()) {
 
                 GameScene.updateGhostMesh(intersect)

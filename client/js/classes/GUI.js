@@ -55,7 +55,8 @@ var GUI = function(window, undefined) {
             logout: function() {
                 var url = window.location.protocol + '//' + window.location.host
                 window.location = url + '/signout'
-            }
+            },
+            coords: ''
         }
 
         controlKit = new ControlKit()
@@ -172,6 +173,15 @@ var GUI = function(window, undefined) {
         controlKit.update()
     }
 
+    function setCoords(planeIntx) {
+
+        if (planeIntx) {
+            var gPos = (planeIntx.point).clone().add(planeIntx.face.normal).worldToGrid()
+            settings.coords = 'x: ' + gPos.x + ', y: ' + gPos.z
+            controlKit.update()
+        }
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -213,6 +223,13 @@ var GUI = function(window, undefined) {
             .addButton('Start Highlighting', highlight)
             .addStringOutput(settings.debug, 'hoveredUser', {
                 label: 'Owner'
+            })
+
+        mainPanel.addGroup({
+                label: 'Info'
+            })
+            .addStringOutput(settings, 'coords', {
+                label: 'Coordinates'
             })
 
         mainPanel.addGroup({
@@ -313,7 +330,8 @@ var GUI = function(window, undefined) {
         wasClicked: wasClicked,
         setClicked: setClicked,
         setPickColor: setPickColor,
-        highlight: highlight
+        highlight: highlight,
+        setCoords: setCoords
     }
 
 }(window)
