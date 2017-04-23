@@ -14,7 +14,6 @@ var GUI = function(window, undefined) {
     var controlKit
     var guiClicked
 
-
     /*------------------------------------*
      :: Public Methods
      *------------------------------------*/
@@ -34,8 +33,7 @@ var GUI = function(window, undefined) {
                 blockColor: startingBlockColor,
                 prevBlockColor: startingBlockColor,
                 saved: [],
-                randomColor: setRandomBlockColor,
-                colorPicker: pickColor
+                randomColor: setRandomBlockColor
             },
             debug: {
                 logWorldData: function() {
@@ -121,7 +119,6 @@ var GUI = function(window, undefined) {
             var hColor = pickColor.getHex()
             var hexString = '#' + pickColor.getHexString()
 
-            User.setDefaultState()
             GameScene.setGhostMeshColor(hColor ^ 0x4C000000)
 
             settings.colors.blockColor = hexString
@@ -130,6 +127,8 @@ var GUI = function(window, undefined) {
             controlKit.update()
 
         }
+
+        togglePickColor()
 
     }
 
@@ -190,7 +189,6 @@ var GUI = function(window, undefined) {
             width: 275
         })
 
-        var highlightToggle = false
         mainPanel.addGroup({
                 label: 'Controls'
             })
@@ -207,18 +205,12 @@ var GUI = function(window, undefined) {
                     pushToSavedColors()
                 }
             })
-            .addButton('Color Picker', settings.colors.colorPicker)
+            .addButton('Color Picker', togglePickColor)
             .addButton('Random Color', settings.colors.randomColor)
             .addSubGroup({
                 label: 'Highlight Voxels by User'
             })
-            .addButton('Start Highlighting', function() {
-                if (User.modeIsEdit()) {
-                    User.setHighlightState()
-                    if (!highlightToggle) this._node._element.innerHTML = '<div class="wrap"><input type="button" class="button" value="Stop Highlighting (or ESC)"></div>'
-                    else this._node._element.innerHTML = '<div class="wrap"><input type="button" class="button" value="Start Highlighting"></div>'
-                }
-            })
+            .addButton('Start Highlighting', highlight)
             .addStringOutput(settings.debug, 'hoveredUser', {
                 label: 'Owner'
             })
@@ -244,15 +236,34 @@ var GUI = function(window, undefined) {
 
     }
 
+    function highlight(forceOff) {
+        if (User.modeIsEdit()) {
+            if (User.stateIsDefault() && !forceOff) {
+                $('#controlKit [value="Start Highlighting"]').val('Stop Highlighting (or ESC)')
+                User.setHighlightState()
+            } else if (User.stateIsHighlight()) {
+                $('#controlKit [value="Stop Highlighting (or ESC)"]').val('Start Highlighting')
+                User.setDefaultState()
+            }
+        }
+    }
+
     /**
      * If the pick color button is clicked,
      * set the users state to pickcolor
      * @memberOf GUI
      * @access private
      */
-    function pickColor() {
-        if (User.modeIsEdit())
-            User.setPickState()
+    function togglePickColor() {
+        if (User.modeIsEdit()) {
+            if (User.stateIsDefault()) {
+                $('#controlKit [value="Color Picker"]').val('Click Voxel')
+                User.setPickState()
+            } else if (User.stateIsPick()) {
+                $('#controlKit [value="Click Voxel"]').val('Color Picker')
+                User.setDefaultState()
+            }
+        }
     }
 
     /**
@@ -301,7 +312,8 @@ var GUI = function(window, undefined) {
         getBlockColor: getBlockColor,
         wasClicked: wasClicked,
         setClicked: setClicked,
-        setPickColor: setPickColor
+        setPickColor: setPickColor,
+        highlight: highlight
     }
 
 }(window)

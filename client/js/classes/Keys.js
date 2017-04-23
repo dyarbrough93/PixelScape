@@ -177,8 +177,11 @@ var Keys = function(window, undefined) {
      */
     function escDown() {
 
-        if (!User.stateIsDefault())
+        if (!User.stateIsDefault()) {
+            if (User.stateIsHighlight())
+                GUI.highlight(true)
             User.setDefaultState()
+        }
 
         else if (User.modeIsEdit()) {
 
