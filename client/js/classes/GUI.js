@@ -11,8 +11,9 @@ var GUI = function(window, undefined) {
      *------------------------------------*/
 
     var settings
-    var gui
+    var controlKit
     var guiClicked
+
 
     /*------------------------------------*
      :: Public Methods
@@ -26,14 +27,13 @@ var GUI = function(window, undefined) {
      */
     function init() {
 
+        var startingBlockColor = randomHexColor().getHashHexString()
+
         settings = {
             colors: {
-                blockColor: randomHexColor(),
-                saved: {
-                    1: randomHexColor(),
-                    2: randomHexColor(),
-                    3: randomHexColor()
-                },
+                blockColor: startingBlockColor,
+                prevBlockColor: startingBlockColor,
+                saved: [],
                 randomColor: setRandomBlockColor,
                 colorPicker: pickColor
             },
@@ -48,23 +48,22 @@ var GUI = function(window, undefined) {
                         }
                     }
                 },
-                anyString: '',
+                hoveredUser: '',
                 userName: User.getUName()
             },
             userSettings: {
                 useAA: Config.getGeneral().aaOnByDefault
             },
-            highlight: highlight,
             logout: function() {
                 var url = window.location.protocol + '//' + window.location.host
                 window.location = url + '/signout'
             }
         }
 
-        gui = new dat.GUI()
+        controlKit = new ControlKit()
         guiClicked = false
 
-        addGUIEls()
+        initControlKit()
 
         // if it was the gui that was clicked,
         // save this fact so that we can prevent
@@ -73,28 +72,20 @@ var GUI = function(window, undefined) {
             guiClicked = true
         })
 
-    }
+        // if it was the gui that was clicked,
+        // save this fact so that we can prevent
+        // world actions from taking place behind it
+        $('#controlKit .panel').mousedown(function() {
+            guiClicked = true
 
-    /**
-     * Set the specified saved color to the block color
-     * @memberOf GUI
-     * @access public
-     * @param {number} cNum The saved color number
-     */
-    function setSavedColor(cNum) {
-        settings.colors.saved[cNum] = settings.colors.blockColor
-    }
+            // this has to be assigned here because
+            // some elements don't exist on page load
+            $('#controlKit *').mousedown(function() {
+                guiClicked = true
+            })
 
-    /**
-     * Set the block color to the specified saved color
-     * @memberOf GUI
-     * @access public
-     * @param {number} cNum The saved color number
-     */
-    function loadSavedColor(cNum) {
-        settings.colors.blockColor = settings.colors.saved[cNum]
-        GameScene.setGhostMeshColor(settings.colors.saved[cNum])
-        GameScene.render()
+        })
+
     }
 
     /**
@@ -128,10 +119,15 @@ var GUI = function(window, undefined) {
             }
 
             var hColor = pickColor.getHex()
+            var hexString = '#' + pickColor.getHexString()
 
-            settings.colors.blockColor = hColor
             User.setDefaultState()
             GameScene.setGhostMeshColor(hColor ^ 0x4C000000)
+
+            settings.colors.blockColor = hexString
+            pushToSavedColors()
+
+            controlKit.update()
 
         }
 
@@ -173,7 +169,8 @@ var GUI = function(window, undefined) {
     }
 
     function displayString(string) {
-        settings.debug.anyString = string
+        settings.debug.hoveredUser = string
+        controlKit.update()
     }
 
     /*------------------------------------*
@@ -185,48 +182,65 @@ var GUI = function(window, undefined) {
      * @memberOf GUI
      * @access private
      */
-    function addGUIEls() {
+    function initControlKit() {
 
-        var colors = gui.addFolder('Colors')
-        var debug = gui.addFolder('_debug')
-        var userSettings = gui.addFolder('Settings')
-
-        ;
-        (function initColorsFolder() {
-
-            var blockColor = colors.addColor(settings.colors, 'blockColor').listen().name('Block Color')
-            colors.addColor(settings.colors.saved, '1').name('Saved Color 1').listen()
-            colors.addColor(settings.colors.saved, '2').name('Saved Color 2').listen()
-            colors.addColor(settings.colors.saved, '3').name('Saved Color 3').listen()
-
-            colors.add(settings.colors, 'randomColor').name('Random Color')
-            colors.add(settings.colors, 'colorPicker').name('Color Picker')
-
-            blockColor.onChange(function(newColor) {
-
-                // if the gui color is manually edited (typing in the color),
-                // it returns a hex string for some reason.
-                if (newColor[0] === '#') newColor = parseInt(newColor.substring(1), 16)
-                GameScene.setGhostMeshColor(newColor)
-                settings.colors.blockColor = newColor
-
-            })
-
-            colors.open()
-
-        })()
-
-        userSettings.add(settings.userSettings, 'useAA').name('Antialiasing').onChange(function(value) {
-            GameScene.switchRenderer()
+        var mainPanel = controlKit.addPanel({
+            label: ' ',
+            align: 'right',
+            width: 275
         })
 
-        debug.add(settings.debug, 'logWorldData')
-        debug.add(settings.debug, 'anyString').listen()
-        debug.add(settings.debug, 'userName').listen()
-        debug.open()
+        var highlightToggle = false
+        mainPanel.addGroup({
+                label: 'Controls'
+            })
+            .addSubGroup({
+                label: 'Colors'
+            })
+            .addColor(settings.colors, 'blockColor', {
+                presets: 'saved',
+                label: 'Block Color',
+                onChange: function(newColor) {
+                    // get decimal
+                    var dColor = VoxelUtils.hexStringToDec(newColor)
+                    GameScene.setGhostMeshColor(dColor)
+                    pushToSavedColors()
+                }
+            })
+            .addButton('Color Picker', settings.colors.colorPicker)
+            .addButton('Random Color', settings.colors.randomColor)
+            .addSubGroup({
+                label: 'Highlight Voxels by User'
+            })
+            .addButton('Start Highlighting', function() {
+                if (User.modeIsEdit()) {
+                    User.setHighlightState()
+                    if (!highlightToggle) this._node._element.innerHTML = '<div class="wrap"><input type="button" class="button" value="Stop Highlighting (or ESC)"></div>'
+                    else this._node._element.innerHTML = '<div class="wrap"><input type="button" class="button" value="Start Highlighting"></div>'
+                }
+            })
+            .addStringOutput(settings.debug, 'hoveredUser', {
+                label: 'Owner'
+            })
 
-        gui.add(settings, 'logout').name('Log Out')
-        gui.add(settings, 'highlight').name('Highlight')
+        mainPanel.addGroup({
+                label: 'Debug'
+            })
+            .addButton('Log World Data', settings.debug.logWorldData)
+            .addStringInput(settings.debug, 'userName', {
+                label: 'Username'
+            })
+
+        mainPanel.addGroup({
+                label: 'Settings'
+            })
+            .addCheckbox(settings.userSettings, 'useAA', {
+                label: 'Antialiasing',
+                onChange: function() {
+                    GameScene.switchRenderer()
+                }
+            })
+            .addButton('Log Out', settings.logout)
 
     }
 
@@ -241,11 +255,6 @@ var GUI = function(window, undefined) {
             User.setPickState()
     }
 
-    function highlight() {
-        if (User.modeIsEdit())
-            User.setHighlightState()
-    }
-
     /**
      * Set the block color to a random color
      * @memberOf GUI
@@ -253,8 +262,24 @@ var GUI = function(window, undefined) {
      */
     function setRandomBlockColor() {
         var randColor = randomHexColor()
-        GameScene.setGhostMeshColor(randColor)
-        settings.colors.blockColor = randColor
+        GameScene.setGhostMeshColor(randColor.getHex())
+        settings.colors.blockColor = randColor.getHashHexString()
+        pushToSavedColors()
+        controlKit.update()
+    }
+
+    function pushToSavedColors() {
+        var maxColors = Config.getGUI().maxSavedColors
+
+        var savedColors = settings.colors.saved
+        var prevBlockColor = settings.colors.prevBlockColor
+
+        var idx = savedColors.indexOf(prevBlockColor)
+        if (idx !== -1) savedColors.splice(idx, 1)
+
+        savedColors.unshift(prevBlockColor)
+        if (savedColors.length > maxColors) savedColors.pop()
+        settings.colors.prevBlockColor = settings.colors.blockColor
     }
 
     /**
@@ -264,7 +289,7 @@ var GUI = function(window, undefined) {
      * @return {number} The random hex color
      */
     function randomHexColor() {
-        return 0xffffff * Math.random()
+        return new THREE.Color(0xffffff * Math.random())
     }
 
     /*********** expose public methods *************/
@@ -276,9 +301,7 @@ var GUI = function(window, undefined) {
         getBlockColor: getBlockColor,
         wasClicked: wasClicked,
         setClicked: setClicked,
-        setPickColor: setPickColor,
-        setSavedColor: setSavedColor,
-        loadSavedColor: loadSavedColor
+        setPickColor: setPickColor
     }
 
 }(window)

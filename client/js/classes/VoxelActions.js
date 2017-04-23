@@ -18,12 +18,12 @@ var VoxelActions = function(window, undefined) {
      * @access public
      * @param  {VoxelUtils.GridVector3} gPos The grid position
      * to create the voxel at
-     * @param  {number} hColor Hex color of the voxel
+     * @param  {string} hexString Hex color of the voxel
      */
-    function createVoxelAtGridPos(gPos, hColor, username) {
+    function createVoxelAtGridPos(gPos, hexString, username) {
 
         var voxelMesh = VoxelUtils.initVoxel({
-            color: hColor,
+            color: VoxelUtils.hexStringToDec(hexString),
             gPos: gPos
         })
 
@@ -57,11 +57,11 @@ var VoxelActions = function(window, undefined) {
         gPos.initWorldPos()
         gPos.worldToGrid()
 
-        var hColor = GUI.getBlockColor()
+        var hexString = GUI.getBlockColor()
 
-        SocketHandler.emitBlockAdded(gPos, hColor, function(success) {
+        SocketHandler.emitBlockAdded(gPos, hexString, function(success) {
             if (success) {
-                createVoxelAtGridPos(gPos, hColor, User.getUName())
+                createVoxelAtGridPos(gPos, hexString, User.getUName())
                 done(success)
             }
         })

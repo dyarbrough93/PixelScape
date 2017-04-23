@@ -63,15 +63,15 @@ var SocketHandler = function(window, undefined) {
      * @access public
      * @param  {VoxelUtils.GridVector3} gPos The grid
      * position of the voxel to add
-     * @param {number} hColor Hex color of the voxel
+     * @param {string} hexString Hex color of the voxel
      * we are adding
      * @param  {Function} cb Callback to call with
      * a boolean indicating success
      */
-    function emitBlockAdded(gPos, hColor, cb) {
+    function emitBlockAdded(gPos, hexString, cb) {
 
         socket.emit('block added', {
-            color: hColor,
+            color: VoxelUtils.hexStringToDec(hexString),
             position: {
                 x: gPos.x,
                 y: gPos.y,

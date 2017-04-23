@@ -39,6 +39,10 @@ var VoxelUtils = (function(window, undefined) {
         return !!formatReg.exec(this)
     }
 
+    THREE.Color.prototype.getHashHexString = function() {
+        return '#' + this.getHexString()
+    }
+
     /**
      * Sets a THREE.Vector3's values to the
      * center of the closest world "anchor". I.e. the position
@@ -368,6 +372,10 @@ var VoxelUtils = (function(window, undefined) {
 
     }
 
+    function hexStringToDec(hexString) {
+        return parseInt(hexString.substring(1), 16)
+    }
+
     /*------------------------------------*
      :: Private methods
      *------------------------------------*/
@@ -434,6 +442,7 @@ var VoxelUtils = (function(window, undefined) {
         Tuple: Tuple,
         getSectionIndices: getSectionIndices,
         buildOutlineGeom: buildOutlineGeom,
+        hexStringToDec: hexStringToDec
 
     }
 
