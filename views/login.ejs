@@ -25,19 +25,43 @@
 
 <%- messages('message_template', locals) %>
 
+<% var signup = false %>
+<% if (!locals.signupFormData) { %>
+
+    <%
+    locals.signupFormData = {
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: ''
+    }
+    %>
+
+<% } else { signup = true } %>
+
+<% if (!locals.loginFormData) { %>
+
+    <% locals.loginFormData = {
+        username: '',
+    }
+    locals.signup
+    %>
+
+<% } %>
+
 <div class="login-page">
     <div class="form">
         <form class="register-form" method="POST" action="/signup">
-            <input type="text" name="firstName" placeholder="First" />
-            <input type="text" name="lastName" placeholder="Last" />
-            <input type="text" name="username" placeholder="username" />
+            <input type="text" name="firstName" value="<%= locals.signupFormData.firstName %>" placeholder="first name" />
+            <input type="text" name="lastName" value="<%= locals.signupFormData.lastName %>" placeholder="last name" />
+            <input type="text" name="username" value="<%= locals.signupFormData.username %>" placeholder="username" />
             <input type="password" name="password" placeholder="password" />
-            <input type="email" name="email" placeholder="email address" />
+            <input type="email" name="email" value="<%= locals.signupFormData.email %>" placeholder="email" />
             <button>create</button>
             <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>
         <form class="login-form" method="POST" action="/login">
-            <input type="text" name="username" placeholder="username" />
+            <input type="text" name="username"     value="<%= locals.loginFormData.username %>" placeholder="username" />
             <input type="password" name="password" placeholder="password" />
             <button>login</button>
             <p class="message">Not registered? <a href="#">Create an account</a></p>
@@ -47,10 +71,19 @@
 </div>
 
 <script>
-    $('.message a').click(function() {
+
+    function animateForm(speed) {
         $('form').animate({
-            height: "toggle",
-            opacity: "toggle"
-        }, "slow")
-    })
+            height: 'toggle',
+            opacity: 'toggle'
+        }, speed)
+    }
+
+    $('.message a').click(function() { animateForm(500) })
+
+    <% if (signup) { %>
+        animateForm(0)
+    <% } %>
+
+
 </script>
