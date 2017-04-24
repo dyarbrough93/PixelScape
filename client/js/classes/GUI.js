@@ -53,7 +53,11 @@ var GUI = function(window, undefined) {
                 useAA: Config.getGeneral().aaOnByDefault
             },
             coords: '',
-            highlightColor: '#000000'
+            highlight: {
+                offText: 'Start Highlighting',
+                onText: 'Stop Highlighting (or ESC)',
+                color: '#000000'
+            }
         }
 
         controlKit = new ControlKit()
@@ -180,7 +184,7 @@ var GUI = function(window, undefined) {
     }
 
     function getHighlightColor() {
-        return settings.highlightColor
+        return settings.highlight.color
     }
 
     /*------------------------------------*
@@ -221,18 +225,19 @@ var GUI = function(window, undefined) {
             .addSubGroup({
                 label: 'Highlight Voxels by User'
             })
-            .addButton('Start Highlighting', highlight)
+            .addButton('Start Highlighting', toggleHighlight)
             .addStringOutput(settings.debug, 'hoveredUser', {
                 label: 'Owner'
             })
-            .addColor(settings, 'highlightColor', {
+            .addColor(settings.highlight, 'color', {
                 label: 'Highlight Color',
                 onChange: function(newColor) {;
                 }
             })
 
         mainPanel.addGroup({
-                label: 'Info'
+                label: 'Info',
+                enable: false
             })
             .addStringOutput(settings, 'coords', {
                 label: 'Coordinates'
@@ -242,12 +247,8 @@ var GUI = function(window, undefined) {
             })
 
         mainPanel.addGroup({
-                label: 'Debug'
-            })
-            .addButton('Log World Data', settings.debug.logWorldData)
-
-        mainPanel.addGroup({
-                label: 'Settings'
+                label: 'Settings',
+                enable: false
             })
             .addCheckbox(settings.userSettings, 'useAA', {
                 label: 'Antialiasing',
@@ -260,15 +261,20 @@ var GUI = function(window, undefined) {
                 window.location = url + '/signout'
             })
 
+        mainPanel.addGroup({
+                label: 'Debug'
+            })
+            .addButton('Log World Data', settings.debug.logWorldData)
+
     }
 
-    function highlight(forceOff) {
+    function toggleHighlight() {
         if (User.modeIsEdit()) {
-            if (User.stateIsDefault() && !forceOff) {
-                $('#controlKit [value="Start Highlighting"]').val('Stop Highlighting (or ESC)')
+            if (User.stateIsDefault()) {
+                $('#controlKit [value="' + settings.highlight.offText + '"]').val(settings.highlight.onText)
                 User.setHighlightState()
             } else if (User.stateIsHighlight()) {
-                $('#controlKit [value="Stop Highlighting (or ESC)"]').val('Start Highlighting')
+                $('#controlKit [value="' + settings.highlight.onText + '"]').val(settings.highlight.offText)
                 User.setDefaultState()
             }
         }
@@ -339,9 +345,10 @@ var GUI = function(window, undefined) {
         wasClicked: wasClicked,
         setClicked: setClicked,
         setPickColor: setPickColor,
-        highlight: highlight,
+        toggleHighlight: toggleHighlight,
         setCoords: setCoords,
-        getHighlightColor: getHighlightColor
+        getHighlightColor: getHighlightColor,
+        togglePickColor: togglePickColor
     }
 
 }(window)

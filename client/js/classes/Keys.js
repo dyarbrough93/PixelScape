@@ -179,7 +179,9 @@ var Keys = function(window, undefined) {
 
         if (!User.stateIsDefault()) {
             if (User.stateIsHighlight())
-                GUI.highlight(true)
+                GUI.toggleHighlight()
+            else if (User.stateIsPick())
+                GUI.togglePickColor()
             User.setDefaultState()
         }
 
