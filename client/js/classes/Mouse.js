@@ -4,13 +4,13 @@
  * Manages and routes Mouse events
  * @namespace Mouse
  */
-var Mouse = function(window, undefined) {
+let Mouse = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var pos
+    let pos
 
     /*------------------------------------*
      :: Public Methods
@@ -41,7 +41,7 @@ var Mouse = function(window, undefined) {
      */
     function forceTriggerMouseMove() {
 
-        var e = $.Event('mousemove')
+        let e = $.Event('mousemove')
         e.clientX = pos.clientX
         e.clientY = pos.clientY
 
@@ -79,11 +79,11 @@ var Mouse = function(window, undefined) {
 
         e.preventDefault()
 
-        var intersect = getMouseIntersects(e).closestIntx
+        let intersect = getMouseIntersects(e).closestIntx
 
         if (intersect) { // only act if we intersected something
 
-            var intxGPos = intersect.point.clone().initWorldPos()
+            let intxGPos = intersect.point.clone().initWorldPos()
             intxGPos = intxGPos.add(intersect.face.normal).worldToGrid()
 
             if (User.modeIsEdit()) {
@@ -115,7 +115,7 @@ var Mouse = function(window, undefined) {
 
                 // switch to edit mode
                 User.setSelectedRegion(intersect)
-                var region = User.getSelectedRegion()
+                let region = User.getSelectedRegion()
                 PixVoxConversion.convertToVoxels(region)
                 User.setEditMode()
 
@@ -141,8 +141,8 @@ var Mouse = function(window, undefined) {
         pos.clientX = e.clientX
         pos.clientY = e.clientY
 
-        var intersects = getMouseIntersects(e)
-        var intersect = intersects.closestIntx
+        let intersects = getMouseIntersects(e)
+        let intersect = intersects.closestIntx
 
         if (intersect) { // only act if we intersected something
 
@@ -158,7 +158,7 @@ var Mouse = function(window, undefined) {
 
             } else if (User.modeIsSelect()) {
 
-                var planeIntx = intersects.planeIntx
+                let planeIntx = intersects.planeIntx
 
                 if (planeIntx) {
 
@@ -187,16 +187,16 @@ var Mouse = function(window, undefined) {
      */
     function getMouseIntersects(e) {
 
-        var camera = GameScene.getCamera()
+        let camera = GameScene.getCamera()
 
         pos.x = (e.clientX / window.innerWidth) * 2 - 1
         pos.y = -(e.clientY / window.innerHeight) * 2 + 1
 
-        var intersects = Raycast.getIntersects(pos, camera)
+        let intersects = Raycast.getIntersects(pos, camera)
 
-        var minDist = Number.MAX_VALUE
-        var closestIntx
-        var planeIntx
+        let minDist = Number.MAX_VALUE
+        let closestIntx
+        let planeIntx
 
         intersects.forEach(function(intx) {
             if (intx.distance < minDist) {

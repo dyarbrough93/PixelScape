@@ -4,12 +4,12 @@
  * Defines particle systems for use in GameScene
  * @namespace ParticleSystems
  */
-var ParticleSystems = (function(window, undefined) {
+let ParticleSystems = (function(window, undefined) {
 
     /**
      * Used when setting a particle's y position so that it is not seen
      */
-    var nullVal = 1000000
+    let nullVal = 1000000
 
     /**
      * Used to hold pixels that were not loaded in with the rest
@@ -50,7 +50,7 @@ var ParticleSystems = (function(window, undefined) {
         _this._scene = scene
         _this._hiddenPointsPositions = []
 
-        var oldSize = size
+        let oldSize = size
 
         _this._points = new THREE.Points(
             _this._geom,
@@ -60,12 +60,12 @@ var ParticleSystems = (function(window, undefined) {
             })
         )
 
-        var i
-        var len
+        let i
+        let len
         if (double) {
             // copy over the old data
             for (i = 0, len = _this._size; i < len; i++) {
-                var v = oldVertices[i],
+                let v = oldVertices[i],
                     c = oldColors[i]
                 _this._geom.vertices.push(new THREE.Vector3(v.x, v.y, v.z))
                 _this._geom.colors.push(new THREE.Color(c.r, c.g, c.b))
@@ -111,12 +111,12 @@ var ParticleSystems = (function(window, undefined) {
                 //this.doubleSize()
             }
 
-            var wPos = gPos.clone()
+            let wPos = gPos.clone()
             wPos.gridToWorld()
 
-            var particle = new THREE.Vector3(wPos.x, wPos.y, wPos.z)
+            let particle = new THREE.Vector3(wPos.x, wPos.y, wPos.z)
 
-            var index
+            let index
             if (this._emptyIndices.length > 0) {
                 index = this._emptyIndices[0]
                 this._emptyIndices.splice(0, 1)
@@ -145,7 +145,7 @@ var ParticleSystems = (function(window, undefined) {
             this.checkVertexExists(pIdx)
             this.checkHiddenPointExists(pIdx)
 
-            var oldVal = this._hiddenPointsPositions[pIdx]
+            let oldVal = this._hiddenPointsPositions[pIdx]
             this._hiddenPointsPositions[pIdx] = undefined
             this._geom.vertices[pIdx].y = oldVal
             this._geom.verticesNeedUpdate = true
@@ -161,7 +161,7 @@ var ParticleSystems = (function(window, undefined) {
 
             this.checkVertexExists(pIdx)
 
-            var yVal = this._geom.vertices[pIdx].y
+            let yVal = this._geom.vertices[pIdx].y
             this._geom.vertices[pIdx].y = nullVal
             this._hiddenPointsPositions[pIdx] = yVal
             this._geom.verticesNeedUpdate = true
@@ -179,10 +179,10 @@ var ParticleSystems = (function(window, undefined) {
 
             this._scene.remove(this._points)
 
-            var oldVertices = this._geom.vertices,
+            let oldVertices = this._geom.vertices,
                 oldColors = this._geom.colors
 
-            var oldEmptyIndices = this._emptyIndices,
+            let oldEmptyIndices = this._emptyIndices,
                 oldSysIndex = this._systemIdx,
                 oldHiddenPositions = this._hiddenPointsPositions
 
@@ -250,13 +250,13 @@ var ParticleSystems = (function(window, undefined) {
             vertexColors: THREE.VertexColors
         })
 
-        for (var i = 0; i < size; i++) {
+        for (let i = 0; i < size; i++) {
 
             this._geom[i] = []
             this._points[i] = []
             this._hiddenPointsPositions[i] = []
 
-            for (var j = 0; j < size; j++) {
+            for (let j = 0; j < size; j++) {
 
                 this._geom[i][j] = new THREE.Geometry()
 
@@ -278,8 +278,8 @@ var ParticleSystems = (function(window, undefined) {
          * @memberOf ParticleSystems.ParticleSystem
          */
         addToScene: function() {
-            for (var i = 0; i < this._size; i++) {
-                for (var j = 0; j < this._size; j++) {
+            for (let i = 0; i < this._size; i++) {
+                for (let j = 0; j < this._size; j++) {
                     this._scene.add(this._points[i][j])
                 }
             }
@@ -291,8 +291,8 @@ var ParticleSystems = (function(window, undefined) {
          * @memberOf ParticleSystems.ParticleSystem
          */
         removeFromScene: function() {
-            for (var i = 0; i < this._size; i++) {
-                for (var j = 0; j < this._size; j++) {
+            for (let i = 0; i < this._size; i++) {
+                for (let j = 0; j < this._size; j++) {
                     this._scene.remove(this._points[i][j])
                 }
             }
@@ -310,7 +310,7 @@ var ParticleSystems = (function(window, undefined) {
          */
         addPixel: function(sid, wPos, color) {
 
-            var pIdx = this._geom[sid.a][sid.b].vertices.push(wPos) - 1
+            let pIdx = this._geom[sid.a][sid.b].vertices.push(wPos) - 1
             this._geom[sid.a][sid.b].colors.push(color)
 
             return pIdx
@@ -328,7 +328,7 @@ var ParticleSystems = (function(window, undefined) {
 
             this.checkVertexExists(sid, pIdx)
 
-            var yVal = this._geom[sid.a][sid.b].vertices[pIdx].y
+            let yVal = this._geom[sid.a][sid.b].vertices[pIdx].y
             this._geom[sid.a][sid.b].vertices[pIdx].y = nullVal
             this._hiddenPointsPositions[sid.a][sid.b][pIdx] = yVal
             this._geom[sid.a][sid.b].verticesNeedUpdate = true
@@ -346,7 +346,7 @@ var ParticleSystems = (function(window, undefined) {
             this.checkVertexExists(sid, pIdx)
             this.checkHiddenPointExists(sid, pIdx)
 
-            var oldVal = this._hiddenPointsPositions[sid.a][sid.b][pIdx]
+            let oldVal = this._hiddenPointsPositions[sid.a][sid.b][pIdx]
             this._hiddenPointsPositions[sid.a][sid.b][pIdx] = undefined
             this._geom[sid.a][sid.b].vertices[pIdx].y = oldVal
             this._geom[sid.a][sid.b].verticesNeedUpdate = true

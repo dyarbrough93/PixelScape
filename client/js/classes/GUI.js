@@ -4,15 +4,15 @@
  * Manages the game's dat.GUI
  * @namespace GUI
  */
-var GUI = function(window, undefined) {
+let GUI = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var settings
-    var controlKit
-    var guiClicked
+    let settings
+    let controlKit
+    let guiClicked
 
     /*------------------------------------*
      :: Public Methods
@@ -26,7 +26,7 @@ var GUI = function(window, undefined) {
      */
     function init() {
 
-        var startingBlockColor = randomHexColor().getHashHexString()
+        let startingBlockColor = randomHexColor().getHashHexString()
 
         settings = {
             colors: {
@@ -37,10 +37,10 @@ var GUI = function(window, undefined) {
             },
             debug: {
                 logWorldData: function() {
-                    var worldData = WorldData.getWorldData()
-                    for (var i = 0; i < worldData.length; i++) {
-                        for (var j = 0; j < worldData[i].length; j++) {
-                            for (var voxPos in worldData[i][j]) {
+                    let worldData = WorldData.getWorldData()
+                    for (let i = 0; i < worldData.length; i++) {
+                        for (let j = 0; j < worldData[i].length; j++) {
+                            for (let voxPos in worldData[i][j]) {
                                 console.log('voxPos: ' + voxPos)
                             }
                         }
@@ -98,17 +98,17 @@ var GUI = function(window, undefined) {
      */
     function setPickColor(intersect) {
 
-        var iObj = intersect.object
-        var objName = iObj.name
+        let iObj = intersect.object
+        let objName = iObj.name
 
-        var pickColor
+        let pickColor
 
         if (objName !== 'plane') {
 
             if (objName === 'BufferMesh') {
 
-                var bufColArr = iObj.geometry.attributes.color.array
-                var idx = intersect.index * 3
+                let bufColArr = iObj.geometry.attributes.color.array
+                let idx = intersect.index * 3
 
                 pickColor = new THREE.Color(bufColArr[idx], bufColArr[idx + 1], bufColArr[idx + 2])
 
@@ -118,8 +118,8 @@ var GUI = function(window, undefined) {
 
             }
 
-            var hColor = pickColor.getHex()
-            var hexString = '#' + pickColor.getHexString()
+            let hColor = pickColor.getHex()
+            let hexString = '#' + pickColor.getHexString()
 
             GameScene.setGhostMeshColor(hColor ^ 0x4C000000)
 
@@ -177,7 +177,7 @@ var GUI = function(window, undefined) {
     function setCoords(planeIntx) {
 
         if (planeIntx) {
-            var gPos = (planeIntx.point).clone().add(planeIntx.face.normal).worldToGrid()
+            let gPos = (planeIntx.point).clone().add(planeIntx.face.normal).worldToGrid()
             settings.coords = '(' + gPos.x + ', ' + gPos.z + ')'
             controlKit.update()
         }
@@ -198,7 +198,7 @@ var GUI = function(window, undefined) {
      */
     function initControlKit() {
 
-        var mainPanel = controlKit.addPanel({
+        let mainPanel = controlKit.addPanel({
             label: ' ',
             align: 'right',
             width: 275
@@ -215,7 +215,7 @@ var GUI = function(window, undefined) {
                 label: 'Block Color',
                 onChange: function(newColor) {
                     // get decimal
-                    var dColor = VoxelUtils.hexStringToDec(newColor)
+                    let dColor = VoxelUtils.hexStringToDec(newColor)
                     GameScene.setGhostMeshColor(dColor)
                     pushToSavedColors()
                 }
@@ -257,7 +257,7 @@ var GUI = function(window, undefined) {
                 }
             })
             .addButton('Log Out', function() {
-                var url = window.location.protocol + '//' + window.location.host
+                let url = window.location.protocol + '//' + window.location.host
                 window.location = url + '/signout'
             })
 
@@ -304,7 +304,7 @@ var GUI = function(window, undefined) {
      * @access private
      */
     function setRandomBlockColor() {
-        var randColor = randomHexColor()
+        let randColor = randomHexColor()
         GameScene.setGhostMeshColor(randColor.getHex())
         settings.colors.blockColor = randColor.getHashHexString()
         pushToSavedColors()
@@ -312,12 +312,12 @@ var GUI = function(window, undefined) {
     }
 
     function pushToSavedColors() {
-        var maxColors = Config.getGUI().maxSavedColors
+        let maxColors = Config.getGUI().maxSavedColors
 
-        var savedColors = settings.colors.saved
-        var prevBlockColor = settings.colors.prevBlockColor
+        let savedColors = settings.colors.saved
+        let prevBlockColor = settings.colors.prevBlockColor
 
-        var idx = savedColors.indexOf(prevBlockColor)
+        let idx = savedColors.indexOf(prevBlockColor)
         if (idx !== -1) savedColors.splice(idx, 1)
 
         savedColors.unshift(prevBlockColor)

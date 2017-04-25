@@ -4,14 +4,14 @@
  * Manages raycasting operations
  * @namespace Raycast
  */
-var Raycast = function(window, undefined) {
+let Raycast = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var raycastArr // array of THREE.js meshes to raycast against
-    var raycaster
+    let raycastArr // array of THREE.js meshes to raycast against
+    let raycaster
 
     /*------------------------------------*
      :: Public Methods
@@ -47,7 +47,7 @@ var Raycast = function(window, undefined) {
      */
     function remove(mesh) {
 
-        for (var i = 0, len = raycastArr.length; i < len; i++) {
+        for (let i = 0, len = raycastArr.length; i < len; i++) {
             if (raycastArr[i] === mesh) {
                 raycastArr.splice(i, 1)
                 break

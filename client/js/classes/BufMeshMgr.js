@@ -6,19 +6,19 @@
  * voxels from the buffer mesh
  * @namespace BufMeshMgr
  */
-var BufMeshMgr = function(window, undefined) {
+let BufMeshMgr = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var p
-    var n
+    let p
+    let n
 
-    var bufVerts
-    var bufNorms
+    let bufVerts
+    let bufNorms
 
-    var bufObj
+    let bufObj
 
     /*------------------------------------*
      :: Public methods
@@ -32,7 +32,7 @@ var BufMeshMgr = function(window, undefined) {
      */
     function init() {
 
-        var blockSize = Config.getGrid().blockSize
+        let blockSize = Config.getGrid().blockSize
 
         p = blockSize / 2
         n = -blockSize / 2
@@ -194,11 +194,11 @@ var BufMeshMgr = function(window, undefined) {
      */
     function addVoxel(addIdx, wPos, tColor) {
 
-        var bufPositions = bufObj.geom.attributes.position.array
-        var bufColors = bufObj.geom.attributes.color.array
-        var bufNormals = bufObj.geom.attributes.normal.array
+        let bufPositions = bufObj.geom.attributes.position.array
+        let bufColors = bufObj.geom.attributes.color.array
+        let bufNormals = bufObj.geom.attributes.normal.array
 
-        for (var iter = 0; iter < bufVerts.length; iter += 3) {
+        for (let iter = 0; iter < bufVerts.length; iter += 3) {
 
             // add vertices
             bufPositions[addIdx + iter] = (bufVerts[iter] + wPos.x)
@@ -227,9 +227,9 @@ var BufMeshMgr = function(window, undefined) {
      */
     function removeVoxel(bIdx) {
 
-        var bufAttrs = bufObj.geom.attributes
+        let bufAttrs = bufObj.geom.attributes
 
-        for (var i = 0; i < 108; i++) {
+        for (let i = 0; i < 108; i++) {
             bufAttrs.color.array[bIdx + i] = 0
             bufAttrs.normal.array[bIdx + i] = 0
             bufAttrs.position.array[bIdx + i] = 0

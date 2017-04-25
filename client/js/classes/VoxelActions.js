@@ -5,7 +5,7 @@
  * of voxels
  * @namespace VoxelActions
  */
-var VoxelActions = function(window, undefined) {
+let VoxelActions = function(window, undefined) {
 
     /*------------------------------------*
      :: Public Methods
@@ -22,14 +22,14 @@ var VoxelActions = function(window, undefined) {
      */
     function createVoxelAtGridPos(gPos, hexString, username) {
 
-        var voxelMesh = VoxelUtils.initVoxel({
+        let voxelMesh = VoxelUtils.initVoxel({
             color: VoxelUtils.hexStringToDec(hexString),
             gPos: gPos
         })
 
-        var sid = VoxelUtils.getSectionIndices(gPos)
+        let sid = VoxelUtils.getSectionIndices(gPos)
 
-        var coordStr = VoxelUtils.getCoordStr(gPos)
+        let coordStr = VoxelUtils.getCoordStr(gPos)
         WorldData.addMesh(sid, coordStr, voxelMesh, username)
 
         Raycast.add(voxelMesh)
@@ -52,16 +52,16 @@ var VoxelActions = function(window, undefined) {
      */
     function createVoxelAtIntersect(intersect, done) {
 
-        var gPos = intersect.point
+        let gPos = intersect.point
         gPos.add(intersect.face.normal)
         gPos.initWorldPos()
         gPos.worldToGrid()
 
-        var hexString = GUI.getBlockColor()
+        let hexString = GUI.getBlockColor()
 
         SocketHandler.emitBlockAdded(gPos, hexString, function(response) {
 
-            var responses = SocketResponses.get()
+            let responses = SocketResponses.get()
 
             if (response === responses.success) {
                 createVoxelAtGridPos(gPos, hexString, User.getUName())
@@ -69,7 +69,7 @@ var VoxelActions = function(window, undefined) {
             } else {
                 console.debug(response)
                 if (response === 'max') {
-                    var maxVoxels = Config.getGeneral().maxGlobalBlocks
+                    let maxVoxels = Config.getGeneral().maxGlobalBlocks
                     alert('Maximum voxel limit of ' + maxVoxels + ' reached.')
                 }
                 return done(false)
@@ -89,7 +89,7 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteVoxelAtGridPos(gPos) {
 
-        var voxel = WorldData.getVoxel(gPos)
+        let voxel = WorldData.getVoxel(gPos)
 
         // newly created, delete mesh
         if (voxel.isMesh) deleteNewVoxel(gPos)
@@ -108,12 +108,12 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteVoxelAtIntersect(intersect, done) {
 
-        var iobj = intersect.object
+        let iobj = intersect.object
 
         if (iobj.name !== 'plane') {
 
-            var gPos
-            var successFunc
+            let gPos
+            let successFunc
             if (iobj.name === 'voxel') {
 
                 gPos = iobj.position.clone()
@@ -132,7 +132,7 @@ var VoxelActions = function(window, undefined) {
             }
 
             SocketHandler.emitBlockRemoved(gPos, function(response) {
-                var responses = SocketResponses.get()
+                let responses = SocketResponses.get()
                 if (response === responses.success) {
                     successFunc(gPos)
                     return done(true)
@@ -154,14 +154,14 @@ var VoxelActions = function(window, undefined) {
      */
     function deletePixelAtGridPos(gPos) {
 
-        var vox = WorldData.getVoxel(gPos)
+        let vox = WorldData.getVoxel(gPos)
 
         // part of expansion
         if (vox.exp) GameScene.getPSystemExpo().hidePixel(vox.pIdx)
         // part of original
         else GameScene.getPSystem().hidePixel(sid, vox.pIdx)
 
-        var username = vox.isMesh ? vox.userData.username : vox.username
+        let username = vox.isMesh ? vox.userData.username : vox.username
         WorldData.removeFromUserData(username, gPos)
         WorldData.removeVoxel(gPos)
 
@@ -182,13 +182,13 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteNewVoxel(gPos) {
 
-        var vox = WorldData.getVoxel(gPos)
+        let vox = WorldData.getVoxel(gPos)
 
-        var coordStr = VoxelUtils.getCoordStr(gPos)
+        let coordStr = VoxelUtils.getCoordStr(gPos)
 
         GameScene.removeFromScene(vox)
 
-        var username = vox.isMesh ? vox.userData.username : vox.username
+        let username = vox.isMesh ? vox.userData.username : vox.username
         WorldData.removeFromUserData(username, gPos)
         WorldData.removeVoxel(gPos)
 
@@ -212,13 +212,13 @@ var VoxelActions = function(window, undefined) {
      */
     function deleteMergedVoxel(gPos) {
 
-        var vox = WorldData.getVoxel(gPos)
-        var coordStr = VoxelUtils.getCoordStr(gPos)
+        let vox = WorldData.getVoxel(gPos)
+        let coordStr = VoxelUtils.getCoordStr(gPos)
 
         BufMeshMgr.removeVoxel(vox.bIdx)
         PixVoxConversion.removeFromConvertedVoxels(coordStr)
 
-        var username = vox.isMesh ? vox.userData.username : vox.username
+        let username = vox.isMesh ? vox.userData.username : vox.username
         WorldData.removeFromUserData(username, gPos)
         WorldData.removeVoxel(gPos)
 

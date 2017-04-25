@@ -5,7 +5,7 @@
  * and related game assets
  * @namespace GameScene
  */
-var GameScene = function(window, undefined) {
+let GameScene = function(window, undefined) {
 
     if (!Detector.webgl) Detector.addGetWebGLMessage()
 
@@ -14,27 +14,30 @@ var GameScene = function(window, undefined) {
      *------------------------------------*/
 
     // basic scene els
-    var scene
-    var camera
-    var renderer
-    var noaarenderer
-    var aarenderer // with antialiasing
+    let scene
+    let camera
+    let renderer
+    let noaarenderer
+    let aarenderer // with antialiasing
 
     // the game scene div
-    var container
+    let container
+
+    // lights
+    let directionalLight
 
     // planes
-    var voxelPlane
-    var mapControlsPlane
-    var regionSelectPlane
+    let voxelPlane
+    let mapControlsPlane
+    let regionSelectPlane
 
     // meshes
-    var ghostMesh
-    var deleteMesh
+    let ghostMesh
+    let deleteMesh
 
     // particle systems
-    var particleSystem
-    var pSystemExpansion
+    let particleSystem
+    let pSystemExpansion
 
     /*------------------------------------*
      :: Public methods
@@ -51,19 +54,19 @@ var GameScene = function(window, undefined) {
         scene = new THREE.Scene()
         container = document.getElementById('container')
 
-        var gridConfig = Config.getGrid()
+        let gridConfig = Config.getGrid()
 
         ;
         (function _initCamera() {
 
-            var config = {
+            let config = {
                 fov: 45,
                 near: 100,
                 far: 300000,
                 distMult: 0.1
             }
 
-            var aspect = window.innerWidth / window.innerHeight
+            let aspect = window.innerWidth / window.innerHeight
 
             camera = new THREE.PerspectiveCamera(config.fov, aspect, config.near, config.far)
             camera.position.set(10000 * config.distMult, 15000 * config.distMult, 10000 * config.distMult)
@@ -75,7 +78,8 @@ var GameScene = function(window, undefined) {
         (function _initRenderer() {
 
             function setSharedConfig(r) {
-                var clearColor = Config.getGeneral().clearColor
+
+                let clearColor = Config.getGeneral().clearColor
                 r.setClearColor(clearColor)
                 r.sortObjects = false
                 r.setSize(window.innerWidth, window.innerHeight)
@@ -114,12 +118,12 @@ var GameScene = function(window, undefined) {
         ;
         (function _initPlanes() {
 
-            var gridSize = gridConfig.size
-            var blockSize = gridConfig.blockSize
+            let gridSize = gridConfig.size
+            let blockSize = gridConfig.blockSize
 
-            var stdSideLen = gridSize * 2 + blockSize
+            let stdSideLen = gridSize * 2 + blockSize
 
-            var nullMat = new THREE.MeshBasicMaterial({
+            let nullMat = new THREE.MeshBasicMaterial({
                 visible: false
             })
 
@@ -127,10 +131,10 @@ var GameScene = function(window, undefined) {
             ;
             (function _initVoxelPlane() {
 
-                var voxGeom = new THREE.PlaneGeometry(stdSideLen, stdSideLen)
+                let voxGeom = new THREE.PlaneGeometry(stdSideLen, stdSideLen)
                 voxGeom.rotateX(-Math.PI / 2)
 
-                var voxelPlane = new THREE.Mesh(voxGeom, nullMat)
+                let voxelPlane = new THREE.Mesh(voxGeom, nullMat)
                 voxelPlane.name = 'plane'
 
                 scene.add(voxelPlane)
@@ -143,15 +147,15 @@ var GameScene = function(window, undefined) {
             ;
             (function _floorPlane() {
 
-                var floorGeom = new THREE.PlaneGeometry(stdSideLen, stdSideLen)
+                let floorGeom = new THREE.PlaneGeometry(stdSideLen, stdSideLen)
                 floorGeom.rotateX(-Math.PI / 2)
                 floorGeom.translate(0, -25, 0)
 
-                var floorMat = new THREE.MeshBasicMaterial({
+                let floorMat = new THREE.MeshBasicMaterial({
                     color: '#f5f5f5'
                 })
 
-                var floorPlane = new THREE.Mesh(floorGeom, floorMat)
+                let floorPlane = new THREE.Mesh(floorGeom, floorMat)
 
                 scene.add(floorPlane)
 
@@ -162,7 +166,7 @@ var GameScene = function(window, undefined) {
             ;
             (function _initControlsPlane() {
 
-                var ctrlGeom = new THREE.PlaneGeometry(gridSize * 40, gridSize * 40)
+                let ctrlGeom = new THREE.PlaneGeometry(gridSize * 40, gridSize * 40)
                 ctrlGeom.rotateX(-Math.PI / 2)
 
                 mapControlsPlane = new THREE.Mesh(ctrlGeom, nullMat)
@@ -178,13 +182,13 @@ var GameScene = function(window, undefined) {
             ;
             (function _initRegionSelectPlane() {
 
-                var spssp = gridConfig.sqPerSideOfSelectPlane
+                let spssp = gridConfig.sqPerSideOfSelectPlane
 
-                var selGeom = new THREE.PlaneGeometry(blockSize * spssp, blockSize * spssp)
+                let selGeom = new THREE.PlaneGeometry(blockSize * spssp, blockSize * spssp)
                 selGeom.rotateX(-Math.PI / 2)
                 selGeom.translate(0, -25, 0)
 
-                var selMat = new THREE.MeshBasicMaterial({
+                let selMat = new THREE.MeshBasicMaterial({
                     color: '#008cff',
                     transparent: true,
                     opacity: 0.10
@@ -204,11 +208,11 @@ var GameScene = function(window, undefined) {
             // voxel shown when hovering grid
             (function _initGhostVoxel() {
 
-                var blockSize = Config.getGrid().blockSize
+                let blockSize = Config.getGrid().blockSize
 
-                var ghostGeo = new THREE.CubeGeometry(blockSize, blockSize, blockSize)
+                let ghostGeo = new THREE.CubeGeometry(blockSize, blockSize, blockSize)
 
-                var ghostMaterial = new THREE.MeshBasicMaterial({
+                let ghostMaterial = new THREE.MeshBasicMaterial({
                     color: GUI.getBlockColor(),
                     transparent: true,
                     opacity: 0.5,
@@ -224,10 +228,10 @@ var GameScene = function(window, undefined) {
             // cube rendered over voxel when hovered and shift is held
             (function _initDeleteVoxel() {
 
-                var redXTexture = new THREE.ImageUtils.loadTexture('img/redx.png')
+                let redXTexture = new THREE.ImageUtils.loadTexture('img/redx.png')
 
-                var deleteGeo = new THREE.CubeGeometry(51, 51, 51)
-                var deleteMat = new THREE.MeshPhongMaterial({
+                let deleteGeo = new THREE.CubeGeometry(51, 51, 51)
+                let deleteMat = new THREE.MeshPhongMaterial({
                     map: redXTexture,
                     color: 0xffffff,
                     transparent: true,
@@ -247,7 +251,7 @@ var GameScene = function(window, undefined) {
         ;
         (function _initParticleSystems() {
 
-            var sps = Config.getGrid().sectionsPerSide
+            let sps = Config.getGrid().sectionsPerSide
 
             particleSystem = new ParticleSystems.ParticleSystem(sps, scene)
             pSystemExpansion = new ParticleSystems.PSystemExpansion(100000, scene)
@@ -344,7 +348,7 @@ var GameScene = function(window, undefined) {
      */
     function updateGhostMesh(intersect) {
 
-        var gPos = intersect.point.clone().initWorldPos()
+        let gPos = intersect.point.clone().initWorldPos()
         gPos.add(intersect.face.normal).worldToGrid()
 
         if (!VoxelUtils.validBlockLocation(gPos) ||
@@ -355,7 +359,7 @@ var GameScene = function(window, undefined) {
 
         setGhostMeshVis(true)
 
-        var gmp = ghostMesh.position
+        let gmp = ghostMesh.position
 
         gmp.copy(intersect.point)
         gmp.add(intersect.face.normal)
@@ -382,7 +386,7 @@ var GameScene = function(window, undefined) {
 
         setDeleteMeshVis(true)
 
-        var dmp = deleteMesh.position
+        let dmp = deleteMesh.position
 
         dmp.copy(intersect.point)
         dmp.sub(intersect.face.normal)
@@ -409,16 +413,16 @@ var GameScene = function(window, undefined) {
         }
 
         // get grid / world pos
-        var wPos = intersect.point.clone().sub(intersect.face.normal)
-        var gPos = intersect.point.clone().sub(intersect.face.normal)
+        let wPos = intersect.point.clone().sub(intersect.face.normal)
+        let gPos = intersect.point.clone().sub(intersect.face.normal)
         wPos.initWorldPos().snapToGrid()
         gPos.initWorldPos().worldToGrid()
 
         // voxel at intersect
-        var voxel = WorldData.getVoxel(gPos)
+        let voxel = WorldData.getVoxel(gPos)
 
         // get uname
-        var username = voxel.isMesh ? voxel.userData.username : voxel.username
+        let username = voxel.isMesh ? voxel.userData.username : voxel.username
 
         // guest voxel
         if (!username || username === 'Guest') {
@@ -427,7 +431,7 @@ var GameScene = function(window, undefined) {
         }
 
         // avoid redundant calls
-        var currentHoveredUser = User.getCurrentHoveredUser()
+        let currentHoveredUser = User.getCurrentHoveredUser()
         if (currentHoveredUser && username === currentHoveredUser) return
 
         // remove existing
@@ -439,15 +443,15 @@ var GameScene = function(window, undefined) {
         GUI.displayString(username)
 
         // get the user voxels
-        var mergedGeo = VoxelUtils.buildOutlineGeom(username)
+        let mergedGeo = VoxelUtils.buildOutlineGeom(username)
 
         // create the merged mesh and add it to the scene
-        var outlineMaterial = new THREE.MeshBasicMaterial({
+        let outlineMaterial = new THREE.MeshBasicMaterial({
             color: GUI.getHighlightColor(),
             side: THREE.BackSide
         })
 
-        var mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
+        let mergedMesh = new THREE.Mesh(mergedGeo, outlineMaterial)
         mergedMesh.name = 'outlineMesh'
 
         scene.add(mergedMesh)
@@ -553,8 +557,8 @@ var GameScene = function(window, undefined) {
      */
     function removeOutlines() {
         User.setCurrentHoveredUser(undefined)
-        for (var i = scene.children.length - 1; i >= 0; i--) {
-            var obj = scene.children[i]
+        for (let i = scene.children.length - 1; i >= 0; i--) {
+            let obj = scene.children[i]
             if (obj.name === 'outlineMesh') {
                 scene.remove(obj)
             }

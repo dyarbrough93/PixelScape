@@ -5,7 +5,7 @@
  * color of all voxels)
  * @namespace WorldData
  */
-var WorldData = function(window, undefined) {
+let WorldData = function(window, undefined) {
 
     /**
      * An object containing information on voxel
@@ -82,8 +82,8 @@ var WorldData = function(window, undefined) {
      :: Class Variables
      *------------------------------------*/
 
-    var worldData
-    var userData
+    let worldData
+    let userData
 
     /*------------------------------------*
      :: Public Methods
@@ -97,13 +97,13 @@ var WorldData = function(window, undefined) {
      */
     function init() {
 
-        var secPerSide = Config.getGrid().sectionsPerSide
+        let secPerSide = Config.getGrid().sectionsPerSide
 
         worldData = []
         userData = {}
-        for (var i = 0, len1 = secPerSide; i < len1; i++) {
+        for (let i = 0, len1 = secPerSide; i < len1; i++) {
             worldData[i] = []
-            for (var j = 0, len2 = secPerSide; j < len2; j++) {
+            for (let j = 0, len2 = secPerSide; j < len2; j++) {
                 worldData[i][j] = {}
             }
         }
@@ -119,34 +119,34 @@ var WorldData = function(window, undefined) {
      */
     function loadIntoScene(data) {
 
-        var particleSystem = GameScene.getPSystem()
+        let particleSystem = GameScene.getPSystem()
 
         console.log('loading pixels into scene ...')
 
-        for (var coordStr in data) {
+        for (let coordStr in data) {
             if (data.hasOwnProperty(coordStr)) {
 
-                var hColor = data[coordStr].c
-                var tColor = new THREE.Color(hColor)
-                var username = data[coordStr].username
+                let hColor = data[coordStr].c
+                let tColor = new THREE.Color(hColor)
+                let username = data[coordStr].username
 
-                var gPos = VoxelUtils.coordStrParse(coordStr)
+                let gPos = VoxelUtils.coordStrParse(coordStr)
 
                 if (username && username !== 'Guest')
                     addToUserData(username, gPos)
 
                 if (VoxelUtils.withinGridBoundaries(gPos)) {
 
-                    var wPos = gPos.clone().gridToWorld()
+                    let wPos = gPos.clone().gridToWorld()
 
-                    var sid = VoxelUtils.getSectionIndices(gPos)
+                    let sid = VoxelUtils.getSectionIndices(gPos)
 
                     // add a pixel to the particle system,
                     // then add a voxel to worldData
-                    var pIdx = particleSystem.addPixel(sid, wPos, tColor)
+                    let pIdx = particleSystem.addPixel(sid, wPos, tColor)
 
                     // add to worldData
-                    var voxInfo = new VoxelInfo(hColor, username, pIdx, null, false)
+                    let voxInfo = new VoxelInfo(hColor, username, pIdx, null, false)
                     addVoxel(sid, coordStr, voxInfo)
 
                 }
@@ -197,8 +197,8 @@ var WorldData = function(window, undefined) {
      * the voxel to remove
      */
     function removeVoxel(gPos) {
-        var coordStr = VoxelUtils.getCoordStr(gPos)
-        var sid = VoxelUtils.getSectionIndices(gPos)
+        let coordStr = VoxelUtils.getCoordStr(gPos)
+        let sid = VoxelUtils.getSectionIndices(gPos)
         delete worldData[sid.a][sid.b][coordStr]
     }
 
@@ -212,8 +212,8 @@ var WorldData = function(window, undefined) {
      * @memberOf WorldData
      */
     function getVoxel(gPos) {
-        var coordStr = VoxelUtils.getCoordStr(gPos)
-        var sid = VoxelUtils.getSectionIndices(gPos)
+        let coordStr = VoxelUtils.getCoordStr(gPos)
+        let sid = VoxelUtils.getSectionIndices(gPos)
         return worldData[sid.a][sid.b][coordStr]
     }
 

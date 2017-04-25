@@ -10,19 +10,19 @@
  * Handles the zoom, pan, and rotate controls
  * @namespace MapControls
  */
- var MapControls = function() {
+ let MapControls = function() {
 
-     var enabled
-     var target
-     var raycastPlane
-     var camera
-     var config
+     let enabled
+     let target
+     let raycastPlane
+     let camera
+     let config
 
      // constraints
-     var camMinxz
-     var camMaxxz
-     var camMiny
-     var camMaxy
+     let camMinxz
+     let camMaxxz
+     let camMiny
+     let camMaxy
 
      function init() {
 
@@ -40,23 +40,23 @@
      }
 
     // internals
-    var EPS = 0.000001
-    var rotateStart = new THREE.Vector2()
-    var rotateEnd = new THREE.Vector2()
-    var rotateDelta = new THREE.Vector2()
-    var panStart = new THREE.Vector3()
-    var panDelta = new THREE.Vector3()
-    var phiDelta = 0
-    var thetaDelta = 0
-    var lastPosition = new THREE.Vector3()
-    var STATE = {
+    let EPS = 0.000001
+    let rotateStart = new THREE.Vector2()
+    let rotateEnd = new THREE.Vector2()
+    let rotateDelta = new THREE.Vector2()
+    let panStart = new THREE.Vector3()
+    let panDelta = new THREE.Vector3()
+    let phiDelta = 0
+    let thetaDelta = 0
+    let lastPosition = new THREE.Vector3()
+    let STATE = {
         NONE: -1,
         ROTATE: 0,
         DOLLY: 1,
         PAN: 2
     }
-    var state = STATE.NONE
-    var vector, projector, intersects,
+    let state = STATE.NONE
+    let vector, projector, intersects,
         raycaster = new THREE.Raycaster()
 
     function update() {
@@ -83,13 +83,13 @@
             return
         }
 
-        var intersects
+        let intersects
         if (event.button === 1) {
 
             state = STATE.PAN
 
-            var mouseX = (event.clientX / window.innerWidth) * 2 - 1
-            var mouseY = -(event.clientY / window.innerHeight) * 2 + 1
+            let mouseX = (event.clientX / window.innerWidth) * 2 - 1
+            let mouseY = -(event.clientY / window.innerHeight) * 2 + 1
 
             intersects = getIntersects({
                 x: mouseX,
@@ -130,14 +130,14 @@
 
         event.preventDefault()
 
-        var element = document === document ? document.body : document
+        let element = document === document ? document.body : document
 
         if (state === STATE.PAN) {
 
-            var mouseX = (event.clientX / window.innerWidth) * 2 - 1
-            var mouseY = -(event.clientY / window.innerHeight) * 2 + 1
+            let mouseX = (event.clientX / window.innerWidth) * 2 - 1
+            let mouseY = -(event.clientY / window.innerHeight) * 2 + 1
 
-            var intersects = getIntersects({
+            let intersects = getIntersects({
                 x: mouseX,
                 y: mouseY
             })
@@ -146,11 +146,11 @@
 
                 panDelta = intersects[0].point
 
-                var delta = new THREE.Vector3()
+                let delta = new THREE.Vector3()
                 delta.subVectors(panStart, panDelta)
 
                 //console.log(camera.position)
-                var pos = camera.position.clone()
+                let pos = camera.position.clone()
                 pos.addVectors(pos, delta)
 
                 if ((pos.x < camMinxz && pos.x < camera.position.x) ||
@@ -172,14 +172,14 @@
             thetaDelta -= 2 * Math.PI * rotateDelta.x / element.clientWidth * config.rotateSpeed
             phiDelta -= 2 * Math.PI * rotateDelta.y / element.clientHeight * config.rotateSpeed
 
-            var position = camera.position
-            var offset = position.clone().sub(target)
+            let cPosition = camera.position
+            let offset = cPosition.clone().sub(target)
 
             // angle from z-axis around y-axis
-            var theta = Math.atan2(offset.x, offset.z)
+            let theta = Math.atan2(offset.x, offset.z)
 
             // angle from y-axis
-            var phi = Math.atan2(Math.sqrt(offset.x * offset.x + offset.z * offset.z), offset.y)
+            let phi = Math.atan2(Math.sqrt(offset.x * offset.x + offset.z * offset.z), offset.y)
 
             theta += thetaDelta
             phi += phiDelta
@@ -190,7 +190,7 @@
             // restrict phi to be betwee EPS and PI-EPS
             phi = Math.max(EPS, Math.min(Math.PI - EPS, phi))
 
-            var radius = offset.length()
+            let radius = offset.length()
 
             // restrict radius to be between desired limits
             radius = Math.max(config.minDistance, Math.min(config.maxDistance, radius))
@@ -229,7 +229,7 @@
 
         if (enabled === false) return
 
-        var delta = 0
+        let delta = 0
 
         if (event.wheelDelta) { // WebKit / Opera / Explorer 9
 
@@ -241,12 +241,12 @@
 
         }
 
-        var zoomOffset = new THREE.Vector3()
-        var te = camera.matrix.elements
+        let zoomOffset = new THREE.Vector3()
+        let te = camera.matrix.elements
         zoomOffset.set(te[8], te[9], te[10])
         zoomOffset.multiplyScalar(delta * -config.zoomSpeed * camera.position.y / 1000)
 
-        var pos = camera.position.clone()
+        let pos = camera.position.clone()
         pos.addVectors(pos, zoomOffset)
         //
         if ((delta < 0 && pos.y > camMaxy) ||

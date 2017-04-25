@@ -4,7 +4,7 @@
  * Provides utility functions for VoxelWorld.js
  * @namespace VoxelUtils
  */
-var VoxelUtils = (function(window, undefined) {
+let VoxelUtils = (function(window, undefined) {
 
     /**
      * A coordinate string defining the grid position of a voxel.
@@ -35,7 +35,7 @@ var VoxelUtils = (function(window, undefined) {
      *------------------------------------*/
 
     String.prototype.isCoordStr = function() {
-        var formatReg = /x[-]*\d+y[-]*\d+z[-]*\d+/
+        let formatReg = /x[-]*\d+y[-]*\d+z[-]*\d+/
         return !!formatReg.exec(this)
     }
 
@@ -152,11 +152,11 @@ var VoxelUtils = (function(window, undefined) {
      */
     function coordStrParse(coordStr) {
 
-        var xreg = /x[-]*\d+/,
+        let xreg = /x[-]*\d+/,
             yreg = /y[-]*\d+/,
             zreg = /z[-]*\d+/
 
-        var pos = {
+        let pos = {
             x: parseInt(xreg.exec(coordStr)[0].slice(1)),
             y: parseInt(yreg.exec(coordStr)[0].slice(1)),
             z: parseInt(zreg.exec(coordStr)[0].slice(1))
@@ -187,10 +187,10 @@ var VoxelUtils = (function(window, undefined) {
      */
     function getSectionIndices(gPos) {
 
-        var gridConfig = Config.getGrid()
+        let gridConfig = Config.getGrid()
 
-        var sqPerSGrid = gridConfig.sqPerSideOfGrid
-        var sqPerSSect = gridConfig.sqPerSideOfSection
+        let sqPerSGrid = gridConfig.sqPerSideOfGrid
+        let sqPerSSect = gridConfig.sqPerSideOfSection
 
         return new Tuple(
             Math.floor((gPos.x + sqPerSGrid / 2) / sqPerSSect),
@@ -208,7 +208,7 @@ var VoxelUtils = (function(window, undefined) {
      */
     function withinSelectionBounds(gPos) {
 
-        var selectedRegion = User.getSelectedRegion()
+        let selectedRegion = User.getSelectedRegion()
 
         return (gPos.x >= selectedRegion.corner1.x &&
             gPos.z >= selectedRegion.corner1.z &&
@@ -257,10 +257,10 @@ var VoxelUtils = (function(window, undefined) {
 
     function withinGridBoundaries(gPos) {
 
-        var spsg = Config.getGrid().sqPerSideOfGrid
+        let spsg = Config.getGrid().sqPerSideOfGrid
 
-        var minxz = -(spsg / 2)
-        var maxxz = spsg / 2
+        let minxz = -(spsg / 2)
+        let maxxz = spsg / 2
 
         return (gPos.x >= minxz &&
             gPos.z >= minxz &&
@@ -279,23 +279,23 @@ var VoxelUtils = (function(window, undefined) {
      */
     function initVoxel(args) {
 
-        var blockSize = Config.getGrid().blockSize
+        let blockSize = Config.getGrid().blockSize
 
-        var wPos = args.gPos.clone()
+        let wPos = args.gPos.clone()
         wPos.gridToWorld()
 
-        var geom = new THREE.BoxGeometry(blockSize, blockSize, blockSize),
+        let geom = new THREE.BoxGeometry(blockSize, blockSize, blockSize),
             material = new THREE.MeshLambertMaterial({
                 vertexColors: THREE.VertexColors
             })
 
-        var color = args.color || 0
-        for (var i = 0; i < geom.faces.length; i++) {
-            var face = geom.faces[i]
+        let color = args.color || 0
+        for (let i = 0; i < geom.faces.length; i++) {
+            let face = geom.faces[i]
             face.color.setHex(color)
         }
 
-        var mesh = new THREE.Mesh(geom, material)
+        let mesh = new THREE.Mesh(geom, material)
 
         mesh.name = 'voxel'
         mesh.position.set(wPos.x, wPos.y, wPos.z)
@@ -314,8 +314,8 @@ var VoxelUtils = (function(window, undefined) {
      * @returns {number}
      */
     function countObjAttrs(obj) {
-        var num = 0
-        for (var attr in obj) {
+        let num = 0
+        for (let attr in obj) {
             num++
         }
         return num
@@ -331,24 +331,24 @@ var VoxelUtils = (function(window, undefined) {
      */
     function buildOutlineGeom(username) {
 
-        var voxels = WorldData.getUserVoxels(username)
+        let voxels = WorldData.getUserVoxels(username)
 
-        var mergedGeo = new THREE.Geometry()
-        var blockSize = Config.getGrid().blockSize
+        let mergedGeo = new THREE.Geometry()
+        let blockSize = Config.getGrid().blockSize
 
-        for (var x in voxels) {
-            for (var y in voxels[x]) {
-                for (var z in voxels[x][y]) {
+        for (let x in voxels) {
+            for (let y in voxels[x]) {
+                for (let z in voxels[x][y]) {
 
                     x = parseInt(x)
                     y = parseInt(y)
                     z = parseInt(z)
 
-                    var wPos = new THREE.Vector3(x, y, z).gridToWorld()
+                    let wPos = new THREE.Vector3(x, y, z).gridToWorld()
 
                     // geom / mesh
-                    var cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
-                    var outlineMesh = new THREE.Mesh(cubeGeo)
+                    let cubeGeo = new THREE.BoxGeometry(blockSize, blockSize, blockSize)
+                    let outlineMesh = new THREE.Mesh(cubeGeo)
 
                     // mesh config
                     outlineMesh.position.x = wPos.x
@@ -416,11 +416,11 @@ var VoxelUtils = (function(window, undefined) {
      */
     function removeFaces(geom, nVec) {
 
-        for (var i = 0; i < geom.faces.length; i++) {
+        for (let i = 0; i < geom.faces.length; i++) {
 
-            var face = geom.faces[i]
+            let face = geom.faces[i]
 
-            var n = face.normal
+            let n = face.normal
             if (n.x === nVec.x && n.y === nVec.y && n.z === nVec.z)
                 delete geom.faces[i]
 

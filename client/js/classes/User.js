@@ -4,7 +4,7 @@
  * Manages and stores the user's current state
  * @namespace UserState
  */
-var User = function(window, undefined) {
+let User = function(window, undefined) {
 
     /*------------------------------------*
      :: Classes
@@ -29,14 +29,14 @@ var User = function(window, undefined) {
      :: Class Variables
      *------------------------------------*/
 
-    var states
-    var state
-    var modes
-    var mode
-    var selectedRegion
-    var actionTimer
-    var currentHoveredUser
-    var actionDelay
+    let states
+    let state
+    let modes
+    let mode
+    let selectedRegion
+    let actionTimer
+    let currentHoveredUser
+    let actionDelay
 
     /*------------------------------------*
      :: Public Methods
@@ -68,8 +68,8 @@ var User = function(window, undefined) {
 
         actionTimer = new Date()
 
-        var re = /[\w-]+/
-        var res = re.exec(window.location.pathname)
+        let re = /[\w-]+/
+        let res = re.exec(window.location.pathname)
         if (res && res[0] === 'guest') actionDelay = Config.getGeneral().guestActionDelay
         else actionDelay = Config.getGeneral().actionDelay
 
@@ -94,7 +94,7 @@ var User = function(window, undefined) {
      * @return {boolean}
      */
     function canAct() {
-        var msSinceAct = new Date(new Date() - actionTimer).getTime()
+        let msSinceAct = new Date(new Date() - actionTimer).getTime()
         return msSinceAct > actionDelay
     }
 
@@ -106,18 +106,18 @@ var User = function(window, undefined) {
      */
     function setSelectedRegion(intersect) {
 
-        var gPos = intersect.point.clone().initWorldPos()
+        let gPos = intersect.point.clone().initWorldPos()
         gPos.add(intersect.face.normal).worldToGrid()
 
-        var halfSpssp = (Config.getGrid().sqPerSideOfSelectPlane - 1) / 2
+        let halfSpssp = (Config.getGrid().sqPerSideOfSelectPlane - 1) / 2
 
-        var x1 = gPos.x - halfSpssp
-        var x2 = gPos.x + halfSpssp
-        var z1 = gPos.z - halfSpssp
-        var z2 = gPos.z + halfSpssp
+        let x1 = gPos.x - halfSpssp
+        let x2 = gPos.x + halfSpssp
+        let z1 = gPos.z - halfSpssp
+        let z2 = gPos.z + halfSpssp
 
-        var c1 = new THREE.Vector3(x1, 0, z1).initGridPos()
-        var c2 = new THREE.Vector3(x2, 0, z2).initGridPos()
+        let c1 = new THREE.Vector3(x1, 0, z1).initGridPos()
+        let c2 = new THREE.Vector3(x2, 0, z2).initGridPos()
 
         if (!selectedRegion) selectedRegion = new RegionSelection(c1, c2)
 
@@ -242,9 +242,9 @@ var User = function(window, undefined) {
     }
 
     function getUName() {
-        var username = $('#user #username').html()
+        let username = $('#user #username').html()
         if (!username) username = 'Guest'
-        var res = /[a-zA-Z0-9_]+/.exec(username)
+        let res = /[a-zA-Z0-9_]+/.exec(username)
         if (res) username = res[0]
         return username
     }

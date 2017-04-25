@@ -4,13 +4,13 @@
  * Manages and routes keyboard events
  * @namespace Keys
  */
-var Keys = function(window, undefined) {
+let Keys = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var keyStates
+    let keyStates
 
     /*------------------------------------*
      :: Public Methods
@@ -162,7 +162,7 @@ var Keys = function(window, undefined) {
 
         e.preventDefault()
 
-        var colorNum = e.keyCode - 48
+        let colorNum = e.keyCode - 48
 
         if (keyStates.ctrlDown)
             GUI.setSavedColor(colorNum)

@@ -2,7 +2,7 @@
  * A class to assist with validating function arguments.
  * @namespace Validation
  */
-var Validation = (function(window, undefined) {
+let Validation = (function(window, undefined) {
 
     /**
      * An illegal argument exception
@@ -28,7 +28,7 @@ var Validation = (function(window, undefined) {
         if (!args || args.length !== len)
             return false;
 
-        var undefFlag = true;
+        let undefFlag = true;
         args.forEach(function(obj) {
             if (obj === null || obj === undefined)
                 undefFlag = false;
@@ -52,7 +52,7 @@ var Validation = (function(window, undefined) {
      */
     function validateArgumentTypes(args, types) {
 
-        var i = 0,
+        let i = 0,
             ret = -1,
             done = false;
         args.forEach(function(arg) {
@@ -110,13 +110,13 @@ var Validation = (function(window, undefined) {
         args = Array.prototype.slice.call(args);
 
         if (validateLenAndDefined(args, func.length)) {
-            var paramNames = getParams(func);
+            let paramNames = getParams(func);
 
-            var i = validateArgumentTypes(args, types);
+            let i = validateArgumentTypes(args, types);
 
             if (i >= 0) {
 
-                var str;
+                let str;
                 if (types[i] && !(typeof types[i] === 'function'))
                     str = 'param ' + paramNames[i] + ' is not a valid ' + types[i];
                 else str = 'param ' + paramNames[i] + ' is not valid';

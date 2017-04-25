@@ -5,13 +5,13 @@
  * and pixels
  * @namespace PixVoxConversion
  */
-var PixVoxConversion = function(window, undefined) {
+let PixVoxConversion = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var convertedVoxels
+    let convertedVoxels
 
     /*------------------------------------*
      :: Public Methods
@@ -40,7 +40,7 @@ var PixVoxConversion = function(window, undefined) {
     function convertToVoxels(region) {
 
         constrainRegion(region)
-        var numCubes = addRegionToConvertedVoxels(region)
+        let numCubes = addRegionToConvertedVoxels(region)
 
         if (validNumConverting(numCubes)) {
 
@@ -62,36 +62,36 @@ var PixVoxConversion = function(window, undefined) {
      */
     function convertToPixels() {
 
-        var i = 0
-        var worldData = WorldData.getWorldData()
+        let i = 0
+        let worldData = WorldData.getWorldData()
 
-        var pSystemExpo = GameScene.getPSystemExpo()
-        var pSystem = GameScene.getPSystem()
+        let pSystemExpo = GameScene.getPSystemExpo()
+        let pSystem = GameScene.getPSystem()
 
-        for (var voxPos in convertedVoxels) {
+        for (let voxPos in convertedVoxels) {
 
             // get basic info we need
-            var gPos = VoxelUtils.coordStrParse(voxPos)
+            let gPos = VoxelUtils.coordStrParse(voxPos)
             gPos = new THREE.Vector3(gPos.x, gPos.y, gPos.z).initGridPos()
-            var wPos = gPos.clone().gridToWorld()
+            let wPos = gPos.clone().gridToWorld()
 
-            var sid = VoxelUtils.getSectionIndices(gPos)
-            var vox = WorldData.getVoxel(gPos)
+            let sid = VoxelUtils.getSectionIndices(gPos)
+            let vox = WorldData.getVoxel(gPos)
 
             if (vox) {
 
                 if (vox.isMesh) { // newly added in selected region
 
-                    var tColor = vox.geometry.faces[0].color
+                    let tColor = vox.geometry.faces[0].color
 
                     // add to particle system expo
-                    var pIdx = pSystemExpo.addPixel(gPos, tColor)
-                    var coordStr = VoxelUtils.getCoordStr(gPos)
+                    let pIdx = pSystemExpo.addPixel(gPos, tColor)
+                    let coordStr = VoxelUtils.getCoordStr(gPos)
 
-                    var username = User.getUName()
+                    let username = User.getUName()
 
                     // overwrite mesh with voxel entry
-                    var voxInfo = new WorldData.VoxelInfo(tColor.getHex(), username, pIdx, null, true)
+                    let voxInfo = new WorldData.VoxelInfo(tColor.getHex(), username, pIdx, null, true)
                     WorldData.addVoxel(sid, coordStr, voxInfo)
 
                     // remove from scene and stop
@@ -118,7 +118,7 @@ var PixVoxConversion = function(window, undefined) {
 
         }
 
-        var bufMesh = BufMeshMgr.getBufMesh()
+        let bufMesh = BufMeshMgr.getBufMesh()
         Raycast.remove(bufMesh)
         GameScene.removeFromScene(bufMesh)
         BufMeshMgr.destroyBufMesh()
@@ -139,7 +139,7 @@ var PixVoxConversion = function(window, undefined) {
      * voxel we are adding
      */
     function addToConvertedVoxels(sid, coord) {
-        var worldData = WorldData.getWorldData()
+        let worldData = WorldData.getWorldData()
         convertedVoxels[coord] = worldData[sid.a][sid.b][coord]
     }
 
@@ -170,13 +170,13 @@ var PixVoxConversion = function(window, undefined) {
       */
      function constrainRegion(region) {
 
-         var spsg = Config.getGrid().sqPerSideOfGrid
+         let spsg = Config.getGrid().sqPerSideOfGrid
 
-         var c1 = region.corner1
-         var c2 = region.corner2
+         let c1 = region.corner1
+         let c2 = region.corner2
 
-         var minxz = -(spsg / 2)
-         var maxxz = spsg / 2
+         let minxz = -(spsg / 2)
+         let maxxz = spsg / 2
 
          if (c1.x < minxz)
              c1.x = minxz
@@ -198,20 +198,20 @@ var PixVoxConversion = function(window, undefined) {
       */
      function addRegionToConvertedVoxels(region) {
 
-         var worldData = WorldData.getWorldData()
+         let worldData = WorldData.getWorldData()
 
-         var c1 = region.corner1
-         var c2 = region.corner2
+         let c1 = region.corner1
+         let c2 = region.corner2
 
-         var c1Sid = VoxelUtils.getSectionIndices(c1)
-         var c2Sid = VoxelUtils.getSectionIndices(c2)
+         let c1Sid = VoxelUtils.getSectionIndices(c1)
+         let c2Sid = VoxelUtils.getSectionIndices(c2)
 
-         var numConverted = 0
+         let numConverted = 0
 
-         for (var x = c1Sid.a; x <= c2Sid.a; x++) {
-             for (var z = c1Sid.b; z <= c2Sid.b; z++) {
-                 for (var voxPos in worldData[x][z]) {
-                     var gPos = VoxelUtils.coordStrParse(voxPos)
+         for (let x = c1Sid.a; x <= c2Sid.a; x++) {
+             for (let z = c1Sid.b; z <= c2Sid.b; z++) {
+                 for (let voxPos in worldData[x][z]) {
+                     let gPos = VoxelUtils.coordStrParse(voxPos)
                      if (VoxelUtils.withinSelectionBounds(gPos)) {
                          convertedVoxels[voxPos] = worldData[x][z][voxPos]
                          numConverted++
@@ -234,9 +234,9 @@ var PixVoxConversion = function(window, undefined) {
       */
      function validNumConverting(numConverting) {
 
-         var convConfig = Config.getConvert()
-         var warnThresh = convConfig.warnThreshold
-         var errThresh = convConfig.errorThreshold
+         let convConfig = Config.getConvert()
+         let warnThresh = convConfig.warnThreshold
+         let errThresh = convConfig.errorThreshold
 
          if (numConverting >= warnThresh && numConverting < errThresh) {
 
@@ -265,33 +265,33 @@ var PixVoxConversion = function(window, undefined) {
 
          function hidePixel(voxel, sid) {
 
-             var pIdx = voxel.pIdx
+             let pIdx = voxel.pIdx
 
              if (voxel.exp) pSystemExpansion.hidePixel(pIdx)
              else pSystem.hidePixel(sid, pIdx)
 
          }
 
-         var pSystemExpansion = GameScene.getPSystemExpo()
-         var pSystem = GameScene.getPSystem()
+         let pSystemExpansion = GameScene.getPSystemExpo()
+         let pSystem = GameScene.getPSystem()
 
-         var gPos
-         var wPos
-         var sid
-         var currVox
+         let gPos
+         let wPos
+         let sid
+         let currVox
 
-         var i = 0
-         var bufVertsLen = BufMeshMgr.getBufVertsLen()
+         let i = 0
+         let bufVertsLen = BufMeshMgr.getBufVertsLen()
 
-         for (var voxPos in convertedVoxels) {
+         for (let voxPos in convertedVoxels) {
 
              gPos = VoxelUtils.coordStrParse(voxPos).initGridPos()
              wPos = gPos.clone().gridToWorld()
              sid = VoxelUtils.getSectionIndices(gPos)
              currVox = convertedVoxels[voxPos]
 
-             var hColor = currVox.hColor
-             var tColor = new THREE.Color(hColor)
+             let hColor = currVox.hColor
+             let tColor = new THREE.Color(hColor)
 
              /*// vvv black magic, don't touch
              if (i === 0) console.log(wPos)
@@ -305,7 +305,7 @@ var PixVoxConversion = function(window, undefined) {
 
          }
 
-         var bufMesh = BufMeshMgr.getBufMesh()
+         let bufMesh = BufMeshMgr.getBufMesh()
 
          Raycast.add(bufMesh)
          GameScene.addToScene(bufMesh)

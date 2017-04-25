@@ -4,13 +4,13 @@
  * Manages socket events
  * @namespace SocketHandler
  */
-var SocketHandler = function(window, undefined) {
+let SocketHandler = function(window, undefined) {
 
     /*------------------------------------*
      :: Class Variables
      *------------------------------------*/
 
-    var socket
+    let socket
 
     /*------------------------------------*
      :: Public Methods
@@ -84,9 +84,9 @@ var SocketHandler = function(window, undefined) {
 
         socket.emit('start chunking')
 
-        var numChunks
-        var numChunksLoaded
-        var chunkData
+        let numChunks
+        let numChunksLoaded
+        let chunkData
 
         // we get the number of chunks we are
         // about to receive
@@ -104,7 +104,7 @@ var SocketHandler = function(window, undefined) {
             numChunksLoaded++
 
             if (numChunks > 0) {
-                var percent = ((numChunksLoaded / numChunks) * 100).toFixed(0)
+                let percent = ((numChunksLoaded / numChunks) * 100).toFixed(0)
                 console.log(percent + '% chunks loaded')
             }
 
@@ -141,18 +141,18 @@ var SocketHandler = function(window, undefined) {
 
         socket.on('block added', function(block) {
 
-            var pos = block.position
+            let pos = block.position
 
-            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
-            var tColor = new THREE.Color(block.color)
-            var username = block.username
+            let gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
+            let tColor = new THREE.Color(block.color)
+            let username = block.username
 
             if (User.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
                 VoxelActions.createVoxelAtGridPos(gPos, tColor.getHex(), username)
             } else {
-                var sid = VoxelUtils.getSectionIndices(gPos)
-                var coordStr = VoxelUtils.getCoordStr(gPos)
-                var pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
+                let sid = VoxelUtils.getSectionIndices(gPos)
+                let coordStr = VoxelUtils.getCoordStr(gPos)
+                let pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
                 WorldData.addVoxel(sid, coordStr, tColor, username, pIdx, true)
             }
 
@@ -162,7 +162,7 @@ var SocketHandler = function(window, undefined) {
 
         socket.on('block removed', function(pos) {
 
-            var gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
+            let gPos = new THREE.Vector3(pos.x, pos.y, pos.z).initGridPos()
 
             if (User.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
 
