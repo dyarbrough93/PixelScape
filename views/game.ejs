@@ -1,5 +1,30 @@
 <% extend('layout') %>
 
+<div id="circleTimer">
+    <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+     <g><circle id="circle" class="circle_animation" r="30" cy="50" cx="50" stroke-width="4" stroke="#595959" fill="none"/></g>
+    </svg>
+</div>
+
+<style>
+
+    #circleTimer {
+        position: absolute;
+        float: left;
+    }
+
+    #circleTimer svg {
+       -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+
+    #circleTimer .circle_animation {
+      stroke-dasharray: 188; /* this value is the pixel circumference of the circle */
+      stroke-dashoffset: 188;
+    }
+
+</style>
+
 <!-- modal content -->
 <!--<div id="basic-modal-content">
         <h2>PixelScape</h2>

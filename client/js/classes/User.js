@@ -253,6 +253,10 @@ let User = function(window, undefined) {
         return currentHoveredUser
     }
 
+    function getActionDelay() {
+        return actionDelay
+    }
+
     /*********** expose public methods *************/
 
     return {
@@ -274,7 +278,8 @@ let User = function(window, undefined) {
         setSelectedRegion: setSelectedRegion,
         resetSelectedRegion: resetSelectedRegion,
         getCurrentHoveredUser: getCurrentHoveredUser,
-        setCurrentHoveredUser: setCurrentHoveredUser
+        setCurrentHoveredUser: setCurrentHoveredUser,
+        getActionDelay: getActionDelay
     }
 
 }(window)

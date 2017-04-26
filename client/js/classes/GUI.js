@@ -187,6 +187,17 @@ let GUI = function(window, undefined) {
         return settings.highlight.color
     }
 
+    function resetActionTimer(ms) {
+
+        $('#circleTimer').css('display', 'block')
+
+        $('.circle_animation').css('stroke-dashoffset', '188')
+        $('.circle_animation').animate({'stroke-dashoffset': 0}, ms, function() {
+            $('#circleTimer').css('display', 'none')
+        })
+
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -348,7 +359,8 @@ let GUI = function(window, undefined) {
         toggleHighlight: toggleHighlight,
         setCoords: setCoords,
         getHighlightColor: getHighlightColor,
-        togglePickColor: togglePickColor
+        togglePickColor: togglePickColor,
+        resetActionTimer: resetActionTimer
     }
 
 }(window)

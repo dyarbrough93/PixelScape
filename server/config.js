@@ -2,7 +2,7 @@ const _ = require('lodash')
 
 const sharedConfig = {
     maxVoxelHeight: 75,
-    actionDelay: 125, // ms
+    actionDelay: 225, // ms
     guestActionDelay: 2500, // ms
     chatDelay: 3, // s
     maxGlobalBlocks: 1000000,
@@ -27,7 +27,7 @@ const clientConfig = {
         actionDelay: serverConfig.actionDelay,
         chatDelay: serverConfig.chatDelay,
         clearColor: 0xffffff,
-        aaOnByDefault: true
+        aaOnByDefault: false
     },
     convert: {
         warnThreshold: 15000,

@@ -99,11 +99,17 @@ let Mouse = function(window, undefined) {
 
                         if (Keys.isShiftDown()) { // delete voxel
                             VoxelActions.deleteVoxelAtIntersect(intersect, function(success) {
-                                if (success) forceTriggerMouseMove()
+                                if (success) {
+                                    forceTriggerMouseMove()
+                                    GUI.resetActionTimer(User.getActionDelay())
+                                }
                             })
                         } else { // create voxel
                             VoxelActions.createVoxelAtIntersect(intersect, function(success) {
-                                if (success) forceTriggerMouseMove()
+                                if (success) {
+                                    forceTriggerMouseMove()
+                                    GUI.resetActionTimer(User.getActionDelay())
+                                }
                             })
                         }
 
