@@ -12,9 +12,10 @@ module.exports = function(passport) {
 			var res = /@[\w-\.]+/.exec(req.body.email)
             if (!res || domains.indexOf(res[0].substring(1)) === -1) return done(null, false, { message: 'Please use a real email address.'})
 
-            if (password.length < 8) return done(null, false, { message: 'Password must be at least 8 characters.' })
+            res = /[\w]+/.exec(username)
+            if (!res || res[0].length !== username.length) return done(null, false, 'Username can only contain letters, numbers, and underscores.')
 
-            if (password.length)
+            if (password.length < 8) return done(null, false, { message: 'Password must be at least 8 characters.' })
 
             findOrCreateUser = function() {
                 // find a user in Mongo with provided username
