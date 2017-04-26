@@ -199,7 +199,7 @@
             offset.y = radius * Math.cos(phi)
             offset.z = radius * Math.sin(phi) * Math.cos(theta)
 
-            position.copy(target).add(offset)
+            cPosition.copy(target).add(offset)
 
             camera.lookAt(target)
 
