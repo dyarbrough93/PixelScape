@@ -3,8 +3,6 @@
         <ul class="flash_message">
             <% messages[type].forEach(function (message) { %>
                 <li>
-                    <%= type.charAt(0).toUpperCase() + type.substring(1) %>
-                    :
                     <%= message %>
                 </li>
                 <% }) %>

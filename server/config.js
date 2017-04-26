@@ -11,7 +11,12 @@ const sharedConfig = {
 const serverConfig = {
     dataChunkSize: 15000, // keys
     chunkInterval: 50, // ms
-    maxClients: 1000
+    maxClients: 1000,
+    loginForm: {
+        lowMaxLength: 20,
+        highMaxLength: 40,
+        minLength: 8
+    }
 }
 
 // each set much be contanined within

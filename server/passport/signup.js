@@ -1,3 +1,4 @@
+const formConfig = require('../config.js').server.loginForm
 const LocalStrategy = require('passport-local').Strategy
 const bCrypt = require('bcrypt-nodejs')
 const User = require('../models/User.js')
@@ -9,13 +10,8 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) {
 
-			var res = /@[\w-\.]+/.exec(req.body.email)
-            if (!res || domains.indexOf(res[0].substring(1)) === -1) return done(null, false, { message: 'Please use a real email address.'})
-
-            res = /[\w]+/.exec(username)
-            if (!res || res[0].length !== username.length) return done(null, false, 'Username can only contain letters, numbers, and underscores.')
-
-            if (password.length < 8) return done(null, false, { message: 'Password must be at least 8 characters.' })
+            var res = preDbValidation(req, username, password)
+            if (res.failure) return done(null, false, req.flash('message', res.message))
 
             findOrCreateUser = function() {
                 // find a user in Mongo with provided username
@@ -60,11 +56,40 @@ module.exports = function(passport) {
             // in the next tick of the event loop
             process.nextTick(findOrCreateUser)
         }))
+}
 
-    // Generates hash using bCrypt
-    var createHash = function(password) {
-        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null)
-    }
+// Generates hash using bCrypt
+function createHash(password) {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null)
+}
+
+function preDbValidation(req, username, password) {
+
+    // first name
+    var fName = req.body.firstName
+    if (!fName || fName.length > formConfig.lowMaxLength)
+        return { failure: true, message: 'First name must use only letters and be less than ' + formConfig.lowMaxLength + ' characters.' }
+
+    // last name
+    var lName = req.body.lastName
+    if (!lName || lName.length > formConfig.lowMaxLength)
+        return { failure: true, message: 'Last name must use only letters and be less than ' + formConfig.lowMaxLength + ' characters.' }
+
+    // username
+    var res = /[\w]+/.exec(username)
+    if (!res || res[0].length !== username.length || username.length > formConfig.lowMaxLength)
+        return { failure: true, message: 'Username must use only letters, numbers, and underscores and be less than ' + formConfig.lowMaxLength + ' characters.' }
+
+    // password
+    if (password.length < formConfig.minLength || password.length > formConfig.lowMaxLength)
+        return { failure: true, message: 'Password must be between ' + formConfig.minLength + ' and ' + formConfig.lowMaxLength + ' characters.' }
+
+    // email
+    res = /@[\w-\.]+/.exec(req.body.email)
+    if (!res || domains.indexOf(res[0].substring(1)) === -1)
+        return { failure: true, message: 'Please use a real email address.' }
+
+    return { failure: false }
 
 }
 

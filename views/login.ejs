@@ -51,18 +51,18 @@
 
 <div class="login-page">
     <div class="form">
-        <form class="register-form" method="POST" action="/signup">
-            <input type="text" name="firstName" value="<%= locals.signupFormData.firstName %>" placeholder="first name" />
-            <input type="text" name="lastName" value="<%= locals.signupFormData.lastName %>" placeholder="last name" />
-            <input type="text" name="username" value="<%= locals.signupFormData.username %>" placeholder="username" />
-            <input type="password" name="password" placeholder="password" />
-            <input type="email" name="email" value="<%= locals.signupFormData.email %>" placeholder="email" />
+        <form class="register-form" id="register-form" method="POST" action="/signup">
+            <input maxlength="<%= locals.constraints.lowMaxLength %>" type="text" name="firstName" pattern="[a-zA-Z]+" value="<%= locals.signupFormData.firstName %>" placeholder="first name" required/>
+            <input maxlength="<%= locals.constraints.lowMaxLength %>" type="text" name="lastName" pattern="[a-zA-Z]+" value="<%= locals.signupFormData.lastName %>" placeholder="last name" required/>
+            <input maxlength="<%= locals.constraints.lowMaxLength %>" type="text" name="username" pattern="[\w_]+" value="<%= locals.signupFormData.username %>" placeholder="username" required/>
+            <input pattern=".{<%= locals.constraints.minLength %>,}" maxlength="20" type="password" name="password" placeholder="password" required/>
+            <input type="email" maxlength="<%= locals.constraints.highMaxLength %>" name="email" value="<%= locals.signupFormData.email %>" placeholder="email" required/>
             <button>create</button>
             <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>
         <form class="login-form" method="POST" action="/login">
-            <input type="text" name="username"     value="<%= locals.loginFormData.username %>" placeholder="username" />
-            <input type="password" name="password" placeholder="password" />
+            <input maxlength="<%= locals.constraints.lowMaxLength %>" type="text" name="username" value="<%= locals.loginFormData.username %>" placeholder="username" required/>
+            <input maxlength="<%= locals.constraints.lowMaxLength %>" type="password" name="password" placeholder="password" required/>
             <button>login</button>
             <p class="message">Not registered? <a href="#">Create an account</a></p>
             <p>Or <a href="/guest">Play as a Guest</a></p>
@@ -71,6 +71,29 @@
 </div>
 
 <script>
+
+    var errMessages = {
+
+        firstName: 'First name must use only letters.',
+        lastName: 'Last name must use only letters.',
+        username: 'Username must use only letters, numbers, and underscores.',
+        password: 'Password must be at least <%= locals.constraints.minLength %> characters.'
+
+    }
+
+    $('#register-form input').on('invalid', function(e) {
+
+        var target = e.target
+        var validity = target.validity
+        var attrName = target.attributes.name.value
+
+        if (validity.patternMismatch) {
+            return target.setCustomValidity(errMessages[attrName])
+        }
+
+        target.setCustomValidity('')
+
+    })
 
     function animateForm(speed) {
         $('form').animate({

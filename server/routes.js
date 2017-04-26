@@ -1,3 +1,4 @@
+const config = require('./config.js').server
 const express = require('express')
 const router = express.Router()
 
@@ -22,7 +23,8 @@ module.exports = function(passport) {
         res.render('login', {
             dev: dev,
             loginFormData: req.session.loginFormData,
-            signupFormData: req.session.signupFormData
+            signupFormData: req.session.signupFormData,
+            constraints: config.loginForm
         })
     })
 
