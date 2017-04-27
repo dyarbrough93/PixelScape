@@ -100,15 +100,18 @@ let Mouse = function(window, undefined) {
 
                             let timerID
                             let actionDelay
+                            let resetOwn
                             let myuname = User.getUName()
 
                             if (username !== myuname && username !== 'Guest') {
                                 if (!User.canDeleteOther()) return
                                 timerID = '#actOtherCircleTimer'
+                                resetOwn = false
                                 actionDelay = User.getDeleteOtherDelay()
                             } else {
                                 if (!User.canActOnOwn()) return
                                 timerID = '#actOwnCircleTimer'
+                                resetOwn = true
                                 actionDelay = User.getActionDelay()
                             }
 
@@ -116,7 +119,7 @@ let Mouse = function(window, undefined) {
                                 if (success) {
                                     forceTriggerMouseMove()
                                     GUI.resetActionTimer(actionDelay, timerID)
-                                    User.resetOwnActionTimer()
+                                    if (resetOwn) User.resetOwnActionTimer()
                                     User.resetDeleteOtherTimer()
                                 }
                             })
