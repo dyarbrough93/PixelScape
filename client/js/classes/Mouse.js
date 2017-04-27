@@ -97,6 +97,7 @@ let Mouse = function(window, undefined) {
                         if (Keys.isShiftDown()) { // delete voxel
 
                             let deleteInfo = checkDelete(intersect)
+                            if (!deleteInfo) return
 
                             VoxelActions.deleteVoxelAtIntersect(intersect, function(success) {
                                 if (success) {
@@ -259,12 +260,12 @@ let Mouse = function(window, undefined) {
         let voxelUName = WorldData.getUsernameAtIntersect(intersect)
 
         if (voxelUName !== myUName && voxelUName !== 'Guest') {
-            if (!User.canDeleteOther()) return
+            if (!User.canDeleteOther()) return false
             timerID = '#actOtherCircleTimer'
             resetOwn = false
             actionDelay = User.getDeleteOtherDelay()
         } else {
-            if (!User.canActOnOwn()) return
+            if (!User.canActOnOwn()) return false
             timerID = '#actOwnCircleTimer'
             resetOwn = true
             actionDelay = User.getActionDelay()
