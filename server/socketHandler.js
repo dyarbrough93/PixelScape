@@ -74,7 +74,9 @@ function handleBlockOperations(socket) {
 
 		var voxel = worldData.getVoxel(position)
 
-		if (voxel && voxel.username !== uname) {
+		var voxelUName = voxel && voxel.username ? voxel.username : 'Guest'
+
+		if (voxel && voxelUName !== 'Guest' && voxelUName !== uname) {
 			if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
 		} else {
 			if (!enoughTimePassed(socket)) return callback(responses.needDelay)
