@@ -4,6 +4,8 @@ const sharedConfig = {
     maxVoxelHeight: 75,
     actionDelay: 225, // ms
     guestActionDelay: 2500, // ms
+    deleteOtherDelay: 2500, // ms
+    guestDeleteOtherDelay: 5500, // ms
     chatDelay: 3, // s
     maxGlobalBlocks: 1000000,
 }
@@ -26,6 +28,7 @@ const clientConfig = {
         maxVoxelHeight: serverConfig.maxVoxelHeight,
         actionDelay: serverConfig.actionDelay,
         chatDelay: serverConfig.chatDelay,
+        deleteOtherDelay: serverConfig.deleteOtherDelay,
         clearColor: 0xffffff,
         aaOnByDefault: false
     },

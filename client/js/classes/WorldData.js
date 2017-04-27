@@ -255,6 +255,17 @@ let WorldData = function(window, undefined) {
 
     }
 
+    function getUsernameAtIntersect(intersect) {
+
+        let gPos = VoxelUtils.getGridPositionFromIntersect(intersect)
+        if (!gPos) return
+        let voxel = WorldData.getVoxel(gPos)
+
+        if (voxel.isMesh) return voxel.userData.username
+        return voxel.username
+
+    }
+
     /**
      * Return the voxels for the give username
      * @param  {string} username The username index
@@ -285,7 +296,8 @@ let WorldData = function(window, undefined) {
         removeVoxel: removeVoxel,
         addToUserData: addToUserData,
         removeFromUserData: removeFromUserData,
-        VoxelInfo: VoxelInfo
+        VoxelInfo: VoxelInfo,
+        getUsernameAtIntersect: getUsernameAtIntersect
     }
 
 }()

@@ -94,21 +94,39 @@ let Mouse = function(window, undefined) {
                         GUI.setPickColor(intersect)
                     else { // create or delete
 
-                        if (!User.canAct()) return
-                        User.resetActionTimer()
+                        if (!User.canActOnOwn()) return
 
                         if (Keys.isShiftDown()) { // delete voxel
+
+                            let username = WorldData.getUsernameAtIntersect(intersect)
+
+                            let timerID
+                            let actionDelay
+                            let myuname = User.getUName()
+
+                            if (username !== myuname && username !== 'Guest') {
+                                if (!User.canDeleteOther()) return
+                                timerID = '#actOtherCircleTimer'
+                                actionDelay = User.getDeleteOtherDelay()
+                            } else {
+                                timerID = '#actOwnCircleTimer'
+                                actionDelay = User.getActionDelay()
+                            }
+
                             VoxelActions.deleteVoxelAtIntersect(intersect, function(success) {
                                 if (success) {
                                     forceTriggerMouseMove()
-                                    GUI.resetActionTimer(User.getActionDelay())
+                                    GUI.resetActionTimer(actionDelay, timerID)
+                                    User.resetOwnActionTimer()
+                                    User.resetDeleteOtherTimer()
                                 }
                             })
                         } else { // create voxel
                             VoxelActions.createVoxelAtIntersect(intersect, function(success) {
                                 if (success) {
                                     forceTriggerMouseMove()
-                                    GUI.resetActionTimer(User.getActionDelay())
+                                    GUI.resetActionTimer(User.getActionDelay(), '#actOwnCircleTimer')
+                                    User.resetOwnActionTimer()
                                 }
                             })
                         }

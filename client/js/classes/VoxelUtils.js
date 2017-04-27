@@ -321,6 +321,34 @@ let VoxelUtils = (function(window, undefined) {
         return num
     }
 
+    function getGridPositionFromIntersect(intersect) {
+
+        let gPos
+        let iobj = intersect.object
+
+        if (iobj.name !== 'plane') {
+
+            if (iobj.name === 'voxel') {
+
+                gPos = iobj.position.clone()
+                gPos.initWorldPos()
+                gPos.worldToGrid()
+
+            } else {
+
+                gPos = (intersect.point).clone().sub(intersect.face.normal)
+                gPos.worldToGrid()
+
+            }
+
+            return gPos
+
+        }
+
+        return null
+
+    }
+
     /**
      * Build and return an outline geometry for the
      * given username.
@@ -446,7 +474,8 @@ let VoxelUtils = (function(window, undefined) {
         Tuple: Tuple,
         getSectionIndices: getSectionIndices,
         buildOutlineGeom: buildOutlineGeom,
-        hexStringToDec: hexStringToDec
+        hexStringToDec: hexStringToDec,
+        getGridPositionFromIntersect: getGridPositionFromIntersect
 
     }
 

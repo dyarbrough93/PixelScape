@@ -187,13 +187,17 @@ let GUI = function(window, undefined) {
         return settings.highlight.color
     }
 
-    function resetActionTimer(ms) {
+    function resetActionTimer(ms, timerID) {
 
-        $('#circleTimer').css('display', 'block')
+        let r = parseInt($(timerID + ' circle').attr('r'))
+        let circumf = 2 * Math.PI * r
 
-        $('.circle_animation').css('stroke-dashoffset', '188')
-        $('.circle_animation').animate({'stroke-dashoffset': 0}, ms, function() {
-            $('#circleTimer').css('display', 'none')
+        $(timerID).css('display', 'block')
+        $(timerID).css('stroke-dasharray', circumf)
+
+        $(timerID + ' .circle_animation').css('stroke-dashoffset', circumf)
+        $(timerID + ' .circle_animation').animate({'stroke-dashoffset': 0}, ms, function() {
+            $(timerID).css('display', 'none')
         })
 
     }

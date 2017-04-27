@@ -35,8 +35,10 @@ let User = function(window, undefined) {
     let mode
     let selectedRegion
     let actionTimer
+    let deleteOtherTimer
     let currentHoveredUser
     let actionDelay
+    let deleteOtherDelay
 
     /*------------------------------------*
      :: Public Methods
@@ -67,11 +69,20 @@ let User = function(window, undefined) {
         selectedRegion = new RegionSelection(0, 0)
 
         actionTimer = new Date()
+        deleteOtherTimer = new Date()
 
         let re = /[\w-]+/
         let res = re.exec(window.location.pathname)
-        if (res && res[0] === 'guest') actionDelay = Config.getGeneral().guestActionDelay
-        else actionDelay = Config.getGeneral().actionDelay
+        let config = Config.getGeneral()
+
+        if (res && res[0] === 'guest') {
+             actionDelay = config.guestActionDelay
+             deleteOtherDelay = config.guestDeleteOtherDelay
+         }
+        else {
+            actionDelay = config.actionDelay
+            deleteOtherDelay = config.deleteOtherDelay
+        }
 
     }
 
@@ -81,8 +92,12 @@ let User = function(window, undefined) {
      * @memberOf UserState
      * @access public
      */
-    function resetActionTimer() {
+    function resetOwnActionTimer() {
         actionTimer = new Date()
+    }
+
+    function resetDeleteOtherTimer() {
+        deleteOtherTimer = new Date()
     }
 
     /**
@@ -93,9 +108,14 @@ let User = function(window, undefined) {
      * @access public
      * @return {boolean}
      */
-    function canAct() {
+    function canActOnOwn() {
         let msSinceAct = new Date(new Date() - actionTimer).getTime()
         return msSinceAct > actionDelay
+    }
+
+    function canDeleteOther() {
+        let msSinceAct = new Date(new Date() - deleteOtherTimer).getTime()
+        return msSinceAct > deleteOtherDelay
     }
 
     /**
@@ -257,13 +277,19 @@ let User = function(window, undefined) {
         return actionDelay
     }
 
+    function getDeleteOtherDelay() {
+        return deleteOtherDelay
+    }
+
     /*********** expose public methods *************/
 
     return {
         init: init,
-        canAct: canAct,
+        canActOnOwn: canActOnOwn,
+        canDeleteOther: canDeleteOther,
         getUName: getUName,
-        resetActionTimer: resetActionTimer,
+        resetOwnActionTimer: resetOwnActionTimer,
+        resetDeleteOtherTimer: resetDeleteOtherTimer,
         modeIsSelect: modeIsSelect,
         modeIsEdit: modeIsEdit,
         stateIsPick: stateIsPick,
@@ -279,7 +305,8 @@ let User = function(window, undefined) {
         resetSelectedRegion: resetSelectedRegion,
         getCurrentHoveredUser: getCurrentHoveredUser,
         setCurrentHoveredUser: setCurrentHoveredUser,
-        getActionDelay: getActionDelay
+        getActionDelay: getActionDelay,
+        getDeleteOtherDelay: getDeleteOtherDelay
     }
 
 }(window)

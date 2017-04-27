@@ -112,24 +112,12 @@ let VoxelActions = function(window, undefined) {
 
         if (iobj.name !== 'plane') {
 
-            let gPos
             let successFunc
-            if (iobj.name === 'voxel') {
+            if (iobj.name === 'voxel') successFunc = deleteNewVoxel
+            else successFunc = deleteMergedVoxel
 
-                gPos = iobj.position.clone()
-                gPos.initWorldPos()
-                gPos.worldToGrid()
-
-                successFunc = deleteNewVoxel
-
-            } else {
-
-                gPos = (intersect.point).sub(intersect.face.normal)
-                gPos.worldToGrid()
-
-                successFunc = deleteMergedVoxel
-
-            }
+            let gPos = VoxelUtils.getGridPositionFromIntersect(intersect)
+            if (!gPos) return done(false)
 
             SocketHandler.emitBlockRemoved(gPos, function(response) {
                 let responses = SocketResponses.get()
