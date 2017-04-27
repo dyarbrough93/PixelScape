@@ -96,30 +96,13 @@ let Mouse = function(window, undefined) {
 
                         if (Keys.isShiftDown()) { // delete voxel
 
-                            let username = WorldData.getUsernameAtIntersect(intersect)
-
-                            let timerID
-                            let actionDelay
-                            let resetOwn
-                            let myuname = User.getUName()
-
-                            if (username !== myuname && username !== 'Guest') {
-                                if (!User.canDeleteOther()) return
-                                timerID = '#actOtherCircleTimer'
-                                resetOwn = false
-                                actionDelay = User.getDeleteOtherDelay()
-                            } else {
-                                if (!User.canActOnOwn()) return
-                                timerID = '#actOwnCircleTimer'
-                                resetOwn = true
-                                actionDelay = User.getActionDelay()
-                            }
+                            let deleteInfo = checkDelete(intersect)
 
                             VoxelActions.deleteVoxelAtIntersect(intersect, function(success) {
                                 if (success) {
                                     forceTriggerMouseMove()
-                                    GUI.resetActionTimer(actionDelay, timerID)
-                                    if (resetOwn) User.resetOwnActionTimer()
+                                    GUI.resetActionTimer(deleteInfo.actionDelay, deleteInfo.timerID)
+                                    if (deleteInfo.resetOwn) User.resetOwnActionTimer()
                                     User.resetDeleteOtherTimer()
                                 }
                             })
@@ -263,6 +246,37 @@ let Mouse = function(window, undefined) {
         $(document).unbind('mousemove')
         document.removeEventListener('mousedown', mouseDown)
     }
+
+    function checkDelete(intersect) {
+
+        let timerID
+        let actionDelay
+        let resetOwn
+
+        let myUName = User.getUName()
+        let voxelUName = WorldData.getUsernameAtIntersect(intersect)
+
+        console.log(voxelUname)
+
+        if (voxelUName !== myUName && voxelUName !== 'Guest') {
+            if (!User.canDeleteOther()) return
+            timerID = '#actOtherCircleTimer'
+            resetOwn = false
+            actionDelay = User.getDeleteOtherDelay()
+        } else {
+            if (!User.canActOnOwn()) return
+            timerID = '#actOwnCircleTimer'
+            resetOwn = true
+            actionDelay = User.getActionDelay()
+        }
+
+        return {
+            timerID: timerID,
+            actionDelay: actionDelay,
+            resetOwn: resetOwn
+        }
+
+   }
 
     /*********** expose public methods *************/
 

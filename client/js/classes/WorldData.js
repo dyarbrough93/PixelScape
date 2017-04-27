@@ -261,8 +261,12 @@ let WorldData = function(window, undefined) {
         if (!gPos) return
         let voxel = WorldData.getVoxel(gPos)
 
-        if (voxel.isMesh) return voxel.userData.username
-        return voxel.username
+        let username
+        if (voxel.isMesh) username = voxel.userData.username
+        username = voxel.username
+
+        if (!username) return 'Guest'
+        return username
 
     }
 
