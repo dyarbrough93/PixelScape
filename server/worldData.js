@@ -168,6 +168,13 @@ WorldData.remove = function(gPos, username, cb) {
 
 }
 
+WorldData.getVoxel = function(gPos) {
+
+    var coordStr = getPosStr(gPos)
+    return WorldData.voxels[coordStr]
+
+}
+
 WorldData.init = function(done) {
 
     VoxelData.find({}, function(err, data) {

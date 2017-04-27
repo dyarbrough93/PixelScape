@@ -2,26 +2,37 @@ const config = require('./config.js').server
 const responses = require('./socketResponses.js')
 
 const actionDelay = {}
+const deleteActionDelay = {}
 const connectedUsers = {}
 
 var worldData
 
 var i = 0
-function enoughTimePassed(socket) {
+function enoughTimePassed(socket, deleteOther) {
 
 	const uname = socket.request.user.username
-	const actDelayKey = uname ? uname : socket.id
-	const delay = uname ? config.actionDelay : config.guestActionDelay
+	const actDelayKey = uname ? uname : socket.id // guest
+	const delay = (function() {
+		if (uname) {
+			if (deleteOther) return config.deleteOtherDelay
+			return config.actionDelay
+		} else {
+			if (deleteOther) return config.guestDeleteOtherDelay
+			return config.guestActionDelay
+		}
+	})()
+
+	const delayObj = deleteOther ? deleteActionDelay : actionDelay
 
 	// only allow add if user hasn't
-	// added for actionDelay
-	if (actionDelay[actDelayKey]) {
-		var msPassed = (new Date() - actionDelay[actDelayKey])
-		if (msPassed <= delay) return false
-		actionDelay[actDelayKey] = new Date()
+	// added for delayObj
+	if (delayObj[actDelayKey]) {
+		var msPassed = (new Date() - delayObj[actDelayKey])
+		if (msPassed < delay) return false
+		delayObj[actDelayKey] = new Date()
 		return true
 	} else {
-		actionDelay[actDelayKey] = new Date()
+		delayObj[actDelayKey] = new Date()
 		return true
 	}
 
@@ -58,10 +69,16 @@ function handleBlockOperations(socket) {
     // handle block remove
     socket.on('block removed', function(position, callback) {
 
-        if (!enoughTimePassed(socket)) return callback(responses.needDelay)
-
 		var uname = socket.request.user.username
 		if (!uname) uname = 'Guest'
+
+		var voxel = worldData.getVoxel(position)
+
+		if (voxel && voxel.username !== uname) {
+			if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
+		} else {
+			if (!enoughTimePassed(socket)) return callback(responses.needDelay)
+		}
 
         // try to remove block
         worldData.remove(position, uname, function(response) {
