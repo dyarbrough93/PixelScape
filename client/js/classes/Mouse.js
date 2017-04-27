@@ -104,7 +104,7 @@ let Mouse = function(window, undefined) {
                                     forceTriggerMouseMove()
                                     GUI.resetActionTimer(deleteInfo.actionDelay, deleteInfo.timerID)
                                     if (deleteInfo.resetOwn) User.resetOwnActionTimer()
-                                    User.resetDeleteOtherTimer()
+                                    else User.resetDeleteOtherTimer()
                                 }
                             })
                         } else { // create voxel
