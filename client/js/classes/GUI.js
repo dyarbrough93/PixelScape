@@ -197,7 +197,7 @@ let GUI = function(window, undefined) {
 
         $(timerID + ' .circle_animation').css('stroke-dashoffset', circumf)
         $(timerID + ' .circle_animation').animate({'stroke-dashoffset': 0}, ms, function() {
-            $(timerID).css('display', 'none')
+            $(timerID).fadeOut(400)
         })
 
     }

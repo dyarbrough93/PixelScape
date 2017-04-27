@@ -94,8 +94,6 @@ let Mouse = function(window, undefined) {
                         GUI.setPickColor(intersect)
                     else { // create or delete
 
-                        if (!User.canActOnOwn()) return
-
                         if (Keys.isShiftDown()) { // delete voxel
 
                             let username = WorldData.getUsernameAtIntersect(intersect)
@@ -109,6 +107,7 @@ let Mouse = function(window, undefined) {
                                 timerID = '#actOtherCircleTimer'
                                 actionDelay = User.getDeleteOtherDelay()
                             } else {
+                                if (!User.canActOnOwn()) return
                                 timerID = '#actOwnCircleTimer'
                                 actionDelay = User.getActionDelay()
                             }
@@ -122,6 +121,7 @@ let Mouse = function(window, undefined) {
                                 }
                             })
                         } else { // create voxel
+                            if (!User.canActOnOwn()) return
                             VoxelActions.createVoxelAtIntersect(intersect, function(success) {
                                 if (success) {
                                     forceTriggerMouseMove()
