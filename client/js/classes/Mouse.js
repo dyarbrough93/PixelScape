@@ -160,8 +160,10 @@ let Mouse = function(window, undefined) {
 
             if (User.modeIsEdit()) {
 
-                GameScene.updateGhostMesh(intersect)
-                GameScene.updateDeleteMesh(intersect)
+                if (User.stateIsDefault()) {
+                    GameScene.updateGhostMesh(intersect)
+                    GameScene.updateDeleteMesh(intersect)
+                }
 
                 if (User.stateIsHighlight())
                     GameScene.highlightUserVoxels(intersect)
@@ -255,8 +257,6 @@ let Mouse = function(window, undefined) {
 
         let myUName = User.getUName()
         let voxelUName = WorldData.getUsernameAtIntersect(intersect)
-
-        console.log(voxelUname)
 
         if (voxelUName !== myUName && voxelUName !== 'Guest') {
             if (!User.canDeleteOther()) return

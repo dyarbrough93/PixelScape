@@ -405,8 +405,7 @@ let GameScene = function(window, undefined) {
     function highlightUserVoxels(intersect) {
 
         // return and reset if shouldn't highlight
-        if (intersect.object.name === 'plane' ||
-            Keys.isShiftDown()) {
+        if (intersect.object.name === 'plane') {
             removeOutlines()
             GUI.displayString('')
             return
