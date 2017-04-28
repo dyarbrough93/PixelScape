@@ -68,9 +68,6 @@ let User = function(window, undefined) {
 
         selectedRegion = new RegionSelection(0, 0)
 
-        actionTimer = new Date()
-        deleteOtherTimer = new Date()
-
         let re = /[\w-]+/
         let res = re.exec(window.location.pathname)
         let config = Config.getGeneral()
@@ -83,6 +80,11 @@ let User = function(window, undefined) {
             actionDelay = config.actionDelay
             deleteOtherDelay = config.deleteOtherDelay
         }
+
+        let now = Date.now()
+
+        actionTimer = new Date(now - actionDelay)
+        deleteOtherTimer = new Date(now - deleteOtherDelay)
 
     }
 

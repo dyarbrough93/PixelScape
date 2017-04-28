@@ -196,8 +196,25 @@ let GUI = function(window, undefined) {
         $(timerID).css('stroke-dasharray', circumf)
 
         $(timerID + ' .circle_animation').css('stroke-dashoffset', circumf)
-        $(timerID + ' .circle_animation').animate({'stroke-dashoffset': 0}, ms - 150, function() {
+        $(timerID + ' .circle_animation').animate({'stroke-dashoffset': 0}, {duration: ms - 150, queue: false, complete: function() {
             $(timerID).fadeOut(150)
+        }})
+
+    }
+
+    function popCircleTimer(timerID) {
+
+        let strokeWidth = parseInt($(timerID + ' circle').attr('stroke-width'))
+        let strokeColor = $(timerID + ' circle').attr('stroke')
+        let newStrokeColor = '#7e2929'
+        let newStrokeWidth = strokeWidth + 1
+
+        let popSpeed = 125
+
+        $(timerID + ' .circle_animation').css({'stroke': newStrokeColor, transition: popSpeed})
+        $(timerID + ' .circle_animation').animate({'stroke-width': newStrokeWidth}, popSpeed, function() {
+            $(timerID + ' .circle_animation').css({'stroke': strokeColor, transition: popSpeed})
+            $(timerID + ' .circle_animation').animate({'stroke-width': strokeWidth}, popSpeed)
         })
 
     }
@@ -364,7 +381,8 @@ let GUI = function(window, undefined) {
         setCoords: setCoords,
         getHighlightColor: getHighlightColor,
         togglePickColor: togglePickColor,
-        resetActionTimer: resetActionTimer
+        resetActionTimer: resetActionTimer,
+        popCircleTimer: popCircleTimer
     }
 
 }(window)

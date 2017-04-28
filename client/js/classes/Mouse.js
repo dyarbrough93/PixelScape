@@ -60,6 +60,7 @@ let Mouse = function(window, undefined) {
       * @param  {Event} e
       */
      function mouseDown(e) {
+
          if (GUI.wasClicked()) {
              GUI.setClicked(false)
              return
@@ -108,7 +109,10 @@ let Mouse = function(window, undefined) {
                                 }
                             })
                         } else { // create voxel
-                            if (!User.canActOnOwn()) return
+                            if (!User.canActOnOwn()) {
+                                GUI.popCircleTimer('#actOwnCircleTimer')
+                                return
+                            }
                             VoxelActions.createVoxelAtIntersect(intersect, function(success) {
                                 if (success) {
                                     forceTriggerMouseMove()
@@ -260,12 +264,18 @@ let Mouse = function(window, undefined) {
         let voxelUName = WorldData.getUsernameAtIntersect(intersect)
 
         if (voxelUName !== myUName && voxelUName !== 'Guest') {
-            if (!User.canDeleteOther()) return false
+            if (!User.canDeleteOther()) {
+                GUI.popCircleTimer('#actOtherCircleTimer')
+                return false
+            }
             timerID = '#actOtherCircleTimer'
             resetOwn = false
             actionDelay = User.getDeleteOtherDelay()
         } else {
-            if (!User.canActOnOwn()) return false
+            if (!User.canActOnOwn()) {
+                GUI.popCircleTimer('#actOwnCircleTimer')
+                return false
+            }
             timerID = '#actOwnCircleTimer'
             resetOwn = true
             actionDelay = User.getActionDelay()

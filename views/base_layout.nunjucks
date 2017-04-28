@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <title>PixelScape</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+        <link rel="icon" type="image/png" href="/img/favicon.png">
+
+        <script src="/js/lib/jquery-1.11.1.min.js"></script>
+
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+            }
+
+        </style>
+
+        {% block head %}{% endblock %}
+
+    </head>
+
+    <body>
+
+        {% if dev %}
+            <style>
+                #banner {
+                    background-color: #ff4b51;
+                    text-align: center;
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0;
+                }
+
+            </style>
+            <div id="banner">
+
+                {% for i in range(0, 10) -%}
+                    DEV MODE
+                {%- endfor %}
+
+            </div>
+        {% endif %}
+
+        {% block body %}{% endblock %}
+
+    </body>
+
+</html>
