@@ -1,4 +1,19 @@
-<% extend('layout') %>
+{% extends './base_layout.nunjucks' %}
+
+{% block head %}
+
+<!-- css -->
+<!--<link href="css/modal.css"></link>-->
+
+{% endblock %}
+
+{% block body %}
+
+<div id="user" hidden>
+    {% if user %}
+        <p id="username">{{ user.username }}</p>
+    {% endif %}
+</div>
 
 <div id="actOwnCircleTimer" class="circleTimer">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
@@ -93,12 +108,12 @@
 <script src="/js/classes/VoxelActions.js"></script>
 <script src="/js/classes/GUI.js"></script>
 <script src="/js/classes/Validation.js"></script>
+<!-- end game classes -->
 
 <!-- game runner -->
 <script src="/js/Main.js"></script>
 
-<!-- css -->
-<link href="css/modal.css"></link>
-
 <!-- game container -->
 <div id="container"></div>
+
+{% endblock %}
