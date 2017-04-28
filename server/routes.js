@@ -4,81 +4,135 @@ const router = express.Router()
 
 var isAuthenticated = function(req, res, next) {
 
-    if (process.env.USE_LOGIN === 'y') {
+	if (process.env.USE_LOGIN === 'y') {
 
-        if (req.isAuthenticated())
-            return next()
-        res.redirect('/login')
+		if (req.isAuthenticated()) {
+			return next()
+        }
+		res.redirect('/login')
 
-    } else return next()
+	} else return next()
 
 }
 
 const dev = process.env.NODE_ENV === 'dev'
 
-module.exports = function(passport) {
+module.exports = function(passport, nev) {
 
-    router.get('/login', function(req, res) {
+	router.get('/login', function(req, res) {
 
-        res.render('login', {
-            dev: dev,
-            loginFormData: req.session.loginFormData,
-            signupFormData: req.session.signupFormData,
-            constraints: config.loginForm
+		res.render('login', {
+			dev: dev,
+			loginFormData: req.session.loginFormData,
+			signupFormData: req.session.signupFormData,
+			constraints: config.loginForm
+		})
+	})
+
+	router.get('/guest', function(req, res) {
+		req.logout()
+		res.render('game')
+	})
+
+	router.get('/signout', function(req, res) {
+		req.logout()
+		req.session.loginFormData = null
+		req.session.signupFormData = null
+		res.redirect('/login')
+	})
+
+	router.get('/', isAuthenticated, function(req, res) {
+
+		res.render('game', {
+			user: req.user,
+			dev: dev
+		})
+	})
+
+    router.get('/verify', function(req, res) {
+
+		res.render('verify', {
+			email: req.session.email,
+			dev: dev
+		})
+	})
+
+    router.get('/verified-redirect', function(req, res) {
+
+        setTimeout(function() {
+
+            res.render('verified_redirect', {
+    			dev: dev
+    		})
+
+        }, 5000)
+
+	})
+
+    router.get('/email-verification/:url', function(req, res) {
+
+        var url = req.params.url
+        nev.confirmTempUser(url, function(err, user) {
+            if (err) {
+                console.log(err)
+                return next(err)
+            }
+
+            if (user) {
+                console.log(user.username + ' successfully verified')
+                req.logIn(user, function(err) {
+    				if (err) return next(err)
+    				return res.redirect('/verified-redirect')
+    			})
+            }
+
+            else {
+                req.flash('message', 'Verification link expired!')
+                res.render('login', {
+                    dev: dev
+                })
+            }
         })
-    })
+	})
 
-    router.get('/guest', function(req, res) {
-        req.logout()
-        res.render('game')
-    })
+	router.post('/login', function(req, res, next) {
 
-    router.get('/signout', function(req, res) {
-        req.logout()
-        req.session.loginFormData = null
-        req.session.signupFormData = null
-        res.redirect('/login')
-    })
+		req.session.loginFormData = {}
+		req.session.signupFormData = null
 
-    router.get('/', isAuthenticated, function(req, res) {
+		for (var attr in req.body) {
+			req.session.loginFormData[attr] = req.body[attr]
+		}
 
-        res.render('game', {
-            user: req.user,
-            dev: dev
-        })
-    })
+		passport.authenticate('login', {
+			successRedirect: '/',
+			failureRedirect: '/login',
+			failureFlash: true
+		})(req, res, next)
+	})
 
-    router.post('/login', function(req, res, next) {
+	router.post('/signup', function(req, res, next) {
 
-        req.session.loginFormData = {}
-        req.session.signupFormData = null
+		req.session.signupFormData = {}
+		req.session.loginFormData = null
 
-        for (var attr in req.body) {
-            req.session.loginFormData[attr] = req.body[attr]
-        }
+		for (var attr in req.body) {
+			req.session.signupFormData[attr] = req.body[attr]
+		}
 
-        passport.authenticate('login', {
-            successRedirect: '/',
-            failureRedirect: '/login',
-            failureFlash: true
-        })(req, res, next)
-    })
+		passport.authenticate('signup', function(err, user, info) {
 
-    router.post('/signup', function(req, res, next) {
+			if (err) return next(err)
+			if (!user) return res.redirect('/login')
 
-        req.session.signupFormData = {}
-        req.session.loginFormData = null
+            req.session.email = user.email
+			req.logIn(user, function(err) {
+				if (err) return next(err)
+				return res.redirect('/verify')
+			})
 
-        for (var attr in req.body) {
-            req.session.signupFormData[attr] = req.body[attr]
-        }
+		})(req, res, next)
+	})
 
-        passport.authenticate('signup', {
-            successRedirect: '/',
-            failureRedirect: '/login',
-            failureFlash: true
-        })(req, res, next)
-    })
-
-    return router
+	return router
 }
