@@ -19,9 +19,12 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const passportSocketIo = require("passport.socketio")
 const flash = require('connect-flash')
+const mongoose = require('mongoose')
+mongoose.Promise = require('bluebird')
+const nev = require('./server/emailVerification.js')(mongoose)
 
 // my files
-const routes = require('./server/routes.js')(passport)
+const routes = require('./server/routes.js')(passport, nev)
 const initPassport = require('./server/passport/init.js')
 const mongoDB = require('./server/MongoDB.js')
 const worldData = require('./server/worldData.js')
@@ -59,7 +62,7 @@ app.use(expressSession({
 // passport
 app.use(passport.initialize())
 app.use(passport.session())
-initPassport(passport)
+initPassport(passport, nev)
 
 // messages
 app.use(flash())
