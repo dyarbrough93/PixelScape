@@ -16,6 +16,8 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const passportSocketIo = require("passport.socketio")
 const flash = require('connect-flash')
+const mongoose = require('mongoose')
+mongoose.Promise = require('bluebird')
 
 const routes = require('./server/routes.js')(passport)
 const initPassport = require('./server/passport/init.js')
@@ -49,10 +51,12 @@ app.use(expressSession({
 	saveUninitialized: true
 }))
 
+const nev = require('./server/emailVerification.js')(mongoose)
+
 // passport
 app.use(passport.initialize())
 app.use(passport.session())
-initPassport(passport)
+initPassport(passport, nev)
 
 // messages
 app.use(flash())
@@ -97,7 +101,7 @@ function onAuthorizeFail(data, message, error, accept) {
  :: Init and start server
  *------------------------------------*/
 
-require('./server/MongoDb.js')(function() {
+require('./server/MongoDb.js')(mongoose, function() {
 
 	const worldData = require('./server/worldData.js')
 
