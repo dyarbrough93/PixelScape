@@ -137,7 +137,6 @@ let GameScene = function(window, undefined) {
                 let voxelPlane = new THREE.Mesh(voxGeom, nullMat)
                 voxelPlane.name = 'plane'
 
-                scene.add(voxelPlane)
                 Raycast.add(voxelPlane)
 
             })()
@@ -189,7 +188,7 @@ let GameScene = function(window, undefined) {
                 selGeom.translate(0, -25, 0)
 
                 let selMat = new THREE.MeshBasicMaterial({
-                    color: '#008cff',
+                    color: '#ff0000',
                     transparent: true,
                     opacity: 0.10
                 })
@@ -302,7 +301,7 @@ let GameScene = function(window, undefined) {
             regionSelectPlane.material.color.set(0xb1b1b1)
         } else {
             regionSelectPlane.material.opacity = 0.10
-            regionSelectPlane.material.color.set(0x008cff)
+            regionSelectPlane.material.color.set(0xff0000)
         }
 
         render()
