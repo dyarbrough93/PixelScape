@@ -2,47 +2,46 @@
 
 {% block head %}
 
-<!-- css -->
-<!--<link href="css/modal.css"></link>-->
+    <!-- css -->
+    <!--<link href="css/modal.css"></link>-->
 
 {% endblock %}
 
 {% block body %}
 
-<div id="user" hidden>
-    {% if user %}
-        <p id="username">{{ user.username }}</p>
-    {% endif %}
-</div>
+    <div id="user" hidden>
+        {% if user %}
+            <p id="username">{{ user.username }}</p>
+        {% endif %}
+    </div>
 
-<div id="actOwnCircleTimer" class="circleTimer">
-    <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-     <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#595959" fill="none"/></g>
-    </svg>
-</div>
+    <div id="actOwnCircleTimer" class="circleTimer">
+        <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+            <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#595959" fill="none"/></g>
+        </svg>
+    </div>
 
-<div id="actOtherCircleTimer" class="circleTimer">
-    <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-     <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#7a0000" fill="none"/></g>
-    </svg>
-</div>
+    <div id="actOtherCircleTimer" class="circleTimer">
+        <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+            <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#7a0000" fill="none"/></g>
+        </svg>
+    </div>
 
-<style>
+    <style>
 
-    .circleTimer {
-        position: absolute;
-        display: none;
-    }
+        .circleTimer {
+            position: absolute;
+            display: none;
+        }
+        .circleTimer svg {
+            -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+        }
 
-    .circleTimer svg {
-       -webkit-transform: rotate(-90deg);
-        transform: rotate(-90deg);
-    }
+    </style>
 
-</style>
-
-<!-- modal content -->
-<!--<div id="basic-modal-content">
+    <!-- modal content -->
+    <!--<div id="basic-modal-content">
         <h2>PixelScape</h2>
         <p>Welcome to PixelScape! In PixelScape, you can collaboratively (or destructively) edit a 3d environment of voxels with other players.</p>
         <h3>Controls</h3>
@@ -68,52 +67,52 @@
         <p><code>View Only</code>Raycasting a large number of blocks is performance heavy, so you are only allowed to convert a certain number of blocks for editing. Selecting this option will disable raycasting in edit mode, allowing you to convert more
             pixels to voxels; however, you will not be able to add or remove voxels.</p>
     </div>-->
-<!-- end modal -->
+    <!-- end modal -->
 
-<script>
-    // open the modal on page load
-    /*$('#basic-modal-content').modal({
+    <script>
+        // open the modal on page load
+        /*$('#basic-modal-content').modal({
         onClose: function() {
             modalClosed()
             $.modal.impl.close()
         }
     })*/
-</script>
+    </script>
 
-<!-- libs -->
-<script src="/js/lib/jquery-1.11.1.min.js"></script>
-<script src="/js/lib/threejs-r85.min.js"></script>
-<script src="/js/lib/Detector.min.js"></script>
-<script src="/js/lib/socket.io-1.4.5.min.js"></script>
-<script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
-<script src="/js/lib/controlKit.min.js"></script>
-<script src="/js/lib/getFuncParamNames.min.js"></script>
-<!-- end libs -->
+    <!-- libs -->
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+    <script src="/js/lib/threejs-r85.min.js"></script>
+    <script src="/js/lib/Detector.min.js"></script>
+    <script src="/js/lib/socket.io-1.4.5.min.js"></script>
+    <script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
+    <script src="/js/lib/controlKit.min.js"></script>
+    <script src="/js/lib/getFuncParamNames.min.js"></script>
+    <!-- end libs -->
 
-<!-- game classes -->
-<script src="/js/classes/WorldData.js"></script>
-<script src="/js/classes/SocketHandler.js"></script>
-<script src="/js/classes/ParticleSystems.js"></script>
-<script src="/js/classes/Raycast.js"></script>
-<script src="/js/classes/GameScene.js"></script>
-<script src="/js/classes/VoxelUtils.js"></script>
-<script src="/js/classes/Config.js"></script>
-<script src="/js/classes/SocketResponses.js"></script>
-<script src="/js/classes/Mouse.js"></script>
-<script src="/js/classes/Keys.js"></script>
-<script src="/js/classes/MapControls.js"></script>
-<script src="/js/classes/User.js"></script>
-<script src="/js/classes/PixVoxConversion.js"></script>
-<script src="/js/classes/BufMeshMgr.js"></script>
-<script src="/js/classes/VoxelActions.js"></script>
-<script src="/js/classes/GUI.js"></script>
-<script src="/js/classes/Validation.js"></script>
-<!-- end game classes -->
+    <!-- game classes -->
+    <script src="/js/classes/WorldData.js"></script>
+    <script src="/js/classes/SocketHandler.js"></script>
+    <script src="/js/classes/ParticleSystems.js"></script>
+    <script src="/js/classes/Raycast.js"></script>
+    <script src="/js/classes/GameScene.js"></script>
+    <script src="/js/classes/VoxelUtils.js"></script>
+    <script src="/js/classes/Config.js"></script>
+    <script src="/js/classes/SocketResponses.js"></script>
+    <script src="/js/classes/Mouse.js"></script>
+    <script src="/js/classes/Keys.js"></script>
+    <script src="/js/classes/MapControls.js"></script>
+    <script src="/js/classes/User.js"></script>
+    <script src="/js/classes/PixVoxConversion.js"></script>
+    <script src="/js/classes/BufMeshMgr.js"></script>
+    <script src="/js/classes/VoxelActions.js"></script>
+    <script src="/js/classes/GUI.js"></script>
+    <script src="/js/classes/Validation.js"></script>
+    <!-- end game classes -->
 
-<!-- game runner -->
-<script src="/js/Main.js"></script>
+    <!-- game runner -->
+    <script src="/js/Main.js"></script>
 
-<!-- game container -->
-<div id="container"></div>
+    <!-- game container -->
+    <div id="container"></div>
 
 {% endblock %}

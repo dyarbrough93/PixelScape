@@ -20,7 +20,7 @@ module.exports = function(passport) {
 
     router.get('/login', function(req, res) {
 
-        res.render('site/login', {
+        res.render('login', {
             dev: dev,
             loginFormData: req.session.loginFormData,
             signupFormData: req.session.signupFormData,
