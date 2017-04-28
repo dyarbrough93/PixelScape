@@ -30,7 +30,7 @@ const clientConfig = {
         chatDelay: serverConfig.chatDelay,
         deleteOtherDelay: serverConfig.deleteOtherDelay,
         clearColor: 0xffffff,
-        aaOnByDefault: false
+        aaOnByDefault: true
     },
     convert: {
         warnThreshold: 15000,

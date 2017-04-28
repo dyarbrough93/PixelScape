@@ -25,6 +25,7 @@ let GameScene = function(window, undefined) {
 
     // lights
     let directionalLight
+    let spotLight
 
     // planes
     let voxelPlane
@@ -83,6 +84,19 @@ let GameScene = function(window, undefined) {
                 r.setClearColor(clearColor)
                 r.sortObjects = false
                 r.setSize(window.innerWidth, window.innerHeight)
+
+                r.shadowMap.enabled = true
+                r.shadowMapSoft = true
+
+        /*        r.shadowCameraNear = 3
+                r.shadowCameraFar = camera.far
+                r.shadowCameraFov = 50
+
+                r.shadowMapBias = 0.0039
+                r.shadowMapDarkness = 0.5
+                r.shadowMapWidth = 1024
+                r.shadowMapHeight = 1024*/
+
             }
 
             aarenderer = new THREE.WebGLRenderer({
@@ -106,12 +120,39 @@ let GameScene = function(window, undefined) {
         ;
         (function _initLights() {
 
-            var ambientLight = new THREE.AmbientLight(0x606060)
-            scene.add(ambientLight)
+            scene.add( new THREE.AmbientLight( 0x505050 ) )
 
-            var directionalLight = new THREE.DirectionalLight(0xffffff)
-            directionalLight.position.set(1, 0.75, 0.5).normalize()
-            scene.add(directionalLight)
+			/*spotLight = new THREE.SpotLight( 0xffffff )
+			spotLight.angle = Math.PI / 5
+			spotLight.penumbra = 0.2
+			spotLight.position.set( 5000, 10000, 2000 )
+            spotLight.target.position.set(0, 0, 0)
+			spotLight.castShadow = true
+			spotLight.shadow.camera.near = 3
+			spotLight.shadow.camera.far = 11000
+			spotLight.shadow.mapSize.width = 1024
+			spotLight.shadow.mapSize.height = 1024
+			scene.add( spotLight )
+            scene.add( spotLight.target )
+
+            var spotLightHelper = new THREE.SpotLightHelper( spotLight )
+            scene.add( spotLightHelper )*/
+
+			directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+			directionalLight.position.set(2000, 3000, 2000)
+			directionalLight.castShadow = true
+			directionalLight.shadow.camera.near = 1
+			directionalLight.shadow.camera.far = 15000
+			directionalLight.shadow.camera.right = 2000
+			directionalLight.shadow.camera.left = -2000
+			directionalLight.shadow.camera.top	= 2000
+			directionalLight.shadow.camera.bottom = -2000
+			directionalLight.shadow.mapSize.width = 1024
+			directionalLight.shadow.mapSize.height = 1024
+			scene.add(directionalLight)
+
+            let helper = new THREE.DirectionalLightHelper(directionalLight, 5)
+            scene.add(helper)
 
         })()
 
@@ -139,6 +180,9 @@ let GameScene = function(window, undefined) {
 
                 Raycast.add(voxelPlane)
 
+                let axisHelper = new THREE.AxisHelper(150)
+                scene.add(axisHelper)
+
             })()
 
             // This is the floor that is actually visible. It has to be offset
@@ -150,11 +194,14 @@ let GameScene = function(window, undefined) {
                 floorGeom.rotateX(-Math.PI / 2)
                 floorGeom.translate(0, -25, 0)
 
-                let floorMat = new THREE.MeshBasicMaterial({
-                    color: '#f5f5f5'
+                let floorMat = new THREE.MeshLambertMaterial({
+                    color: '#ffffff',
+                    reflectivity: 1,
+                    refractionRation: 0
                 })
 
                 let floorPlane = new THREE.Mesh(floorGeom, floorMat)
+                floorPlane.receiveShadow = true
 
                 scene.add(floorPlane)
 
@@ -506,6 +553,11 @@ let GameScene = function(window, undefined) {
         container.removeChild(container.getElementsByTagName('canvas')[0])
     }
 
+    function setDirLightPos(position, target) {
+        directionalLight.position.copy(position)
+        if (target) directionalLight.target.position.copy(target)
+    }
+
     /******************Getters *************/
 
     function getPSystem() {
@@ -586,6 +638,7 @@ let GameScene = function(window, undefined) {
         getCamera: getCamera,
         getPSystem: getPSystem,
         getPSystemExpo: getPSystemExpo,
+        setDirLightPos: setDirLightPos,
         render: render
 
     }

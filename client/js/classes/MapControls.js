@@ -159,6 +159,7 @@
                     (pos.z > camMaxxz && pos.z > camera.position.z)) return
 
                 camera.position.addVectors(camera.position, delta)
+                GameScene.setDirLightPos(camera.position)
 
                 update()
 
@@ -200,8 +201,9 @@
             offset.z = radius * Math.sin(phi) * Math.cos(theta)
 
             cPosition.copy(target).add(offset)
-
             camera.lookAt(target)
+
+            GameScene.setDirLightPos(cPosition, target)
 
             thetaDelta = 0
             phiDelta = 0
@@ -257,6 +259,7 @@
             (pos.z > camMaxxz && pos.z > camera.position.z)) return
 
         camera.position.addVectors(camera.position, zoomOffset)
+        GameScene.setDirLightPos(camera.position)
         update()
 
     }

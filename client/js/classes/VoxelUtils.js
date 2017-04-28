@@ -296,6 +296,7 @@ let VoxelUtils = (function(window, undefined) {
         }
 
         let mesh = new THREE.Mesh(geom, material)
+        mesh.castShadow = true
 
         mesh.name = 'voxel'
         mesh.position.set(wPos.x, wPos.y, wPos.z)
