@@ -109,7 +109,7 @@ socketHandler(io, worldData)
  :: Init and start server
  *------------------------------------*/
 
-mongoDB(function() {
+mongoDB(mongoose, function() {
 
 	worldData.init(function() {
 
