@@ -17,7 +17,7 @@ var isAuthenticated = function(req, res, next) {
 
 const dev = process.env.NODE_ENV === 'dev'
 
-module.exports = function(passport) {
+module.exports = function(passport, nev) {
 
 	router.get('/login', function(req, res) {
 
@@ -52,9 +52,47 @@ module.exports = function(passport) {
     router.get('/verify', function(req, res) {
 
 		res.render('verify', {
-			user: req.user,
+			email: req.session.email,
 			dev: dev
 		})
+	})
+
+    router.get('/verified-redirect', function(req, res) {
+
+        setTimeout(function() {
+
+            res.render('verified_redirect', {
+    			dev: dev
+    		})
+
+        }, 5000)
+
+	})
+
+    router.get('/email-verification/:url', function(req, res) {
+
+        var url = req.params.url
+        nev.confirmTempUser(url, function(err, user) {
+            if (err) {
+                console.log(err)
+                return next(err)
+            }
+
+            if (user) {
+                console.log(user.username + ' successfully verified')
+                req.logIn(user, function(err) {
+    				if (err) return next(err)
+    				return res.redirect('/verified-redirect')
+    			})
+            }
+
+            else {
+                req.flash('message', 'Verification link expired!')
+                res.render('login', {
+                    dev: dev
+                })
+            }
+        })
 	})
 
 	router.post('/login', function(req, res, next) {
@@ -87,6 +125,7 @@ module.exports = function(passport) {
 			if (err) return next(err)
 			if (!user) return res.redirect('/login')
 
+            req.session.email = user.email
 			req.logIn(user, function(err) {
 				if (err) return next(err)
 				return res.redirect('/verify')

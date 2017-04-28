@@ -6,7 +6,7 @@ function init(mongoose) {
 	const nev = require('email-verification')(mongoose)
 
 	nev.configure({
-		verificationURL: 'https://localhost:5000/email-verification/${URL}',
+		verificationURL: 'http://localhost:5000/email-verification/${URL}',
 		persistentUserModel: User,
 		tempUserCollection: 'unverified_users',
 

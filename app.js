@@ -21,9 +21,10 @@ const passportSocketIo = require("passport.socketio")
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
+const nev = require('./server/emailVerification.js')(mongoose)
 
 // my files
-const routes = require('./server/routes.js')(passport)
+const routes = require('./server/routes.js')(passport, nev)
 const initPassport = require('./server/passport/init.js')
 const mongoDB = require('./server/MongoDB.js')
 const worldData = require('./server/worldData.js')
@@ -57,8 +58,6 @@ app.use(expressSession({
 	resave: true,
 	saveUninitialized: true
 }))
-
-const nev = require('./server/emailVerification.js')(mongoose)
 
 // passport
 app.use(passport.initialize())
@@ -113,7 +112,7 @@ socketHandler(io, worldData)
  :: Init and start server
  *------------------------------------*/
 
-mongoDB(function() {
+mongoDB(mongoose, function() {
 
 	worldData.init(function() {
 
