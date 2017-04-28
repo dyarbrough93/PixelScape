@@ -16,6 +16,7 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const passportSocketIo = require("passport.socketio")
 const flash = require('connect-flash')
+const expressNunjucks = require('express-nunjucks')
 
 const routes = require('./server/routes.js')(passport)
 const initPassport = require('./server/passport/init.js')
@@ -65,8 +66,11 @@ app.use(function(req, res, next) {
 app.use('/', routes)
 
 // view engine
-app.set('view engine', 'ejs')
-app.engine('ejs', require('express-ejs-extend'))
+app.set('view engine', 'nunjucks')
+expressNunjucks(app, {
+	watch: devEnv,
+	noCache: devEnv
+})
 
 // passport socket.io init
 io.use(passportSocketIo.authorize({

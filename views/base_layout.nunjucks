@@ -3,12 +3,7 @@
 
 <head>
 
-    <title>PixelScape
-        <% if (typeof pagename !== 'undefined') { %>
-            -
-            <%= pagename %>
-                <% } %>
-    </title>
+    <title>PixelScape</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -24,17 +19,13 @@
         }
     </style>
 
+    {% block head %}{% endblock %}
+
 </head>
 
 <body>
 
-    <div id="user" style="display: none;">
-        <% if (locals.user) { %>
-            <p id="username"><%= user.username %>
-        <% } %>
-    </div>
-
-    <% if (locals.dev) { %>
+    {% if dev %}
         <style>
             #banner {
                 background-color: #ff4b51;
@@ -46,14 +37,14 @@
         </style>
         <div id="banner">
 
-            <% for (var i = 0; i < 10; i++) { %>
+            {% for i in range(0, 10) -%}
                 DEV MODE
-                <% } %>
+            {%- endfor %}
 
         </div>
-        <% } %>
+    {% endif %}
 
-            <%- content %>
+    {% block body %}{% endblock %}
 
 </body>
 
