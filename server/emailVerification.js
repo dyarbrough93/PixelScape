@@ -9,7 +9,7 @@ function init(mongoose) {
 		verificationURL: 'http://localhost:5000/email-verification/${URL}',
 		persistentUserModel: User,
 		tempUserCollection: 'unverified_users',
-
+		shouldSendConfirmation: false,
 		transportOptions: {
 			service: email.service,
 			auth: {
@@ -19,8 +19,8 @@ function init(mongoose) {
 		},
 		verifyMailOptions: {
 			from: email.from,
-			subject: 'Please confirm account',
-			html: 'Click the following link to confirm your account:</p><p>${URL}</p>',
+			subject: 'PixelScape - Confirm account',
+			html: 'Please click the following link to confirm your account:</p><p>${URL}</p>',
 			text: 'Please confirm your account by clicking the following link: ${URL}'
 		}
 	}, function(error, options) {})
