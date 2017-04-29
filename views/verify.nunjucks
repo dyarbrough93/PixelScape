@@ -8,7 +8,7 @@
 <div class="login-page">
     <div class="form">
         <form class="login-form" method="POST" action="/login">
-            <p>An email verification has been sent to {{ email }}. Please click the included link to verify your email.</p>
+            {{ html | safe }}
         </form>
     </div>
 </div>

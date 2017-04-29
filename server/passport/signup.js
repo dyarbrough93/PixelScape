@@ -51,7 +51,7 @@ module.exports = function(passport, nev) {
 							// user already exists in persistent collection...
 							if (existingPersistentUser) {
 								console.log('user already exists')
-								return done(null, false, req.flash('message', 'Already registered!'))
+								return done(null, false, req.flash('message', 'Already registered! Please check your email for a verification code.'))
 							}
 
 							// a new user

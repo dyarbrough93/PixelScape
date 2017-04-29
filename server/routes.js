@@ -51,10 +51,45 @@ module.exports = function(passport, nev) {
 
     router.get('/verify', function(req, res) {
 
-		res.render('verify', {
-			email: req.session.email,
-			dev: dev
-		})
+		const email = req.session.email
+		var baseurl = req.protocol + '://' + req.get('host')
+
+		function renderView(html) {
+			res.render('verify', {
+				email: email,
+				dev: dev,
+				html: html
+			})
+		}
+
+		if (req.query.resend) {
+
+			nev.resendVerificationEmail(email, function(err, userFound) {
+			    if (err) {
+					console.log(err)
+					return next(err)
+				}
+
+			    if (userFound) {
+					return renderView('<p>We\'ve resent the verification email.</p>')
+				}
+			    else {
+					var url = baseurl + '/login'
+					return renderView('<p>Sorry, your email was not found in the database. Please make a new account <a href="' + url +'">here</a>.</p>')
+				}
+			})
+
+		} else {
+
+			var url = baseurl + '/verify?resend=true'
+
+			var html = '<p>An email verification has been sent to ' + email + '. Please click the included link to verify your email.</p>'
+			html += '<p>Click <a href="' + url +'">here</a> to resend the verification.</p>'
+
+			return renderView(html)
+
+		}
+
 	})
 
     router.get('/verified-redirect', function(req, res) {
