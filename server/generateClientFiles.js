@@ -5,25 +5,25 @@ const socketResponses = require('./socketResponses.js')
 ;
 (function genConfig() {
 
-    var file
+    let file
 
     file = ''
-    file += 'var Config = function(window, undefined) {\n\n'
-    file += 'var settings = ' + JSON.stringify(clientConfig) + '\n\n'
+    file += 'let Config = function(window, undefined) {\n\n'
+    file += 'let settings = ' + JSON.stringify(clientConfig) + '\n\n'
 
-    var getFuncs = ''
+    let getFuncs = ''
     getFuncs += 'function get() {\n'
     getFuncs += 'return settings\n'
     getFuncs += '}\n\n'
 
-    var ret = ''
+    let ret = ''
     ret += 'return {\n'
     ret += 'get: get'
 
-    for (var configVar in clientConfig) {
+    for (let configVar in clientConfig) {
         if (clientConfig.hasOwnProperty(configVar)) {
 
-            var capitalized = configVar.charAt(0).toUpperCase() + configVar.substring(1)
+            let capitalized = configVar.charAt(0).toUpperCase() + configVar.substring(1)
             getFuncs += 'function get' + capitalized + '() {\n'
             getFuncs += 'return settings.' + configVar + '\n'
             getFuncs += '}\n\n'
@@ -45,18 +45,18 @@ const socketResponses = require('./socketResponses.js')
 ;
 (function genSocketResponses() {
 
-    var file
+    let file
 
     file = ''
-    file += 'var SocketResponses = function(window, undefined) {\n\n'
-    file += 'var responses = ' + JSON.stringify(socketResponses) + '\n\n'
+    file += 'let SocketResponses = function(window, undefined) {\n\n'
+    file += 'let responses = ' + JSON.stringify(socketResponses) + '\n\n'
 
-    var getFuncs = ''
+    let getFuncs = ''
     getFuncs += 'function get() {\n'
     getFuncs += 'return responses\n'
     getFuncs += '}\n\n'
 
-    var ret = ''
+    let ret = ''
     ret += 'return {\n'
     ret += 'get: get'
     ret += '}\n\n'

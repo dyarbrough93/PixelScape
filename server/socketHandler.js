@@ -5,9 +5,9 @@ const actionDelay = {}
 const deleteActionDelay = {}
 const connectedUsers = {}
 
-var worldData
+let worldData
 
-var i = 0
+let i = 0
 function enoughTimePassed(socket, deleteOther) {
 
 	const uname = socket.request.user.username
@@ -27,7 +27,7 @@ function enoughTimePassed(socket, deleteOther) {
 	// only allow add if user hasn't
 	// added for delayObj
 	if (delayObj[actDelayKey]) {
-		var msPassed = (new Date() - delayObj[actDelayKey])
+		let msPassed = (new Date() - delayObj[actDelayKey])
 		if (msPassed < delay) return false
 		delayObj[actDelayKey] = new Date()
 		return true
@@ -45,7 +45,7 @@ function handleBlockOperations(socket) {
 
 		if (!enoughTimePassed(socket)) return callback(responses.needDelay)
 
-		var uname = socket.request.user.username
+		let uname = socket.request.user.username
 		if (!uname) uname = 'Guest'
 
         // try to add the block
@@ -69,12 +69,12 @@ function handleBlockOperations(socket) {
     // handle block remove
     socket.on('block removed', function(position, callback) {
 
-		var uname = socket.request.user.username
+		let uname = socket.request.user.username
 		if (!uname) uname = 'Guest'
 
-		var voxel = worldData.getVoxel(position)
+		let voxel = worldData.getVoxel(position)
 
-		var voxelUName = voxel && voxel.username ? voxel.username : 'Guest'
+		let voxelUName = voxel && voxel.username ? voxel.username : 'Guest'
 
 		if (voxel && voxelUName !== 'Guest' && voxelUName !== uname) {
 			if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
@@ -111,24 +111,24 @@ function handleChunking(socket) {
 
         // prep for chunking by adding all
         // keys to an array
-        var keys = []
-        for (var key in worldData.voxels) {
+        let keys = []
+        for (let key in worldData.voxels) {
             if (worldData.voxels.hasOwnProperty(key))
                 keys.push(key)
         }
 
-        var chunk
-        var chunkSize = config.dataChunkSize,
+        let chunk
+        let chunkSize = config.dataChunkSize,
             kLen = keys.length // total data length
 
         // tell the client what they're about to receive
         socket.emit('chunking size', Math.ceil(kLen / chunkSize))
 
-        var i = 0,
+        let i = 0,
             j
 
         // send chunks in delayed isntervals
-        var interval = setInterval(function() {
+        let interval = setInterval(function() {
 
             chunk = ''
             j = 0
@@ -140,7 +140,7 @@ function handleChunking(socket) {
 
                 // format it in JSON so it can be
                 // parsed by JSON.parse
-                var obj = worldData.voxels[keys[i]]
+                let obj = worldData.voxels[keys[i]]
                 chunk += '"' + keys[i] + '"' + ':' + JSON.stringify(obj)
 
                 if (i !== kLen - 1) chunk += ','

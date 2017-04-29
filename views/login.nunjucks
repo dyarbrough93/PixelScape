@@ -75,7 +75,7 @@
 
     <script>
 
-        var errMessages = {
+        let errMessages = {
 
             firstName: 'First name must use only letters.',
             lastName: 'Last name must use only letters.',
@@ -86,9 +86,9 @@
 
         $('#register-form input').on('invalid', function (e) {
 
-            var target = e.target
-            var validity = target.validity
-            var attrName = target.attributes.name.value
+            let target = e.target
+            let validity = target.validity
+            let attrName = target.attributes.name.value
 
             if (validity.patternMismatch) {
                 return target.setCustomValidity(errMessages[attrName])

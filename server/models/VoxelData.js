@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const dev = process.env.NODE_ENV === 'dev' ? 'test' : ''
 
-var dataSchema = new Schema({
+let dataSchema = new Schema({
     key: String,
     data: {
         c: Number, // color

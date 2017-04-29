@@ -2,7 +2,7 @@ const config = require('./config.js').server
 const express = require('express')
 const router = express.Router()
 
-var isAuthenticated = function(req, res, next) {
+let isAuthenticated = function(req, res, next) {
 
 	if (process.env.USE_LOGIN === 'y') {
 
@@ -52,7 +52,7 @@ module.exports = function(passport, nev) {
     router.get('/verify', function(req, res) {
 
 		const email = req.session.email
-		var baseurl = req.protocol + '://' + req.get('host')
+		let baseurl = req.protocol + '://' + req.get('host')
 
 		function renderView(html) {
 			res.render('verify', {
@@ -74,16 +74,16 @@ module.exports = function(passport, nev) {
 					return renderView('<p>We\'ve resent the verification email.</p>')
 				}
 			    else {
-					var url = baseurl + '/login'
+					let url = baseurl + '/login'
 					return renderView('<p>Sorry, your email was not found in the database. Please make a new account <a href="' + url +'">here</a>.</p>')
 				}
 			})
 
 		} else {
 
-			var url = baseurl + '/verify?resend=true'
+			let url = baseurl + '/verify?resend=true'
 
-			var html = '<p>An email verification has been sent to ' + email + '. Please click the included link to verify your email.</p>'
+			let html = '<p>An email verification has been sent to ' + email + '. Please click the included link to verify your email.</p>'
 			html += '<p>Click <a href="' + url +'">here</a> to resend the verification.</p>'
 
 			return renderView(html)
@@ -106,7 +106,7 @@ module.exports = function(passport, nev) {
 
     router.get('/email-verification/:url', function(req, res) {
 
-        var url = req.params.url
+        let url = req.params.url
         nev.confirmTempUser(url, function(err, user) {
             if (err) {
                 console.log(err)
@@ -135,7 +135,7 @@ module.exports = function(passport, nev) {
 		req.session.loginFormData = {}
 		req.session.signupFormData = null
 
-		for (var attr in req.body) {
+		for (let attr in req.body) {
 			req.session.loginFormData[attr] = req.body[attr]
 		}
 
@@ -151,7 +151,7 @@ module.exports = function(passport, nev) {
 		req.session.signupFormData = {}
 		req.session.loginFormData = null
 
-		for (var attr in req.body) {
+		for (let attr in req.body) {
 			req.session.signupFormData[attr] = req.body[attr]
 		}
 

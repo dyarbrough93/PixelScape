@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const dev = process.env.NODE_ENV === 'dev' ? 'test' : ''
 
-var userSchema = new Schema({
+let userSchema = new Schema({
     username: String,
     firstName: String,
     lastName: String,

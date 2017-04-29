@@ -24,7 +24,7 @@
         }, 5000)
 
         setInterval(function () {
-            var timeLeft = parseInt($('#countdown').html())
+            let timeLeft = parseInt($('#countdown').html())
             if (timeLeft > 0) $('#countdown').html(timeLeft - 1)
         }, 1000)
 

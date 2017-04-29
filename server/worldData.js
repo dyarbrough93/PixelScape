@@ -4,9 +4,9 @@ const VoxelData = require('./models/VoxelData')
 const Operation = require('./models/Operation')
 const User = require('./models/User')
 
-var numVoxels = 0
+let numVoxels = 0
 
-var WorldData = {}
+let WorldData = {}
 module.exports = WorldData
 
 WorldData.voxels = {} // worldData
@@ -14,7 +14,7 @@ WorldData.userData = {} // indexed by user, each attr holds an array of all voxe
 WorldData.count = function() {
 
     if (!numVoxels) {
-        for (var vox in WorldData.voxels) {
+        for (let vox in WorldData.voxels) {
             if (WorldData.voxels.hasOwnProperty(vox))
                 numVoxels++
         }
@@ -45,7 +45,7 @@ function dbErr(err) {
  */
 WorldData.add = function(voxel, username, cb) {
 
-    var pos = voxel.position
+    let pos = voxel.position
 
     // check constraints
     if (numVoxels >= config.maxGlobalBlocks) return cb(responses.maxVoxels)
@@ -60,7 +60,7 @@ WorldData.add = function(voxel, username, cb) {
         username: username
     }
 
-    var op = new Operation({
+    let op = new Operation({
         operation: 'add',
         data: {
             color: parseInt(voxel.color),
@@ -69,7 +69,7 @@ WorldData.add = function(voxel, username, cb) {
         }
     })
 
-    var vox = new VoxelData({
+    let vox = new VoxelData({
         key: getPosStr(pos),
         data: {
             c: parseInt(voxel.color),
@@ -94,7 +94,7 @@ WorldData.add = function(voxel, username, cb) {
             if (username !== 'Guest') {
 
                 // give the user ownership of the voxel
-                var uarr = WorldData.userData[username]
+                let uarr = WorldData.userData[username]
                 if (!uarr) WorldData.userData[username] = []
                 WorldData.userData[username].push(getPosStr(pos))
 
@@ -117,15 +117,15 @@ WorldData.add = function(voxel, username, cb) {
  */
 WorldData.remove = function(gPos, username, cb) {
 
-    var coordStr = getPosStr(gPos)
-    var vox = WorldData.voxels[coordStr]
+    let coordStr = getPosStr(gPos)
+    let vox = WorldData.voxels[coordStr]
 
     // make sure it exists
     if (vox) {
 
         delete WorldData.voxels[getPosStr(gPos)]
 
-        var op = new Operation({
+        let op = new Operation({
             operation: 'remove',
             data: {
                 position: gPos,
@@ -155,7 +155,7 @@ WorldData.remove = function(gPos, username, cb) {
 
                 if (username && username !== 'Guest') {
                     if (WorldData.userData[username]) {
-                        var idx = WorldData.userData[username].indexOf(coordStr)
+                        let idx = WorldData.userData[username].indexOf(coordStr)
                         if (idx > -1) WorldData.userData[username].splice(idx, 1)
                     }
                 }
@@ -170,7 +170,7 @@ WorldData.remove = function(gPos, username, cb) {
 
 WorldData.getVoxel = function(gPos) {
 
-    var coordStr = getPosStr(gPos)
+    let coordStr = getPosStr(gPos)
     return WorldData.voxels[coordStr]
 
 }

@@ -10,7 +10,7 @@ module.exports = function(passport, nev) {
 		},
 		function(req, username, password, done) {
 
-			var res = preDbValidation(req, username, password)
+			let res = preDbValidation(req, username, password)
 			if (res.failure) return done(null, false, req.flash('message', res.message))
 
 			findOrCreateUser = function() {
@@ -30,7 +30,7 @@ module.exports = function(passport, nev) {
 					} else {
 						// if there is no user with that email
 						// create the user
-						var newUser = new User({
+						let newUser = new User({
                             username: username,
                             password: createHash(password),
                             email: req.body.email,
@@ -56,7 +56,7 @@ module.exports = function(passport, nev) {
 
 							// a new user
 							if (newTempUser) {
-								var URL = newTempUser[nev.options.URLFieldName]
+								let URL = newTempUser[nev.options.URLFieldName]
 								nev.sendVerificationEmail(newTempUser.email, URL, function(err, info) {
 									if (err) {
 										console.log(err)
@@ -99,7 +99,7 @@ function createHash(password) {
 function preDbValidation(req, username, password) {
 
 	// first name
-	var fName = req.body.firstName
+	let fName = req.body.firstName
 	if (!fName || fName.length > formConfig.lowMaxLength)
 		return {
 			failure: true,
@@ -107,7 +107,7 @@ function preDbValidation(req, username, password) {
 		}
 
 	// last name
-	var lName = req.body.lastName
+	let lName = req.body.lastName
 	if (!lName || lName.length > formConfig.lowMaxLength)
 		return {
 			failure: true,
@@ -115,7 +115,7 @@ function preDbValidation(req, username, password) {
 		}
 
 	// username
-	var res = /[\w]+/.exec(username)
+	let res = /[\w]+/.exec(username)
 	if (!res || res[0].length !== username.length || username.length > formConfig.lowMaxLength)
 		return {
 			failure: true,
@@ -143,7 +143,7 @@ function preDbValidation(req, username, password) {
 
 }
 
-var domains = [
+let domains = [
 	/* Default domains included */
 	"aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com",
 	"google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com",
