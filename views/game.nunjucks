@@ -90,6 +90,7 @@
     <!-- end libs -->
 
     <!-- game classes -->
+    <script src="/js/classes/Admin.js"></script>
     <script src="/js/classes/WorldData.js"></script>
     <script src="/js/classes/SocketHandler.js"></script>
     <script src="/js/classes/ParticleSystems.js"></script>

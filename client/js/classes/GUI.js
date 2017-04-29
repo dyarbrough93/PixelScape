@@ -68,16 +68,8 @@ let GUI = function(window, undefined) {
         // if it was the gui that was clicked,
         // save this fact so that we can prevent
         // world actions from taking place behind it
-        $('.dg').mousedown(function() {
+        $('#controlKit *').mousedown(function() {
             guiClicked = true
-        })
-
-        // if it was the gui that was clicked,
-        // save this fact so that we can prevent
-        // world actions from taking place behind it
-        $('#controlKit .panel').mousedown(function() {
-            guiClicked = true
-
             // this has to be assigned here because
             // some elements don't exist on page load
             $('#controlKit *').mousedown(function() {
@@ -367,6 +359,10 @@ let GUI = function(window, undefined) {
         return new THREE.Color(0xffffff * Math.random())
     }
 
+    function getControlKit() {
+        return controlKit
+    }
+
     /*********** expose public methods *************/
 
     return {
@@ -382,7 +378,8 @@ let GUI = function(window, undefined) {
         getHighlightColor: getHighlightColor,
         togglePickColor: togglePickColor,
         resetActionTimer: resetActionTimer,
-        popCircleTimer: popCircleTimer
+        popCircleTimer: popCircleTimer,
+        getControlKit: getControlKit
     }
 
 }(window)

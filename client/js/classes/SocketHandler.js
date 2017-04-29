@@ -179,13 +179,18 @@ let SocketHandler = function(window, undefined) {
 
     }
 
+    function getSocket() {
+        return socket
+    }
+
     /*********** expose public methods *************/
 
     return {
         init: init,
         retrieveData: retrieveData,
         emitBlockAdded: emitBlockAdded,
-        emitBlockRemoved: emitBlockRemoved
+        emitBlockRemoved: emitBlockRemoved,
+        getSocket: getSocket
     }
 
 }()

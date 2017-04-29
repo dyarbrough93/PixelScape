@@ -8,33 +8,34 @@ const connectedUsers = {}
 var worldData
 
 var i = 0
+
 function enoughTimePassed(socket, deleteOther) {
 
-	const uname = socket.request.user.username
-	const actDelayKey = uname ? uname : socket.id // guest
-	const delay = (function() {
-		if (uname) {
-			if (deleteOther) return config.deleteOtherDelay
-			return config.actionDelay
-		} else {
-			if (deleteOther) return config.guestDeleteOtherDelay
-			return config.guestActionDelay
-		}
-	})()
+    const uname = socket.request.user.username
+    const actDelayKey = uname ? uname : socket.id // guest
+    const delay = (function() {
+        if (uname) {
+            if (deleteOther) return config.deleteOtherDelay
+            return config.actionDelay
+        } else {
+            if (deleteOther) return config.guestDeleteOtherDelay
+            return config.guestActionDelay
+        }
+    })()
 
-	const delayObj = deleteOther ? deleteActionDelay : actionDelay
+    const delayObj = deleteOther ? deleteActionDelay : actionDelay
 
-	// only allow add if user hasn't
-	// added for delayObj
-	if (delayObj[actDelayKey]) {
-		var msPassed = (new Date() - delayObj[actDelayKey])
-		if (msPassed < delay) return false
-		delayObj[actDelayKey] = new Date()
-		return true
-	} else {
-		delayObj[actDelayKey] = new Date()
-		return true
-	}
+    // only allow add if user hasn't
+    // added for delayObj
+    if (delayObj[actDelayKey]) {
+        var msPassed = (new Date() - delayObj[actDelayKey])
+        if (msPassed < delay) return false
+        delayObj[actDelayKey] = new Date()
+        return true
+    } else {
+        delayObj[actDelayKey] = new Date()
+        return true
+    }
 
 }
 
@@ -43,10 +44,10 @@ function handleBlockOperations(socket) {
     // handle block add
     socket.on('block added', function(block, callback) {
 
-		if (!enoughTimePassed(socket)) return callback(responses.needDelay)
+        if (!enoughTimePassed(socket)) return callback(responses.needDelay)
 
-		var uname = socket.request.user.username
-		if (!uname) uname = 'Guest'
+        var uname = socket.request.user.username
+        if (!uname) uname = 'Guest'
 
         // try to add the block
         worldData.add(block, uname, function(response) {
@@ -60,7 +61,7 @@ function handleBlockOperations(socket) {
 
             }
 
-			return callback(response)
+            return callback(response)
 
         })
 
@@ -69,18 +70,18 @@ function handleBlockOperations(socket) {
     // handle block remove
     socket.on('block removed', function(position, callback) {
 
-		var uname = socket.request.user.username
-		if (!uname) uname = 'Guest'
+        var uname = socket.request.user.username
+        if (!uname) uname = 'Guest'
 
-		var voxel = worldData.getVoxel(position)
+        var voxel = worldData.getVoxel(position)
 
-		var voxelUName = voxel && voxel.username ? voxel.username : 'Guest'
+        var voxelUName = voxel && voxel.username ? voxel.username : 'Guest'
 
-		if (voxel && voxelUName !== 'Guest' && voxelUName !== uname) {
-			if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
-		} else {
-			if (!enoughTimePassed(socket)) return callback(responses.needDelay)
-		}
+        if (voxel && voxelUName !== 'Guest' && voxelUName !== uname) {
+            if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
+        } else {
+            if (!enoughTimePassed(socket)) return callback(responses.needDelay)
+        }
 
         // try to remove block
         worldData.remove(position, uname, function(response) {
@@ -94,6 +95,20 @@ function handleBlockOperations(socket) {
             }
 
             return callback(response)
+
+        })
+
+    })
+
+    socket.on('batch delete', function(toDelete, done) {
+
+        worldData.batchDelete(toDelete, function(deletedVoxels) {
+
+            for (var i = 0; i < deletedVoxels.length; i++) {
+                socket.broadcast.emit('block removed', deletedVoxels[i])
+            }
+
+            done(deletedVoxels)
 
         })
 
