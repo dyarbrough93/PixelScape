@@ -24,8 +24,9 @@ let GameScene = function(window, undefined) {
     let container
 
     // lights
-    let directionalLight
-    let spotLight
+    let trackingDirLight
+    let globalDirLight
+    let ambientLight
 
     // planes
     let voxelPlane
@@ -80,22 +81,9 @@ let GameScene = function(window, undefined) {
 
             function setSharedConfig(r) {
 
-                let clearColor = Config.getGeneral().clearColor
-                r.setClearColor(clearColor)
+                r.setClearColor('#ffffff')
                 r.sortObjects = false
                 r.setSize(window.innerWidth, window.innerHeight)
-
-                r.shadowMap.enabled = true
-                r.shadowMapSoft = true
-
-        /*        r.shadowCameraNear = 3
-                r.shadowCameraFar = camera.far
-                r.shadowCameraFov = 50
-
-                r.shadowMapBias = 0.0039
-                r.shadowMapDarkness = 0.5
-                r.shadowMapWidth = 1024
-                r.shadowMapHeight = 1024*/
 
             }
 
@@ -120,39 +108,19 @@ let GameScene = function(window, undefined) {
         ;
         (function _initLights() {
 
-            scene.add( new THREE.AmbientLight( 0x505050 ) )
+            ambientLight = new THREE.AmbientLight(0xffffff, 0.45)
+            scene.add(ambientLight)
 
-			/*spotLight = new THREE.SpotLight( 0xffffff )
-			spotLight.angle = Math.PI / 5
-			spotLight.penumbra = 0.2
-			spotLight.position.set( 5000, 10000, 2000 )
-            spotLight.target.position.set(0, 0, 0)
-			spotLight.castShadow = true
-			spotLight.shadow.camera.near = 3
-			spotLight.shadow.camera.far = 11000
-			spotLight.shadow.mapSize.width = 1024
-			spotLight.shadow.mapSize.height = 1024
-			scene.add( spotLight )
-            scene.add( spotLight.target )
+            let pos = gridConfig.sqPerSideOfGrid / 2 * 50
 
-            var spotLightHelper = new THREE.SpotLightHelper( spotLight )
-            scene.add( spotLightHelper )*/
+            globalDirLight = new THREE.DirectionalLight(0xffffff, 0.6)
+            globalDirLight.position.set(pos, pos / 2, 0)
+            globalDirLight.target.position.set(0,0,0)
+            scene.add(globalDirLight)
 
-			directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-			directionalLight.position.set(2000, 3000, 2000)
-			directionalLight.castShadow = true
-			directionalLight.shadow.camera.near = 1
-			directionalLight.shadow.camera.far = 15000
-			directionalLight.shadow.camera.right = 2000
-			directionalLight.shadow.camera.left = -2000
-			directionalLight.shadow.camera.top	= 2000
-			directionalLight.shadow.camera.bottom = -2000
-			directionalLight.shadow.mapSize.width = 1024
-			directionalLight.shadow.mapSize.height = 1024
-			scene.add(directionalLight)
-
-            let helper = new THREE.DirectionalLightHelper(directionalLight, 5)
-            scene.add(helper)
+			trackingDirLight = new THREE.DirectionalLight(0xffffff, 0.4)
+            scene.add(trackingDirLight.target)
+			scene.add(trackingDirLight)
 
         })()
 
@@ -194,14 +162,11 @@ let GameScene = function(window, undefined) {
                 floorGeom.rotateX(-Math.PI / 2)
                 floorGeom.translate(0, -25, 0)
 
-                let floorMat = new THREE.MeshLambertMaterial({
-                    color: '#ffffff',
-                    reflectivity: 1,
-                    refractionRation: 0
+                let floorMat = new THREE.MeshBasicMaterial({
+                    color: '#f5f5f5'
                 })
 
                 let floorPlane = new THREE.Mesh(floorGeom, floorMat)
-                floorPlane.receiveShadow = true
 
                 scene.add(floorPlane)
 
@@ -554,8 +519,8 @@ let GameScene = function(window, undefined) {
     }
 
     function setDirLightPos(position, target) {
-        directionalLight.position.copy(position)
-        if (target) directionalLight.target.position.copy(target)
+        trackingDirLight.position.set(position.x, position.y, position.z)
+        if (target) trackingDirLight.target.position.set(target.x, 500, target.z)
     }
 
     /******************Getters *************/

@@ -171,7 +171,6 @@ let BufMeshMgr = function(window, undefined) {
 
                 this.mesh = new THREE.Mesh(this.geom, this.mat)
                 this.mesh.name = 'BufferMesh'
-                this.mesh.castShadow = true
 
                 this.geom.addAttribute('position', new THREE.BufferAttribute(new Float32Array(this.size * bufVerts.length), 3))
                 this.geom.addAttribute('color', new THREE.BufferAttribute(new Float32Array(this.size * bufVerts.length), 3))

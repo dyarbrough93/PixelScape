@@ -29,7 +29,6 @@ const clientConfig = {
         actionDelay: serverConfig.actionDelay,
         chatDelay: serverConfig.chatDelay,
         deleteOtherDelay: serverConfig.deleteOtherDelay,
-        clearColor: 0xffffff,
         aaOnByDefault: true
     },
     convert: {
