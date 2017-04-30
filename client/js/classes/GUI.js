@@ -318,11 +318,6 @@ let GUI = function(window, undefined) {
                 window.location = url + '/signout'
             })
 
-        mainPanel.addGroup({
-                label: 'Debug'
-            })
-            .addButton('Log World Data', settings.debug.logWorldData)
-
     }
 
     function toggleHighlight() {
