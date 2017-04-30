@@ -57,7 +57,9 @@ let GUI = function(window, undefined) {
                 offText: 'Start Highlighting',
                 onText: 'Stop Highlighting (or ESC)',
                 color: '#000000'
-            }
+            },
+            sqPerSideOfSelectPlane: Config.getGrid().sqPerSideOfSelectPlane,
+            sliderRange: [5, 101]
         }
 
         controlKit = new ControlKit()
@@ -188,9 +190,15 @@ let GUI = function(window, undefined) {
         $(timerID).css('stroke-dasharray', circumf)
 
         $(timerID + ' .circle_animation').css('stroke-dashoffset', circumf)
-        $(timerID + ' .circle_animation').animate({'stroke-dashoffset': 0}, {duration: ms - 150, queue: false, complete: function() {
-            $(timerID).fadeOut(150)
-        }})
+        $(timerID + ' .circle_animation').animate({
+            'stroke-dashoffset': 0
+        }, {
+            duration: ms - 150,
+            queue: false,
+            complete: function() {
+                $(timerID).fadeOut(150)
+            }
+        })
 
     }
 
@@ -203,10 +211,20 @@ let GUI = function(window, undefined) {
 
         let popSpeed = 125
 
-        $(timerID + ' .circle_animation').css({'stroke': newStrokeColor, transition: popSpeed})
-        $(timerID + ' .circle_animation').animate({'stroke-width': newStrokeWidth}, popSpeed, function() {
-            $(timerID + ' .circle_animation').css({'stroke': strokeColor, transition: popSpeed})
-            $(timerID + ' .circle_animation').animate({'stroke-width': strokeWidth}, popSpeed)
+        $(timerID + ' .circle_animation').css({
+            'stroke': newStrokeColor,
+            transition: popSpeed
+        })
+        $(timerID + ' .circle_animation').animate({
+            'stroke-width': newStrokeWidth
+        }, popSpeed, function() {
+            $(timerID + ' .circle_animation').css({
+                'stroke': strokeColor,
+                transition: popSpeed
+            })
+            $(timerID + ' .circle_animation').animate({
+                'stroke-width': strokeWidth
+            }, popSpeed)
         })
 
     }
@@ -254,9 +272,7 @@ let GUI = function(window, undefined) {
                 label: 'Owner'
             })
             .addColor(settings.highlight, 'color', {
-                label: 'Highlight Color',
-                onChange: function(newColor) {;
-                }
+                label: 'Highlight Color'
             })
 
         mainPanel.addGroup({
@@ -283,6 +299,19 @@ let GUI = function(window, undefined) {
             .addButton('Log Out', function() {
                 let url = window.location.protocol + '//' + window.location.host
                 window.location = url + '/signout'
+            })
+            .addSlider(settings, 'sqPerSideOfSelectPlane', 'sliderRange', {
+                label: 'Selection Plane Size',
+                onChange: function() {
+
+                    var sssp = settings.sqPerSideOfSelectPlane
+                    let blockSize = Config.getGrid().blockSize
+
+                    GameScene.setupRegionSelectPlane(blockSize * sssp)
+
+                },
+                step: 1,
+                dp: 0
             })
 
         mainPanel.addGroup({
@@ -363,6 +392,10 @@ let GUI = function(window, undefined) {
         return controlKit
     }
 
+    function getSSSP() {
+        return settings.sqPerSideOfSelectPlane
+    }
+
     /*********** expose public methods *************/
 
     return {
@@ -379,7 +412,8 @@ let GUI = function(window, undefined) {
         togglePickColor: togglePickColor,
         resetActionTimer: resetActionTimer,
         popCircleTimer: popCircleTimer,
-        getControlKit: getControlKit
+        getControlKit: getControlKit,
+        getSSSP: getSSSP
     }
 
 }(window)

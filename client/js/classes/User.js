@@ -131,7 +131,7 @@ let User = function(window, undefined) {
         let gPos = intersect.point.clone().initWorldPos()
         gPos.add(intersect.face.normal).worldToGrid()
 
-        let halfSpssp = (Config.getGrid().sqPerSideOfSelectPlane - 1) / 2
+        let halfSpssp = (GUI.getSSSP() - 1) / 2
 
         let x1 = gPos.x - halfSpssp
         let x2 = gPos.x + halfSpssp

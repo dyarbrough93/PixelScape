@@ -190,26 +190,9 @@ let GameScene = function(window, undefined) {
 
             // this is the transparent plane used to
             // select a region for editing
-            ;
-            (function _initRegionSelectPlane() {
-
-                let spssp = gridConfig.sqPerSideOfSelectPlane
-
-                let selGeom = new THREE.PlaneGeometry(blockSize * spssp, blockSize * spssp)
-                selGeom.rotateX(-Math.PI / 2)
-                selGeom.translate(0, -25, 0)
-
-                let selMat = new THREE.MeshBasicMaterial({
-                    color: '#ff0000',
-                    transparent: true,
-                    opacity: 0.10
-                })
-
-                regionSelectPlane = new THREE.Mesh(selGeom, selMat)
-
-                scene.add(regionSelectPlane)
-
-            })()
+            let bs = Config.getGrid().blockSize
+            let sssp = Config.getGrid().sqPerSideOfSelectPlane
+            setupRegionSelectPlane(bs * sssp)
 
         })()
 
@@ -270,6 +253,26 @@ let GameScene = function(window, undefined) {
         })()
 
         window.addEventListener('resize', onWindowResize)
+
+    }
+
+    function setupRegionSelectPlane(size) {
+
+        scene.remove(regionSelectPlane)
+
+        let selGeom = new THREE.PlaneGeometry(size, size)
+        selGeom.rotateX(-Math.PI / 2)
+        selGeom.translate(0, -25, 0)
+
+        let selMat = new THREE.MeshBasicMaterial({
+            color: '#ff0000',
+            transparent: true,
+            opacity: 0.10
+        })
+
+        regionSelectPlane = new THREE.Mesh(selGeom, selMat)
+
+        scene.add(regionSelectPlane)
 
     }
 
@@ -604,6 +607,7 @@ let GameScene = function(window, undefined) {
         getPSystem: getPSystem,
         getPSystemExpo: getPSystemExpo,
         setDirLightPos: setDirLightPos,
+        setupRegionSelectPlane: setupRegionSelectPlane,
         render: render
 
     }
