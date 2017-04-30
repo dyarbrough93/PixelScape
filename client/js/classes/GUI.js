@@ -59,7 +59,8 @@ let GUI = function(window, undefined) {
                 color: '#000000'
             },
             sqPerSideOfSelectPlane: Config.getGrid().sqPerSideOfSelectPlane,
-            sliderRange: [5, 101]
+            sliderRange: [5, 101],
+            connectedClients: 0
         }
 
         controlKit = new ControlKit()
@@ -279,6 +280,9 @@ let GUI = function(window, undefined) {
                 label: 'Info',
                 enable: false
             })
+            .addStringOutput(settings, 'connectedClients', {
+                label: 'Connections'
+            })
             .addStringOutput(settings, 'coords', {
                 label: 'Coordinates'
             })
@@ -296,10 +300,6 @@ let GUI = function(window, undefined) {
                     GameScene.switchRenderer()
                 }
             })
-            .addButton('Log Out', function() {
-                let url = window.location.protocol + '//' + window.location.host
-                window.location = url + '/signout'
-            })
             .addSlider(settings, 'sqPerSideOfSelectPlane', 'sliderRange', {
                 label: 'Selection Plane Size',
                 onChange: function() {
@@ -312,6 +312,10 @@ let GUI = function(window, undefined) {
                 },
                 step: 1,
                 dp: 0
+            })
+            .addButton('Log Out', function() {
+                let url = window.location.protocol + '//' + window.location.host
+                window.location = url + '/signout'
             })
 
         mainPanel.addGroup({
@@ -396,6 +400,10 @@ let GUI = function(window, undefined) {
         return settings.sqPerSideOfSelectPlane
     }
 
+    function setConnectedClients(num) {
+        settings.connectedClients = num
+    }
+
     /*********** expose public methods *************/
 
     return {
@@ -413,6 +421,7 @@ let GUI = function(window, undefined) {
         resetActionTimer: resetActionTimer,
         popCircleTimer: popCircleTimer,
         getControlKit: getControlKit,
+        setConnectedClients: setConnectedClients,
         getSSSP: getSSSP
     }
 

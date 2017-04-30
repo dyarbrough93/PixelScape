@@ -131,6 +131,10 @@ let SocketHandler = function(window, undefined) {
      */
     function initSocketOns() {
 
+        socket.on('update clients', function(num) {
+            GUI.setConnectedClients(num)
+        })
+
         socket.on('multiple logins', function() {
 
             alert('You are already logged in!')
