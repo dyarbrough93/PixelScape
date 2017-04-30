@@ -45,7 +45,8 @@ module.exports = function(passport, nev) {
 
 		res.render('game', {
 			user: req.user,
-			dev: dev
+			dev: dev,
+			admin: req.user.username === 'admin'
 		})
 	})
 
@@ -144,6 +145,7 @@ module.exports = function(passport, nev) {
 			failureRedirect: '/login',
 			failureFlash: true
 		})(req, res, next)
+
 	})
 
 	router.post('/signup', function(req, res, next) {

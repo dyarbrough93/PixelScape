@@ -90,7 +90,9 @@
     <!-- end libs -->
 
     <!-- game classes -->
+    {% if admin %}
     <script src="/js/classes/Admin.js"></script>
+    {% endif %}
     <script src="/js/classes/WorldData.js"></script>
     <script src="/js/classes/SocketHandler.js"></script>
     <script src="/js/classes/ParticleSystems.js"></script>
