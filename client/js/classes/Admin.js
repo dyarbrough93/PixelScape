@@ -69,7 +69,7 @@ let AdminGUI = function(window, undefined) {
     function initControlKit() {
 
         let mainPanel = controlKit.addPanel({
-                label: 'Admin Biiiiiiitch',
+                label: 'Admin',
                 align: 'left',
                 width: 275
             })
@@ -135,7 +135,7 @@ let AdminGUI = function(window, undefined) {
                 let p = intersect.point.clone().initWorldPos()
                 p.add(intersect.face.normal).worldToGrid()
 
-                let spssp = ((Config.getGrid().sqPerSideOfSelectPlane - 1) / 2)
+                let spssp = ((GUI.getSSSP() - 1) / 2)
                 let c1 = new THREE.Vector3(p.x - spssp, p.y, p.z - spssp).initGridPos()
                 let c2 = new THREE.Vector3(p.x + spssp, p.y, p.z + spssp).initGridPos()
 
