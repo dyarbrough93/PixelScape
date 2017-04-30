@@ -4,11 +4,11 @@ const Schema = mongoose.Schema
 const dev = process.env.NODE_ENV === 'dev' ? 'test' : ''
 
 var userSchema = new Schema({
-    username: String,
+    username: {type: String, unique: true, required: true, dropDups: true},
     firstName: String,
     lastName: String,
-    password: String,
-    email: String,
+    password: {type: String, required: true},
+    email: {type: String, unique: true, required: true, dropDups: true},
     settings: {
         voxelOutlineColor: Number
     }
