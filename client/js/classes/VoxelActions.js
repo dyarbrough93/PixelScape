@@ -147,7 +147,10 @@ let VoxelActions = function(window, undefined) {
         // part of expansion
         if (vox.exp) GameScene.getPSystemExpo().hidePixel(vox.pIdx)
         // part of original
-        else GameScene.getPSystem().hidePixel(sid, vox.pIdx)
+        else {
+            let sid = VoxelUtils.getSectionIndices(gPos)
+            GameScene.getPSystem().hidePixel(sid, vox.pIdx)
+        }
 
         let username = vox.isMesh ? vox.userData.username : vox.username
         WorldData.removeFromUserData(username, gPos)

@@ -160,11 +160,32 @@ WorldData.remove = function(gPos, username, cb) {
                     }
                 }
 
-                return cb(responses.success)
+                return cb(responses.success, gPos)
             })
         })
 
     } else return cb(responses.noExist) // doesn't exist
+
+}
+
+WorldData.batchDelete = function(toDelete, done) {
+
+    var numToDelete = toDelete.length
+    var i = 0
+    var deletedVoxels = []
+
+    function deleteVoxels(i) {
+        var pos = toDelete[i]
+        WorldData.remove(pos, 'Admin', function(success, retPos) {
+            if (success) deletedVoxels.push(retPos)
+            if (i < numToDelete - 1) deleteVoxels(++i)
+            else {
+                return done(deletedVoxels)
+            }
+        })
+    }
+
+    deleteVoxels(0)
 
 }
 

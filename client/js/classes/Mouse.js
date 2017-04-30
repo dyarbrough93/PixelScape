@@ -11,6 +11,7 @@ let Mouse = function(window, undefined) {
      *------------------------------------*/
 
     let pos
+    let preventRegionSel
 
     /*------------------------------------*
      :: Public Methods
@@ -47,6 +48,10 @@ let Mouse = function(window, undefined) {
 
         mouseMove(e)
 
+    }
+
+    function preventRegionSelect() {
+        preventRegionSel = true
     }
 
     /*------------------------------------*
@@ -127,6 +132,11 @@ let Mouse = function(window, undefined) {
                 }
 
             } else if (User.modeIsSelect()) {
+
+                if (preventRegionSel) {
+                    preventRegionSel = false
+                    return
+                }
 
                 // switch to edit mode
                 User.setSelectedRegion(intersect)
@@ -293,7 +303,9 @@ let Mouse = function(window, undefined) {
 
     return {
         init: init,
-        forceTriggerMouseMove: forceTriggerMouseMove
+        forceTriggerMouseMove: forceTriggerMouseMove,
+        getMouseIntersects: getMouseIntersects,
+        preventRegionSelect: preventRegionSelect
     }
 
 }(window)

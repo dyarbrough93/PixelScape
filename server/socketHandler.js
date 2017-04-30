@@ -10,19 +10,19 @@ let worldData
 let i = 0
 function enoughTimePassed(socket, deleteOther) {
 
-	const uname = socket.request.user.username
-	const actDelayKey = uname ? uname : socket.id // guest
-	const delay = (function() {
-		if (uname) {
-			if (deleteOther) return config.deleteOtherDelay
-			return config.actionDelay
-		} else {
-			if (deleteOther) return config.guestDeleteOtherDelay
-			return config.guestActionDelay
-		}
-	})()
+    const uname = socket.request.user.username
+    const actDelayKey = uname ? uname : socket.id // guest
+    const delay = (function() {
+        if (uname) {
+            if (deleteOther) return config.deleteOtherDelay
+            return config.actionDelay
+        } else {
+            if (deleteOther) return config.guestDeleteOtherDelay
+            return config.guestActionDelay
+        }
+    })()
 
-	const delayObj = deleteOther ? deleteActionDelay : actionDelay
+    const delayObj = deleteOther ? deleteActionDelay : actionDelay
 
 	// only allow add if user hasn't
 	// added for delayObj
@@ -43,7 +43,7 @@ function handleBlockOperations(socket) {
     // handle block add
     socket.on('block added', function(block, callback) {
 
-		if (!enoughTimePassed(socket)) return callback(responses.needDelay)
+        if (!enoughTimePassed(socket)) return callback(responses.needDelay)
 
 		let uname = socket.request.user.username
 		if (!uname) uname = 'Guest'
@@ -60,7 +60,7 @@ function handleBlockOperations(socket) {
 
             }
 
-			return callback(response)
+            return callback(response)
 
         })
 
@@ -76,11 +76,11 @@ function handleBlockOperations(socket) {
 
 		let voxelUName = voxel && voxel.username ? voxel.username : 'Guest'
 
-		if (voxel && voxelUName !== 'Guest' && voxelUName !== uname) {
-			if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
-		} else {
-			if (!enoughTimePassed(socket)) return callback(responses.needDelay)
-		}
+        if (voxel && voxelUName !== 'Guest' && voxelUName !== uname) {
+            if (!enoughTimePassed(socket, true)) return callback(responses.needDelay)
+        } else {
+            if (!enoughTimePassed(socket)) return callback(responses.needDelay)
+        }
 
         // try to remove block
         worldData.remove(position, uname, function(response) {
@@ -94,6 +94,20 @@ function handleBlockOperations(socket) {
             }
 
             return callback(response)
+
+        })
+
+    })
+
+    socket.on('batch delete', function(toDelete, done) {
+
+        worldData.batchDelete(toDelete, function(deletedVoxels) {
+
+            for (var i = 0; i < deletedVoxels.length; i++) {
+                socket.broadcast.emit('block removed', deletedVoxels[i])
+            }
+
+            done(deletedVoxels)
 
         })
 

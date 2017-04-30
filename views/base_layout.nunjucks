@@ -40,7 +40,7 @@
             <div id="banner">
 
                 {% for i in range(0, 10) -%}
-                    DEV MODE
+                    DEV MODE 
                 {%- endfor %}
 
             </div>
