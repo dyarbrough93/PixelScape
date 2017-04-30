@@ -13,6 +13,7 @@ let AdminGUI = function(window, undefined) {
     let deletingRegion = false
     let deletingRegionWithColor = false
     let cleaningRegion = false
+    let deletingRegionWithUName = false
 
     setTimeout(function init() {
 
@@ -41,7 +42,12 @@ let AdminGUI = function(window, undefined) {
             cleanRegion: {
                 offText: 'Clean Region',
                 onText: 'Cleaning Region'
-            }
+            },
+            deleteRegionWUName: {
+                offText: 'Delete Region with Username',
+                onText: 'Deleting Region with Username'
+            },
+            username: ''
         }
 
         controlKit = GUI.getControlKit()
@@ -82,6 +88,17 @@ let AdminGUI = function(window, undefined) {
                 toggleAdminControl('cleanRegion', true)
                 cleaningRegion = true
             })
+            .addButton(settings.deleteRegionWUName.offText, function() {
+                Mouse.preventRegionSelect()
+                toggleAdminControl('deleteRegionWUName', true)
+                deletingRegionWithUName = true
+            })
+            .addStringInput(settings, 'username', {
+                label: 'Username',
+                onChange: function() {
+                    console.log('onChange')
+                }
+            })
 
     }
 
@@ -109,13 +126,11 @@ let AdminGUI = function(window, undefined) {
      */
     function leftDown(e) {
 
-        e.preventDefault()
-
         let intersect = Mouse.getMouseIntersects(e).closestIntx
 
         if (intersect) {
 
-            if (deletingRegion || deletingRegionWithColor || cleaningRegion) {
+            if (deletingRegionWithUName || deletingRegion || deletingRegionWithColor || cleaningRegion) {
 
                 let p = intersect.point.clone().initWorldPos()
                 p.add(intersect.face.normal).worldToGrid()
@@ -129,60 +144,64 @@ let AdminGUI = function(window, undefined) {
 
                 let particleSystem = GameScene.getPSystem()
 
-                if (deletingRegion || deletingRegionWithColor || cleaningRegion) {
+                let c1Sid = VoxelUtils.getSectionIndices(c1)
+                let c2Sid = VoxelUtils.getSectionIndices(c2)
 
-                    let c1Sid = VoxelUtils.getSectionIndices(c1)
-                    let c2Sid = VoxelUtils.getSectionIndices(c2)
+                let count = 0
+                let toRemove = []
 
-                    let count = 0
-                    let toRemove = []
+                let voxels = WorldData.getWorldData()
 
-                    let voxels = WorldData.getWorldData()
+                for (let x = c1Sid.a; x <= c2Sid.a; x++) {
+                    for (let z = c1Sid.b; z <= c2Sid.b; z++) {
+                        for (let voxPos in voxels[x][z]) {
+                            let gPos = VoxelUtils.coordStrParse(voxPos)
+                            if (gPos.x >= c1.x && gPos.z >= c1.z &&
+                                gPos.x <= c2.x && gPos.z <= c2.z) {
 
-                    for (let x = c1Sid.a; x <= c2Sid.a; x++) {
-                        for (let z = c1Sid.b; z <= c2Sid.b; z++) {
-                            for (let voxPos in voxels[x][z]) {
-                                let gPos = VoxelUtils.coordStrParse(voxPos)
-                                if (gPos.x >= c1.x && gPos.z >= c1.z &&
-                                    gPos.x <= c2.x && gPos.z <= c2.z) {
-
-                                    if (deletingRegionWithColor) {
-                                        if (WorldData.getVoxel(gPos).hColor !== VoxelUtils.hexStringToDec(GUI.getBlockColor()))
-                                            continue
-                                    }
-
-                                    if (cleaningRegion) {
-                                        let sid = new VoxelUtils.Tuple(x, z)
-                                        if (touchingOwnColor(sid, gPos))
-                                            continue
-                                    }
-
-                                    toRemove.push(gPos)
-
-                                    let sid = new VoxelUtils.Tuple(x, z)
-                                    let vox = voxels[x][z][voxPos]
-                                    let wPos = gPos.clone().gridToWorld()
-                                    particleSystem.hidePixel(sid, vox.pIdx)
-                                    WorldData.removeVoxel(gPos)
+                                if (deletingRegionWithColor) {
+                                    if (WorldData.getVoxel(gPos).hColor !== VoxelUtils.hexStringToDec(GUI.getBlockColor()))
+                                        continue
                                 }
+
+                                if (cleaningRegion) {
+                                    let sid = new VoxelUtils.Tuple(x, z)
+                                    if (touchingOwnColor(sid, gPos))
+                                        continue
+                                }
+
+                                if (deletingRegionWithUName) {
+                                    if (WorldData.getVoxel(gPos).username !== settings.username)
+                                        continue
+                                }
+
+                                toRemove.push(gPos)
+
+                                let sid = new VoxelUtils.Tuple(x, z)
+                                let vox = voxels[x][z][voxPos]
+                                let wPos = gPos.clone().gridToWorld()
+                                particleSystem.hidePixel(sid, vox.pIdx)
+                                WorldData.removeVoxel(gPos)
                             }
                         }
                     }
-                    if (toRemove.length > 0) {
-                        socket.emit('batch delete', toRemove, function(deletedVoxels) {
-                            console.log(`removed ${deletedVoxels.length} of ${toRemove.length} voxels.`)
-                        })
-                    }
-
-                    toggleAdminControl('deleteRegion', false)
-                    toggleAdminControl('deleteRegionWColor', false)
-                    toggleAdminControl('cleanRegion', false)
-
-                    deletingRegion = false
-                    deletingRegionWithColor = false
-                    cleaningRegion = false
-
                 }
+                if (toRemove.length > 0) {
+                    socket.emit('batch delete', toRemove, function(deletedVoxels) {
+                        console.log(`removed ${deletedVoxels.length} of ${toRemove.length} voxels.`)
+                    })
+                }
+
+                toggleAdminControl('deleteRegion', false)
+                toggleAdminControl('deleteRegionWColor', false)
+                toggleAdminControl('cleanRegion', false)
+                toggleAdminControl('deleteRegionWUName', false)
+
+                deletingRegion = false
+                deletingRegionWithColor = false
+                cleaningRegion = false
+                deletingRegionWithUName = false
+
             }
         }
     }
