@@ -54,6 +54,10 @@ let Mouse = function(window, undefined) {
         preventRegionSel = true
     }
 
+    function getMousePos() {
+        return pos
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -305,7 +309,8 @@ let Mouse = function(window, undefined) {
         init: init,
         forceTriggerMouseMove: forceTriggerMouseMove,
         getMouseIntersects: getMouseIntersects,
-        preventRegionSelect: preventRegionSelect
+        preventRegionSelect: preventRegionSelect,
+        getMousePos: getMousePos
     }
 
 }(window)

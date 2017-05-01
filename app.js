@@ -26,7 +26,7 @@ const nev = require('./server/emailVerification.js')(mongoose)
 // my files
 const routes = require('./server/routes.js')(passport, nev)
 const initPassport = require('./server/passport/init.js')
-const mongoDB = require('./server/MongoDB.js')
+const mongoDB = require('./server/MongoDb.js')
 const worldData = require('./server/worldData.js')
 const socketHandler = require('./server/socketHandler.js')
 const dbUrl = require('./server/local.js').mongo.dbUrl
