@@ -30,9 +30,7 @@
         "start": "node app.js",
         "startw": "node server/generateClientFiles.js && grunt && node app.js",
         "dev": "node server/generateClientFiles.js && NODE_ENV=dev node app.js",
-        "devl": "node server/generateClientFiles.js && NODE_ENV=dev node app.js",
         "devw": "node server/generateClientFiles.js && set NODE_ENV=dev&& node app.js",
-        "devwl": "node server/generateClientFiles.js && set NODE_ENV=dev&& node app.js",
         "lint": "eslint .",
         "clean": "rm -rf build",
         "jsdoc": "jsdoc ./server ./client ./README.md -r -a all -c ./jsdocconf.json -d jsdoc"

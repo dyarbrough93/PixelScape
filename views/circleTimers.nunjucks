@@ -1,24 +1,26 @@
+<!-- shadow -->
 <div class="circleTimer" style="display: block">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#e0e0e0" fill="none"/></g>
+        <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#89e0c4" fill="none"/></g>
     </svg>
 </div>
 
 <div id="actOwnCircleTimer" class="circleTimer">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#595959" fill="none"/></g>
+        <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#3e9f7f" fill="none"/></g>
     </svg>
 </div>
 
+<!-- shadow -->
 <div class="circleTimer" style="display: block">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#e6c8c8" fill="none"/></g>
+        <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#89e0c4" fill="none"/></g>
     </svg>
 </div>
 
 <div id="actOtherCircleTimer" class="circleTimer">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#7a0000" fill="none"/></g>
+        <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#235c49" fill="none"/></g>
     </svg>
 </div>
 
@@ -35,11 +37,11 @@
                     These are your <code>Action Timers</code>.
                 </p>
                 <p>
-                    The outer, grey timer is your <code>Personal Action Timer</code>. This resets every time you place a new block, delete your own block,
+                    The outer timer is your <code>Personal Action Timer</code>. This resets every time you place a new block, delete your own block,
                     or delete a guests block.
                 </p>
                 <p>
-                    The inner, red circle is your <code>Delete Other Timer</code>. This resets every time you delete a block that is neither your own nor a guests.
+                    The inner circle is your <code>Delete Other Timer</code>. This resets every time you delete a block that is neither your own nor a guests.
                 </p>
                 <p>
                     You are a guest, so the delay between actions is quite long! <a href="/login">Create an Account</a> for significantly reduced action delays.

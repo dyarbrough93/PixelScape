@@ -32,6 +32,7 @@ let GameScene = function(window, undefined) {
     let voxelPlane
     let mapControlsPlane
     let regionSelectPlane
+    let rspColors
 
     // meshes
     let ghostMesh
@@ -84,15 +85,18 @@ let GameScene = function(window, undefined) {
                 r.setClearColor('#ffffff')
                 r.sortObjects = false
                 r.setSize(window.innerWidth, window.innerHeight)
+                r.setClearColor(0x000000, 0)
 
             }
 
             aarenderer = new THREE.WebGLRenderer({
-                antialias: true
+                antialias: true,
+                alpha: true
             })
 
             noaarenderer = new THREE.WebGLRenderer({
-                antialias: false
+                antialias: false,
+                alpha: true
             })
 
             setSharedConfig(aarenderer)
@@ -163,7 +167,9 @@ let GameScene = function(window, undefined) {
                 floorGeom.translate(0, -25, 0)
 
                 let floorMat = new THREE.MeshBasicMaterial({
-                    color: '#f5f5f5'
+                    color: '#ffffff',
+                    opacity: '0.15',
+                    transparent: true
                 })
 
                 let floorPlane = new THREE.Mesh(floorGeom, floorMat)
@@ -258,6 +264,11 @@ let GameScene = function(window, undefined) {
 
     function setupRegionSelectPlane(size) {
 
+        rspColors = {
+            off: '#7900ab',
+            on: '#c1ffea'
+        }
+
         scene.remove(regionSelectPlane)
 
         let selGeom = new THREE.PlaneGeometry(size, size)
@@ -265,7 +276,7 @@ let GameScene = function(window, undefined) {
         selGeom.translate(0, -25, 0)
 
         let selMat = new THREE.MeshBasicMaterial({
-            color: '#ff0000',
+            color: rspColors.off,
             transparent: true,
             opacity: 0.10
         })
@@ -313,10 +324,10 @@ let GameScene = function(window, undefined) {
 
         if (!visible) {
             regionSelectPlane.material.opacity = 0.085
-            regionSelectPlane.material.color.set(0xb1b1b1)
+            regionSelectPlane.material.color.set(rspColors.on)
         } else {
             regionSelectPlane.material.opacity = 0.10
-            regionSelectPlane.material.color.set(0xff0000)
+            regionSelectPlane.material.color.set(rspColors.off)
         }
 
         render()
