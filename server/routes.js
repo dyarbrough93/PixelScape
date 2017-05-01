@@ -39,6 +39,9 @@ module.exports = function(passport, nev) {
 
 	router.get('/', isAuthenticated, function(req, res) {
 
+		req.session.loginFormData = {}
+		req.session.signupFormData = null
+
 		res.render('game', {
 			user: req.user,
 			dev: dev,
