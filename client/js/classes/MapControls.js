@@ -12,7 +12,6 @@
  */
  let MapControls = function() {
 
-     let enabled
      let target
      let raycastPlane
      let camera
@@ -26,8 +25,7 @@
 
      function init() {
 
-         enabled = true
-         this.target = new THREE.Vector3()
+         target = new THREE.Vector3()
          raycastPlane = GameScene.getMapControlsPlane()
          camera = GameScene.getCamera()
          config = Config.getMapControls()
@@ -77,22 +75,13 @@
 
     function onMouseDown(event) {
 
-        if (!enabled) {
-            return
-        }
 
         let intersects
         if (event.button === 1) {
 
             state = STATE.PAN
 
-            let mouseX = (event.clientX / window.innerWidth) * 2 - 1
-            let mouseY = -(event.clientY / window.innerHeight) * 2 + 1
-
-            intersects = getIntersects({
-                x: mouseX,
-                y: mouseY
-            })
+            intersects = getIntersects(Mouse.getMousePos())
 
             if (intersects.length > 0) {
 
@@ -124,21 +113,11 @@
 
     function onMouseMove(event) {
 
-        if (enabled === false) return
-
         event.preventDefault()
-
-        let element = document === document ? document.body : document
 
         if (state === STATE.PAN) {
 
-            let mouseX = (event.clientX / window.innerWidth) * 2 - 1
-            let mouseY = -(event.clientY / window.innerHeight) * 2 + 1
-
-            let intersects = getIntersects({
-                x: mouseX,
-                y: mouseY
-            })
+            let intersects = getIntersects(Mouse.getMousePos())
 
             if (intersects.length > 0) {
 
@@ -164,6 +143,8 @@
             }
 
         } else if (state === STATE.ROTATE) {
+
+            let element = document === document ? document.body : document
 
             rotateEnd.set(event.clientX, event.clientY)
             rotateDelta.subVectors(rotateEnd, rotateStart)
@@ -216,8 +197,6 @@
 
     function onMouseUp( /* event */ ) {
 
-        if (enabled === false) return
-
         document.removeEventListener('mousemove', onMouseMove, false)
         document.removeEventListener('mouseup', onMouseUp, false)
 
@@ -226,8 +205,6 @@
     }
 
     function onMouseWheel(event) {
-
-        if (enabled === false) return
 
         let delta = 0
 
@@ -248,7 +225,7 @@
 
         let pos = camera.position.clone()
         pos.addVectors(pos, zoomOffset)
-        //
+
         if ((delta < 0 && pos.y > camMaxy) ||
             (delta > 0 && pos.y < camMiny) ||
             (pos.x < camMinxz && pos.x < camera.position.x) ||
@@ -262,11 +239,26 @@
 
     }
 
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault()
-    }, false)
-    document.addEventListener('mousedown', onMouseDown, false)
-    document.addEventListener('wheel', onMouseWheel, false)
+    function ctxMenu(e) {
+        e.preventDefault()
+    }
+
+    $(document).on('modalClosed', function() {
+
+        document.addEventListener('contextmenu', ctxMenu)
+        document.addEventListener('mousedown', onMouseDown)
+        document.addEventListener('wheel', onMouseWheel)
+
+    })
+
+    $(document).on('modalOpened', function() {
+
+        document.removeEventListener('contextmenu', ctxMenu)
+        document.removeEventListener('mousedown', onMouseDown)
+        document.removeEventListener('wheel', onMouseWheel)
+
+    })
+
 
     return {
         init: init

@@ -4,14 +4,10 @@ const router = express.Router()
 
 let isAuthenticated = function(req, res, next) {
 
-	if (process.env.USE_LOGIN === 'y') {
-
-		if (req.isAuthenticated()) {
-			return next()
-        }
-		res.redirect('/login')
-
-	} else return next()
+	if (req.isAuthenticated()) {
+		return next()
+    }
+	res.redirect('/login')
 
 }
 

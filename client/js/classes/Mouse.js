@@ -27,7 +27,8 @@ let Mouse = function(window, undefined) {
 
         pos = {}
 
-        addEventListeners()
+        $(document).on('modalClosed', addEventListeners)
+        $(document).on('modalOpened', removeEventListeners)
 
     }
 
@@ -52,6 +53,10 @@ let Mouse = function(window, undefined) {
 
     function preventRegionSelect() {
         preventRegionSel = true
+    }
+
+    function getMousePos() {
+        return pos
     }
 
     /*------------------------------------*
@@ -305,7 +310,8 @@ let Mouse = function(window, undefined) {
         init: init,
         forceTriggerMouseMove: forceTriggerMouseMove,
         getMouseIntersects: getMouseIntersects,
-        preventRegionSelect: preventRegionSelect
+        preventRegionSelect: preventRegionSelect,
+        getMousePos: getMousePos
     }
 
 }(window)
