@@ -3,7 +3,17 @@
 {% block head %}
 
     <!-- css -->
-    <!--<link href="css/modal.css"></link>-->
+    <link rel="stylesheet" href="/css/modal.css"></link>
+
+    <!-- libs -->
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+    <script src="/js/lib/threejs-r85.min.js"></script>
+    <script src="/js/lib/Detector.min.js"></script>
+    <script src="/js/lib/socket.io-1.4.5.min.js"></script>
+    <script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
+    <script src="/js/lib/controlKit.min.js"></script>
+    <script src="/js/lib/getFuncParamNames.min.js"></script>
+    <!-- end libs -->
 
 {% endblock %}
 
@@ -41,7 +51,7 @@
     </style>
 
     <!-- modal content -->
-    <!--<div id="basic-modal-content">
+    <div id="basic-modal-content">
         <h2>PixelScape</h2>
         <p>Welcome to PixelScape! In PixelScape, you can collaboratively (or destructively) edit a 3d environment of voxels with other players.</p>
         <h3>Controls</h3>
@@ -66,28 +76,8 @@
         <p><code>Cooldown Timer</code>This shows how much time you have left before you can perform another action.</p>
         <p><code>View Only</code>Raycasting a large number of blocks is performance heavy, so you are only allowed to convert a certain number of blocks for editing. Selecting this option will disable raycasting in edit mode, allowing you to convert more
             pixels to voxels; however, you will not be able to add or remove voxels.</p>
-    </div>-->
+    </div>
     <!-- end modal -->
-
-    <script>
-        // open the modal on page load
-        /*$('#basic-modal-content').modal({
-        onClose: function() {
-            modalClosed()
-            $.modal.impl.close()
-        }
-    })*/
-    </script>
-
-    <!-- libs -->
-    <script src="/js/lib/jquery-1.11.1.min.js"></script>
-    <script src="/js/lib/threejs-r85.min.js"></script>
-    <script src="/js/lib/Detector.min.js"></script>
-    <script src="/js/lib/socket.io-1.4.5.min.js"></script>
-    <script src="/js/lib/jquery.simplemodal.1.4.4.min.js"></script>
-    <script src="/js/lib/controlKit.min.js"></script>
-    <script src="/js/lib/getFuncParamNames.min.js"></script>
-    <!-- end libs -->
 
     <!-- game classes -->
     {% if admin %}

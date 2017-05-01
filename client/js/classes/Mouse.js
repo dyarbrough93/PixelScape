@@ -27,7 +27,8 @@ let Mouse = function(window, undefined) {
 
         pos = {}
 
-        addEventListeners()
+        $(document).on('modalClosed', addEventListeners)
+        $(document).on('modalOpened', removeEventListeners)
 
     }
 

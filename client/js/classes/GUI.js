@@ -66,6 +66,7 @@ let GUI = function(window, undefined) {
         guiClicked = false
 
         initControlKit()
+        showModal()
 
         // if it was the gui that was clicked,
         // save this fact so that we can prevent
@@ -229,6 +230,17 @@ let GUI = function(window, undefined) {
 
     }
 
+    function showModal() {
+        $('#basic-modal-content').modal({
+            onClose: hideModal
+        })
+    }
+
+    function hideModal() {
+        $(document).trigger('modalClosed')
+        $.modal.impl.close()
+    }
+
     /*------------------------------------*
      :: Private Methods
      *------------------------------------*/
@@ -284,6 +296,10 @@ let GUI = function(window, undefined) {
             })
             .addStringInput(settings.debug, 'userName', {
                 label: 'Username'
+            })
+            .addButton('Show Controls', function() {
+                $(document).trigger('modalOpened')
+                showModal()
             })
 
         mainPanel.addGroup({

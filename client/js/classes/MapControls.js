@@ -239,11 +239,26 @@
 
     }
 
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault()
-    }, false)
-    document.addEventListener('mousedown', onMouseDown, false)
-    document.addEventListener('wheel', onMouseWheel, false)
+    function ctxMenu(e) {
+        e.preventDefault()
+    }
+
+    $(document).on('modalClosed', function() {
+
+        document.addEventListener('contextmenu', ctxMenu)
+        document.addEventListener('mousedown', onMouseDown)
+        document.addEventListener('wheel', onMouseWheel)
+
+    })
+
+    $(document).on('modalOpened', function() {
+
+        document.removeEventListener('contextmenu', ctxMenu)
+        document.removeEventListener('mousedown', onMouseDown)
+        document.removeEventListener('wheel', onMouseWheel)
+
+    })
+
 
     return {
         init: init
