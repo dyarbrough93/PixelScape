@@ -33,25 +33,6 @@
     <script src="/js/classes/Validation.js"></script>
     <!-- end game classes -->
 
-    <style>
-        /* background gradient */
-        body {
-            background-color: #43cea2;
-            margin: 0;
-            overflow: hidden;
-            background-image: -webkit-gradient(#43cea2, #185a9d);
-            /* Safari 5.1, iOS 5.0-6.1, Chrome 10-25, Android 4.0-4.3 */
-            background-image: -webkit-linear-gradient(#43cea2, #185a9d);
-            /* Firefox 3.6 - 15 */
-            background-image: -moz-linear-gradient(#43cea2, #185a9d);
-            /* Opera 11.1 - 12 */
-            background-image: -o-linear-gradient(#43cea2, #185a9d);
-            /* Opera 15+, Chrome 25+, IE 10+, Firefox 16+, Safari 6.1+, iOS 7+, Android 4.4+ */
-            background-image: linear-gradient(#43cea2, #185a9d);
-        }
-
-    </style>
-
 {% endblock %}
 
 {% block body %}

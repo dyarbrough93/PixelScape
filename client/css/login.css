@@ -32,7 +32,7 @@
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
-    background: #af4c4c;
+    background: #6e4dea;
     width: 100%;
     border: 0;
     padding: 15px;
@@ -44,7 +44,7 @@
 }
 
 .form button:hover, .form button:active, .form button:focus {
-    background: #9f4343;
+    background: #876bee;
 }
 
 .form p {
@@ -54,7 +54,7 @@
 }
 
 .form p a {
-    color: #af4c4c;
+    color: #6e4dea;
     text-decoration: none;
 }
 
@@ -102,14 +102,26 @@
     color: #EF3B3A;
 }
 
+html {
+    height: 100%;
+}
+
 body {
-    /* fallback for old browsers */
-    background: #858585;
-    background: -webkit-linear-gradient(right, #666565, #2f2f2f);
-    background: -moz-linear-gradient(right, #666565, #2f2f2f);
-    background: -o-linear-gradient(right, #666565, #2f2f2f);
-    background: linear-gradient(to left, #b85252, #2f2f2f);
+
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    background-color: #43cea2;
+    margin: 0;
+    overflow: hidden;
+    background-image: -webkit-gradient(#43cea2, #185a9d);
+    /* Safari 5.1, iOS 5.0-6.1, Chrome 10-25, Android 4.0-4.3 */
+    background-image: -webkit-linear-gradient(#43cea2, #185a9d);
+    /* Firefox 3.6 - 15 */
+    background-image: -moz-linear-gradient(#43cea2, #185a9d);
+    /* Opera 11.1 - 12 */
+    background-image: -o-linear-gradient(#43cea2, #185a9d);
+    /* Opera 15+, Chrome 25+, IE 10+, Firefox 16+, Safari 6.1+, iOS 7+, Android 4.4+ */
+    background-image: linear-gradient(#43cea2, #185a9d);
 }

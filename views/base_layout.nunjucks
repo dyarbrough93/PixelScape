@@ -10,6 +10,7 @@
 
         <link rel="icon" type="image/png" href="/img/favicon.png">
         <link rel="stylesheet" href="/css/bootstrap.3.0.0.min.css">
+        <link rel="stylesheet" href="/css/login.css"></link>
 
         <script src="/js/lib/jquery-1.11.1.min.js"></script>
         <script src="/js/lib/bootstrap.3.0.0.min.js"></script>

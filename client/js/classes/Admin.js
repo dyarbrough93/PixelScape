@@ -71,7 +71,8 @@ let AdminGUI = function(window, undefined) {
         let mainPanel = controlKit.addPanel({
                 label: 'Admin',
                 align: 'left',
-                width: 275
+                width: 275,
+                fixed: false
             })
             .addButton(settings.deleteRegion.offText, function() {
                 Mouse.preventRegionSelect()

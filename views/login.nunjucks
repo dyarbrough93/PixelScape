@@ -1,7 +1,6 @@
 {% extends './base_layout.nunjucks' %}
 
 {% block head %}
-    <link rel="stylesheet" href="/css/login.css"></link>
     <style>
         body {
             margin: 0;
