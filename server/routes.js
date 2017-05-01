@@ -27,7 +27,7 @@ module.exports = function(passport, nev) {
 
 	router.get('/guest', function(req, res) {
 		req.logout()
-		res.render('game')
+		res.render('game', {guest: true})
 	})
 
 	router.get('/signout', function(req, res) {

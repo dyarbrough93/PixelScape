@@ -1,0 +1,80 @@
+<style>
+    .modal.modal-wide .modal-dialog {
+        width: 75%;
+    }
+    .modal-wide .modal-body {
+        overflow-y: auto;
+    }
+
+</style>
+
+<div id="welcome-modal" class="modal modal-wide fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Welcome</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Welcome to PixelScape! In PixelScape, you can collaboratively edit a 3d environment of voxels with other players.
+                </p>
+                <p>
+                    You can display this dialog at any time by clicking the "Show Controls" button under the "Info" menu of the GUI.
+                </p>
+                <h3>Controls</h3>
+                <p>To allow for a larger number of possible voxels in the game at once, the voxels are rendered as square pixels in their default state. To switch to edit mode, hover the selection square over the region you wish to edit and left click. Controls for
+                    each mode are listed below.
+                </p>
+                <h4>Both Modes</h4>
+                <p>
+                    <code>Right Click + Drag</code>
+                    &nbsp;Rotate the scene</p>
+                <p>
+                    <code>Mouse wheel</code>
+                    &nbsp;Zoom in/out</p>
+                <p>
+                    <code>Middle Click + Drag:</code>
+                    &nbsp;Pan the scene</p>
+                <h4>View Mode</h4>
+                <p>
+                    <code>Left click</code>
+                    &nbsp;Convert the selected region of pixels into voxels for editing.</p>
+                <p>The size of the selection square can also be adjusted using the the slider in the "Settings" menu of the GUI in the top right.</p>
+                <h4>Edit Mode</h4>
+                <p>
+                    <code>Esc</code> &nbsp;Return to view mode.</p>
+                <p>
+                    <code>Left click</code> &nbsp;Add a voxel at the selected location</p>
+                <p>
+                    <code>Shift + Left click</code> &nbsp;Delete the voxel at the selected location</p>
+                <p>
+                <h4>Additional GUI Controls</h4>
+                <p>
+                    <code>Controls:Colors:Color Picker</code> &nbsp;Click the color picker button, then click a voxel. The block color will be set to the voxel you picked.</p>
+                <p>
+                    <code>Controls:Colors:Random Color</code> &nbsp;Click it to set your block color to a random color.</p>
+                <p>
+                <p>
+                    <code>Controls:Highlight Voxels By User:Start Highlighting</code> &nbsp;Click "Start Highlighting", then hover a voxel. The owner of that voxel will be displayed in the "Owner" field, and all voxels that that user owns will be highlighted.</p>
+                <p>
+                    <p>
+                        <code>Settings:Antialiasing</code> &nbsp;Uncheck this to disable antialiasing if you are experiencing performance issues.</p>
+                    <p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+    $('#welcome-modal').on('show.bs.modal', function () {
+        let height = $(window).height() - 300
+        $(this).find('.modal-body').css('max-height', height)
+    })
+</script>

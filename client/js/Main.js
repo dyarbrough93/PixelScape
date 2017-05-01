@@ -10,11 +10,11 @@ var Main = function() {
     $(document).ready(function() {
 
         // initialize classes
+        Mouse.init()
         GUI.init()
         Raycast.init()
         GameScene.init()
         WorldData.init()
-        Mouse.init()
         Keys.init()
         User.init()
         MapControls.init()

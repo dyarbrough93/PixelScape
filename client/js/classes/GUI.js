@@ -67,7 +67,13 @@ let GUI = function(window, undefined) {
         guiClicked = false
 
         initControlKit()
-        showModal()
+
+        if (User.getUName() === 'Guest') showModal()
+        else $(document).trigger('modalClosed')
+
+        $('#welcome-modal').on('hidden.bs.modal', function() {
+            $(document).trigger('modalClosed')
+        })
 
         // if it was the gui that was clicked,
         // save this fact so that we can prevent
@@ -80,6 +86,15 @@ let GUI = function(window, undefined) {
                 guiClicked = true
             })
 
+        })
+
+        $('#circleTimerHelp').mousedown(function() {
+            guiClicked = true
+            $(document).trigger('modalOpened')
+        })
+
+        $('#timerHelpModal').on('hidden.bs.modal', function() {
+            $(document).trigger('modalClosed')
         })
 
     }
@@ -232,14 +247,7 @@ let GUI = function(window, undefined) {
     }
 
     function showModal() {
-        $('#basic-modal-content').modal({
-            onClose: hideModal
-        })
-    }
-
-    function hideModal() {
-        $(document).trigger('modalClosed')
-        $.modal.impl.close()
+        $('#welcome-modal').modal()
     }
 
     /*------------------------------------*

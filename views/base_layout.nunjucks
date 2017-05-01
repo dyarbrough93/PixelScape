@@ -9,8 +9,10 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
         <link rel="icon" type="image/png" href="/img/favicon.png">
+        <link rel="stylesheet" href="/css/bootstrap.3.0.0.min.css">
 
         <script src="/js/lib/jquery-1.11.1.min.js"></script>
+        <script src="/js/lib/bootstrap.3.0.0.min.js"></script>
 
         <style>
             body {
@@ -40,7 +42,7 @@
             <div id="banner">
 
                 {% for i in range(0, 10) -%}
-                    DEV MODE 
+                    DEV MODE
                 {%- endfor %}
 
             </div>

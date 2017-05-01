@@ -191,6 +191,7 @@ let Keys = function(window, undefined) {
             User.resetSelectedRegion()
             PixVoxConversion.convertToPixels()
             GameScene.setGhostMeshVis(false)
+            Mouse.forceTriggerMouseMove()
             GameScene.render()
 
         }
