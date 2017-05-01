@@ -1,12 +1,14 @@
 const User = require('./models/User')
 const email = require('./local.js').email
+const devEnv = process.env.NODE_ENV === 'dev'
 
 function init(mongoose) {
 
 	const nev = require('email-verification')(mongoose)
+	const domain = devEnv ? 'http://localhost:5000/email-verification/' : 'https://pixelscape.herokuapp.com/'
 
 	nev.configure({
-		verificationURL: 'http://localhost:5000/email-verification/${URL}',
+		verificationURL: domain + '${URL}',
 		persistentUserModel: User,
 		tempUserCollection: 'unverified_users',
 		shouldSendConfirmation: false,
