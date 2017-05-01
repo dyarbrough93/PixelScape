@@ -24,8 +24,8 @@ WorldData.count = function() {
     }
 }
 
-function getPosStr(pos) {
-    return 'x' + pos.x + 'y' + pos.y + 'z' + pos.z
+function getPosStr(gPos) {
+    return 'x' + gPos.x + 'y' + gPos.y + 'z' + gPos.z
 }
 
 function dbErr(err) {
@@ -34,6 +34,18 @@ function dbErr(err) {
         return true
     }
     return false
+}
+
+function withinGridBoundaries(gPos) {
+
+    let minxz = config.minXZ
+    let maxxz = config.maxXZ
+
+    return (gPos.x >= minxz &&
+        gPos.z >= minxz &&
+        gPos.x <= maxxz &&
+        gPos.z <= maxxz)
+
 }
 
 /*
@@ -45,17 +57,18 @@ function dbErr(err) {
  */
 WorldData.add = function(voxel, username, cb) {
 
-    let pos = voxel.position
+    let gPos = voxel.position
 
     // check constraints
     if (numVoxels >= config.maxGlobalBlocks) return cb(responses.maxVoxels)
-    if (pos.y >= config.maxVoxelHeight) return cb(responses.tooHigh)
+    if (gPos.y >= config.maxVoxelHeight) return cb(responses.tooHigh)
+    if (!withinGridBoundaries(gPos)) return cb(responses.outOfBounds)
 
     // already exists
-    if (WorldData.voxels.hasOwnProperty(getPosStr(pos)))
+    if (WorldData.voxels.hasOwnProperty(getPosStr(gPos)))
         return cb(responses.alreadyExists)
 
-    WorldData.voxels[getPosStr(pos)] = {
+    WorldData.voxels[getPosStr(gPos)] = {
         c: voxel.color,
         username: username
     }
@@ -70,7 +83,7 @@ WorldData.add = function(voxel, username, cb) {
     })
 
     let vox = new VoxelData({
-        key: getPosStr(pos),
+        key: getPosStr(gPos),
         data: {
             c: parseInt(voxel.color),
             username: username
@@ -81,13 +94,13 @@ WorldData.add = function(voxel, username, cb) {
     // operations collection
     op.save(function(err) {
         if (dbErr(err)) {
-            delete WorldData.voxels[getPosStr(pos)]
+            delete WorldData.voxels[getPosStr(gPos)]
             return cb(responses.dbErr)
         }
 
         vox.save(function(err2) {
             if (dbErr(err2)) {
-                delete WorldData.voxels[getPosStr(pos)]
+                delete WorldData.voxels[getPosStr(gPos)]
                 return cb(responses.dbErr)
             }
 
@@ -96,7 +109,7 @@ WorldData.add = function(voxel, username, cb) {
                 // give the user ownership of the voxel
                 let uarr = WorldData.userData[username]
                 if (!uarr) WorldData.userData[username] = []
-                WorldData.userData[username].push(getPosStr(pos))
+                WorldData.userData[username].push(getPosStr(gPos))
 
             }
 
@@ -175,8 +188,8 @@ WorldData.batchDelete = function(toDelete, done) {
     var deletedVoxels = []
 
     function deleteVoxels(i) {
-        var pos = toDelete[i]
-        WorldData.remove(pos, 'Admin', function(success, retPos) {
+        var gPos = toDelete[i]
+        WorldData.remove(gPos, 'Admin', function(success, retPos) {
             if (success) deletedVoxels.push(retPos)
             if (i < numToDelete - 1) deleteVoxels(++i)
             else {

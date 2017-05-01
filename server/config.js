@@ -78,6 +78,9 @@ const clientConfig = {
 _.merge(serverConfig, sharedConfig)
 _.merge(clientConfig.general, sharedConfig)
 
+serverConfig.minXZ = -(clientConfig.grid.sqPerSideOfGrid / 2)
+serverConfig.maxXZ = (clientConfig.grid.sqPerSideOfGrid / 2)
+
 module.exports = {
     server: serverConfig,
     client: clientConfig

@@ -5,5 +5,6 @@ module.exports = {
     alreadyExists: 'alreadyExists',
     noExist: 'noExist',
     maxVoxels: 'maxVoxels',
-    needDelay: 'needDelay'
+    needDelay: 'needDelay',
+    outOfBounds: 'outOfBounds'
 }
