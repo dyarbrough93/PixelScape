@@ -9,6 +9,11 @@ var Main = function() {
 
     $(document).ready(function() {
 
+        $('body').mousedown(function (e) {
+            if (e.button == 1)
+                e.preventDefault()
+        })
+
         // initialize classes
         Mouse.init()
         GUI.init()
