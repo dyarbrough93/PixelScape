@@ -8,8 +8,10 @@
         }
         #flash_messages {
             float: left;
-            background-color: #ff6666;
+            background-color: #ffffff;
             width: 100%;
+            opacity: 0.6;
+
         }
         #flash_messages .message {
             list-style: none;
