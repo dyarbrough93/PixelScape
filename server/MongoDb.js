@@ -1,8 +1,6 @@
-const dbUrl = require('./local.js').mongo.dbUrl
-
 function init(mongoose, done) {
 
-    mongoose.connect(dbUrl)
+    mongoose.connect(process.env.DB_URL)
     const conn = mongoose.connection
     conn.once('open', done)
 

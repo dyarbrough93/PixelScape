@@ -29,14 +29,13 @@ const initPassport = require('./server/passport/init.js')
 const mongoDB = require('./server/MongoDb.js')
 const worldData = require('./server/worldData.js')
 const socketHandler = require('./server/socketHandler.js')
-const dbUrl = require('./server/local.js').mongo.dbUrl
 
 /*------------------------------------*
  :: Express config
  *------------------------------------*/
 
 const sessionStore = new MongoStore({
-	url: dbUrl
+	url: process.env.DB_URL
 })
 
 // static client folder
