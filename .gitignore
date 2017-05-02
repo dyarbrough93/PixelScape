@@ -66,11 +66,7 @@ three.js-master/
 # Textures
 textures/
 
-client/js/classes/Config\.js
-
 jsdoc/
 build/
 
 server/local\.js
-
-client/js/classes/SocketResponses\.js
