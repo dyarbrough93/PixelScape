@@ -1,7 +1,7 @@
 const formConfig = require('../config.js').server.loginForm
 const LocalStrategy = require('passport-local').Strategy
 const bCrypt = require('bcrypt-nodejs')
-const User = require('../models/User.js')
+const User = require('../models/User.js').user
 
 module.exports = function(passport, nev) {
 
@@ -42,7 +42,10 @@ module.exports = function(passport, nev) {
 
 							if (err) {
 								console.log(err)
-								return done(null, false, req.flash('message', JSON.stringify(err)))
+								if (err.code === 11000)
+									return done(null, false, req.flash('message', 'This username exists, but has not been verified. If this is your account, please check your email you registered it with for the verification link.'))
+								else
+									return done(err, false, req.flash('message', 'Unknown error. Try a different username / email.'))
 							}
 
 							// user already exists in persistent collection...

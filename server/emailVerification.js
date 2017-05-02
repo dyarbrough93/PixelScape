@@ -1,4 +1,4 @@
-const User = require('./models/User')
+const Users = require('./models/User')
 
 function init(mongoose, port, devEnv) {
 
@@ -11,8 +11,9 @@ function init(mongoose, port, devEnv) {
 	const fromStr = 'Do Not Reply <' + (devEnv ? local.email.user : process.env.EMAIL_USER) + '@' + (devEnv ? local.email.service : process.env.EMAIL_SERVICE) + '.com>'
 
 	nev.configure({
-		verificationURL: domain + '/email-verification/${URL}',
-		persistentUserModel: User,
+		verificationURL: domain + 'email-verification/${URL}',
+		persistentUserModel: Users.user,
+		tempUserModel: Users.tempUser,
 		tempUserCollection: 'unverified_users',
 		shouldSendConfirmation: false,
 		transportOptions: {
@@ -29,8 +30,6 @@ function init(mongoose, port, devEnv) {
 			text: 'Please confirm your account by clicking the following link: ${URL}'
 		}
 	}, function(error, options) {})
-
-	nev.generateTempUserModel(User, function(err, options) {})
 
 	return nev
 
