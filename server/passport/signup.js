@@ -35,10 +35,7 @@ module.exports = function(passport, nev) {
                             password: createHash(password),
                             email: req.body.email,
                             firstName: req.body.firstName,
-                            lastName: req.body.lastName,
-                            settings: {
-                                voxelOutlineColor: 0xffffff * Math.random()
-                            }
+                            lastName: req.body.lastName
                         })
 
 						nev.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
@@ -69,19 +66,9 @@ module.exports = function(passport, nev) {
 							// user already exists in temporary collection...
 							} else {
 								console.log('Already signed up!')
-								return done(null, false, req.flash('message', 'Already signed up'))
+								return done(null, false, req.flash('message', 'There is already an account with this email.'))
 							}
 						})
-
-						// save the user
-						/*newUser.save(function(err) {
-						    if (err) {
-						        console.log('Error in Saving user: ' + err)
-						        throw err
-						    }
-						    console.log('User Registration succesful')
-						    return done(null, newUser)
-						})*/
 					}
 				})
 			}

@@ -66,7 +66,7 @@ let GameScene = function(window, undefined) {
                 fov: 45,
                 near: 100,
                 far: 300000,
-                distMult: 0.5
+                distMult: 0.75
             }
 
             let aspect = window.innerWidth / window.innerHeight

@@ -1,7 +1,7 @@
 <!-- shadow -->
 <div class="circleTimer" style="display: block">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#89e0c4" fill="none"/></g>
+        <g><circle id="circle" class="circle_animation" r="20" cy="30" cx="30" stroke-width="4" stroke="#89e0c4" opacity="0.5" fill="none"/></g>
     </svg>
 </div>
 
@@ -14,7 +14,7 @@
 <!-- shadow -->
 <div class="circleTimer" style="display: block">
     <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#89e0c4" fill="none"/></g>
+        <g><circle id="circle" class="circle_animation" r="12" cy="30" cx="30" stroke-width="6" stroke="#89e0c4" opacity="0.5" fill="none"/></g>
     </svg>
 </div>
 
