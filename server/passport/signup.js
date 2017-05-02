@@ -42,13 +42,13 @@ module.exports = function(passport, nev) {
 
 							if (err) {
 								console.log(err)
-								return done(null, false, req.flash('message', err))
+								return done(null, false, req.flash('message', JSON.stringify(err)))
 							}
 
 							// user already exists in persistent collection...
 							if (existingPersistentUser) {
 								console.log('user already exists')
-								return done(null, false, req.flash('message', 'Already registered! Please check your email for a verification code.'))
+								return done(null, false, req.flash('message', 'There is already an account with this email.'))
 							}
 
 							// a new user
@@ -66,7 +66,7 @@ module.exports = function(passport, nev) {
 							// user already exists in temporary collection...
 							} else {
 								console.log('Already signed up!')
-								return done(null, false, req.flash('message', 'There is already an account with this email.'))
+								return done(null, false, req.flash('message', 'Already registered! Please check your email for a verification code.'))
 							}
 						})
 					}
