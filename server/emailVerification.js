@@ -1,27 +1,29 @@
 const User = require('./models/User')
-const devEnv = process.env.NODE_ENV === 'dev'
 
-function init(mongoose) {
+function init(mongoose, port, devEnv) {
+
+	let local
+	if (devEnv) local = require('./local.js')
 
 	const nev = require('email-verification')(mongoose)
-	//const domain = devEnv ? 'http://localhost:5000/email-verification/' : 'https://pixelscape.herokuapp.com/'
+	const domain = devEnv ? 'http://localhost:' + port : process.env.SITE_URL
 
-	const domain = 'http://localhost:5000/email-verification/'
+	const fromStr = 'Do Not Reply <' + (devEnv ? local.email.user : process.env.EMAIL_USER) + '@' + (devEnv ? local.email.service : process.env.EMAIL_SERVICE) + '.com>'
 
 	nev.configure({
-		verificationURL: domain + '${URL}',
+		verificationURL: domain + '/email-verification/${URL}',
 		persistentUserModel: User,
 		tempUserCollection: 'unverified_users',
 		shouldSendConfirmation: false,
 		transportOptions: {
-			service: process.env.EMAIL_SERVICE,
+			service: devEnv ? local.email.service : process.env.EMAIL_SERVICE,
 			auth: {
-				user: process.env.EMAIL_USER,
-				pass: process.env.EMAIL_PASS
+				user: devEnv ? local.email.user : process.env.EMAIL_USER,
+				pass: devEnv ? local.email.pass : process.env.EMAIL_PASS
 			}
 		},
 		verifyMailOptions: {
-			from: 'Do Not Reply <no.reply.pixelscape@gmail.com>',
+			from: fromStr,
 			subject: 'PixelScape - Confirm account',
 			html: 'Please click the following link to confirm your account:</p><p>${URL}</p>',
 			text: 'Please confirm your account by clicking the following link: ${URL}'

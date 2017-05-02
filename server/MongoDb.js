@@ -1,6 +1,6 @@
-function init(mongoose, done) {
+function init(mongoose, dbUrl, done) {
 
-    mongoose.connect(process.env.DB_URL)
+    mongoose.connect(dbUrl)
     const conn = mongoose.connection
     conn.once('open', done)
 

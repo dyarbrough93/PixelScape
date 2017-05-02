@@ -1,5 +1,7 @@
 const port = process.env.PORT || 5000
 const devEnv = process.env.NODE_ENV === 'dev'
+const local = devEnv ? require('./server/local.js') : ''
+const dbUrl = devEnv ? local.mongo.dbUrl : process.env.DB_URL
 
 /*------------------------------------*
  :: Requires
@@ -21,7 +23,7 @@ const passportSocketIo = require("passport.socketio")
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
-const nev = require('./server/emailVerification.js')(mongoose)
+const nev = require('./server/emailVerification.js')(mongoose, port, devEnv, local)
 
 // my files
 const routes = require('./server/routes.js')(passport, nev)
@@ -35,7 +37,7 @@ const socketHandler = require('./server/socketHandler.js')
  *------------------------------------*/
 
 const sessionStore = new MongoStore({
-	url: process.env.DB_URL
+	url: dbUrl
 })
 
 // static client folder
@@ -111,7 +113,7 @@ socketHandler(io, worldData)
  :: Init and start server
  *------------------------------------*/
 
-mongoDB(mongoose, function() {
+mongoDB(mongoose, dbUrl, function() {
 
 	worldData.init(function() {
 
