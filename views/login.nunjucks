@@ -23,7 +23,6 @@
 {% endblock %}
 
 {% block body %}
-    {% set signup = false %}
     {% if not signupFormData %}
         {% set signupFormData = {
             firstName: '',
@@ -31,8 +30,6 @@
             username: '',
             email: ''
         } %}
-    {% else %}
-        {% set signup = true %}
     {% endif %}
 
     {% if not loginFormData %}

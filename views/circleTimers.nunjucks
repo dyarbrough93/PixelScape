@@ -44,7 +44,7 @@
                     The inner circle is your <code>Delete Other Timer</code>. This resets every time you delete a block that is neither your own nor a guests.
                 </p>
                 <p>
-                    You are a guest, so the delay between actions is quite long! <a href="/login">Create an Account</a> for significantly reduced action delays.
+                    You are a guest, so the delay between actions is quite long! <a href="/login?signup=true">Create an Account</a> for significantly reduced action delays.
                 </p>
             </div>
             <div class="modal-footer">

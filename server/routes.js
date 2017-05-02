@@ -21,7 +21,8 @@ module.exports = function(passport, nev) {
 			dev: dev,
 			loginFormData: req.session.loginFormData,
 			signupFormData: req.session.signupFormData,
-			constraints: config.loginForm
+			constraints: config.loginForm,
+			signup: req.session.signupFormData || req.query.signup
 		})
 	})
 
