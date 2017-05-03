@@ -147,8 +147,6 @@ let PixVoxConversion = function(window, undefined) {
      * Remove a voxel from the convertedVoxels object
      * @memberOf PixVoxConversion
      * @access public
-     * @param {VoxelUtils.Tuple} sid Section indices of the
-     * voxel we are removing
      * @param {VoxelUtils.coordStr} coord Coord string of the
      * voxel we are removing
      */

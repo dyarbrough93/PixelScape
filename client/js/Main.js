@@ -9,7 +9,8 @@ var Main = function() {
 
     $(document).ready(function() {
 
-        $('body').mousedown(function (e) {
+        // prevent middle click directional scroll
+        $('body').mousedown(function(e) {
             if (e.button == 1)
                 e.preventDefault()
         })
