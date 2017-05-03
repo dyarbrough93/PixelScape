@@ -33,6 +33,19 @@
     <script src="/js/classes/Validation.js"></script>
     <!-- end game classes -->
 
+    <!-- game runner -->
+    <script src="/js/Main.js"></script>
+
+    <style>
+        #info {
+            position: absolute;
+            left: 100px;
+        }
+        .btn-info {
+            margin: 0 3px 0 3px;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -43,11 +56,13 @@
         {% endif %}
     </div>
 
+    <div id="info">
+        <a href="https://www.reddit.com/r/pixel_scape/" target="_blank" class="btn btn-default" role="button">Subreddit</a>
+        <a href="https://discordapp.com/channels/301547797134442496/301547797134442496" target="_blank" class="btn btn-primary" role="button">Discord</a>
+    </div>
+
     {% include './circleTimers.nunjucks' %}
     {% include './modal.nunjucks' %}
-
-    <!-- game runner -->
-    <script src="/js/Main.js"></script>
 
     <!-- game container -->
     <div id="container"></div>

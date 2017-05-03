@@ -6,7 +6,7 @@ function init(mongoose, port, devEnv) {
 	if (devEnv) local = require('./local.js')
 
 	const nev = require('email-verification')(mongoose)
-	const domain = devEnv ? 'http://localhost:' + port : process.env.SITE_URL
+	const domain = devEnv ? 'http://localhost:' + port + '/' : process.env.SITE_URL
 
 	const fromStr = 'Do Not Reply <' + (devEnv ? local.email.user : process.env.EMAIL_USER) + '@' + (devEnv ? local.email.service : process.env.EMAIL_SERVICE) + '.com>'
 

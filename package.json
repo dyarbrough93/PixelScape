@@ -32,6 +32,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "postinstall": "grunt",
+        "build": "node server/generateClientFiles.js && grunt",
         "start": "node app.js",
         "startw": "node server/generateClientFiles.js && node node_modules/grunt/bin/grunt && node app.js",
         "dev": "node server/generateClientFiles.js && NODE_ENV=dev node app.js",

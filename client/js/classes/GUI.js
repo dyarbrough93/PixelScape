@@ -78,7 +78,7 @@ let GUI = function(window, undefined) {
         // if it was the gui that was clicked,
         // save this fact so that we can prevent
         // world actions from taking place behind it
-        $('#controlKit *').mousedown(function() {
+        $('#controlKit *, .btn').mousedown(function() {
             guiClicked = true
             // this has to be assigned here because
             // some elements don't exist on page load
@@ -86,6 +86,10 @@ let GUI = function(window, undefined) {
                 guiClicked = true
             })
 
+        })
+
+        $(".btn").mouseup(function() {
+            $(this).blur()
         })
 
         $('#circleTimerHelp').mousedown(function() {
