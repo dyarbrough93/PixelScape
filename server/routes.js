@@ -11,14 +11,12 @@ let isAuthenticated = function(req, res, next) {
 
 }
 
-const dev = process.env.NODE_ENV === 'dev'
-
-module.exports = function(passport, nev) {
+module.exports = function(passport, nev, devEnv, local) {
 
 	router.get('/login', function(req, res) {
 
 		res.render('login', {
-			dev: dev,
+			dev: devEnv,
 			loginFormData: req.session.loginFormData,
 			signupFormData: req.session.signupFormData,
 			constraints: config.loginForm,
@@ -43,10 +41,13 @@ module.exports = function(passport, nev) {
 		req.session.loginFormData = {}
 		req.session.signupFormData = null
 
+		const adminUName = local ? local.adminUName : process.env.ADMIN_UNAME
+		const admin = req.user.username === adminUName
+
 		res.render('game', {
 			user: req.user,
-			dev: dev,
-			admin: req.user.username === 'admin'
+			dev: devEnv,
+			admin: admin
 		})
 	})
 
@@ -58,7 +59,7 @@ module.exports = function(passport, nev) {
 		function renderView(html) {
 			res.render('verify', {
 				email: email,
-				dev: dev,
+				dev: devEnv,
 				html: html
 			})
 		}
@@ -98,7 +99,7 @@ module.exports = function(passport, nev) {
         setTimeout(function() {
 
             res.render('verified_redirect', {
-    			dev: dev
+    			dev: devEnv
     		})
 
         }, 5000)
@@ -125,7 +126,7 @@ module.exports = function(passport, nev) {
             else {
                 req.flash('message', 'Verification link expired!')
                 res.render('login', {
-                    dev: dev
+                    dev: devEnv
                 })
             }
         })

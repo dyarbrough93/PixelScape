@@ -26,7 +26,7 @@ mongoose.Promise = require('bluebird')
 const nev = require('./server/emailVerification.js')(mongoose, port, devEnv, local)
 
 // my files
-const routes = require('./server/routes.js')(passport, nev)
+const routes = require('./server/routes.js')(passport, nev, devEnv, local)
 const initPassport = require('./server/passport/init.js')
 const mongoDB = require('./server/MongoDb.js')
 const worldData = require('./server/worldData.js')
