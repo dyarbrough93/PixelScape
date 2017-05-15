@@ -265,8 +265,8 @@ let GameScene = function(window, undefined) {
     function setupRegionSelectPlane(size) {
 
         rspColors = {
-            off: '#7900ab',
-            on: '#c1ffea'
+            off: '#035d06',
+            on: '#5db686'
         }
 
         scene.remove(regionSelectPlane)
