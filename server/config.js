@@ -37,7 +37,7 @@ const clientConfig = {
     },
     grid: {
         blockSize: 50, // even
-        sqPerSideOfSelectPlane: 41, // must be odd
+        sqPerSideOfSelectPlane: 71, // must be odd
         sqPerSideOfSection: 55, // must be odd
         sectionsPerSide: 7,
         init: function() {
@@ -58,10 +58,10 @@ const clientConfig = {
         minDistance: 0,
         maxDistance: Number.MAX_VALUE,
         // cam position constraints
-        camMinxz: -100000,
-        camMaxxz: 100000,
+        camMinxz: -17000,
+        camMaxxz: 17000,
         camMiny: 100,
-        camMaxy: 75000,
+        camMaxy: 35000,
         // cam rotation / zoom speed
         rotateSpeed: 0.5,
         zoomSpeed: 1.0,
