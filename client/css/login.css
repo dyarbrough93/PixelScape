@@ -32,7 +32,7 @@
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
-    background: #6e4dea;
+    background: #6175bd;
     width: 100%;
     border: 0;
     padding: 15px;
@@ -44,7 +44,7 @@
 }
 
 .form button:hover, .form button:active, .form button:focus {
-    background: #876bee;
+    background: #506096;
 }
 
 .form p {
@@ -54,8 +54,12 @@
 }
 
 .form p a {
-    color: #6e4dea;
+    color: #6175bd;
     text-decoration: none;
+}
+
+.form p a:hover, .form p a:active, .form p a:focus {
+    color: #506096;
 }
 
 .form .register-form {
@@ -112,9 +116,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    background-color: #43C6AC;
     margin: 0;
     overflow: hidden;
+    background-color: #43C6AC;
     background-image: -webkit-gradient(to right, #43C6AC, #F8FFAE);
     /* Safari 5.1, iOS 5.0-6.1, Chrome 10-25, Android 4.0-4.3 */
     background-image: -webkit-linear-gradient(to right, #43C6AC, #F8FFAE);
