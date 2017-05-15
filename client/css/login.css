@@ -123,5 +123,5 @@ body {
     /* Opera 11.1 - 12 */
     background-image: -o-linear-gradient(#43cea2, #185a9d);
     /* Opera 15+, Chrome 25+, IE 10+, Firefox 16+, Safari 6.1+, iOS 7+, Android 4.4+ */
-    background-image: linear-gradient(#43cea2, #185a9d);
+    background-image: linear-gradient(to right, #43C6AC, #F8FFAE);
 }
