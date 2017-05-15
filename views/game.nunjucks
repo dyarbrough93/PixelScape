@@ -46,7 +46,6 @@
         {% endif %}
     </div>
 
-    {% include './circleTimers.nunjucks' %}
     {% include './modal.nunjucks' %}
 
     <!-- game container -->
