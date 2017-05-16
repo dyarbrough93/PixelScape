@@ -64,7 +64,6 @@
     {% include './btn-group.nunjucks' %}
     {% include './modal.nunjucks' %}
 
-
     <!-- game container -->
     <div id="container"></div>
 

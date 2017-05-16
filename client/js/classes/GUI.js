@@ -70,9 +70,22 @@ let GUI = function(window, undefined) {
 
         initControlKit()
 
+        // login
         $('#button-login').click(function() {
             showLogin()
         })
+
+        // logout
+		$('#button-logout').click(function() {
+
+			let url = window.location.protocol + '//' + window.location.host
+			window.location = url + '/signout'
+
+		})
+
+        $(".btn").mouseup(function() {
+			$(this).blur()
+		})
 
         /*if (User.getUName() === 'Guest') showModal()
         else*/ $(document).trigger('modalClosed')
@@ -501,7 +514,8 @@ let GUI = function(window, undefined) {
         popCircleTimer: popCircleTimer,
         getControlKit: getControlKit,
         setConnectedClients: setConnectedClients,
-        getSSSP: getSSSP
+        getSSSP: getSSSP,
+        showLogin: showLogin
     }
 
 }(window)
