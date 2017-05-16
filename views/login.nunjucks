@@ -1,15 +1,10 @@
-{% extends './base_layout.nunjucks' %}
-
 {% block head %}
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
         #flash_messages {
-            float: left;
+            position: absolute;
             background-color: #ffffff;
             width: 100%;
+            bottom: 0;
             opacity: 0.6;
 
         }
@@ -20,13 +15,19 @@
             font-weight: bold;
             text-align: center;
         }
-
+        #login-info {
+            color: red;
+            margin-bottom: 10px;
+            display: none;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
     {% if not signupFormData %}
         {% set signupFormData = {
+            firstName: '',
+            lastName: '',
             username: ''
         } %}
     {% endif %}
@@ -38,13 +39,14 @@
     {% endif %}
 
     <div id="flash_messages">
-        {{ messages()|safe}}
+        {{ messages() | safe }}
     </div>
 
-    <div class="login-page">
-        <div class="form">
+    <div id="login-modal" class="login-page">
+        <div id="login-forms" class="form">
+            <p id="login-info">Create an account to save projects (your current changes will be maintained).</p>
             <form class="register-form" id="register-form" method="POST" action="/signup">
-                <input maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" pattern="[\w_]+" value="{{ signupFormData.username }}" placeholder="username" required/>
+                <input id="regusername" maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" pattern="[\w_]+" value="{{ signupFormData.username }}" placeholder="username" required/>
                 <input id="pwd" pattern="{% raw %}.{{% endraw %}{{ constraints.minLength }},}" maxlength="20" type="password" name="password" placeholder="password" required/>
                 <input id="confirmPwd" maxlength="20" type="password" placeholder="confirm password" required/>
                 <button>create</button>
@@ -52,15 +54,12 @@
                     <a href="#">Sign In</a>
                 </p>
             </form>
-            <form class="login-form" method="POST" action="/login">
-                <input maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" value="{{ loginFormData.username }}" placeholder="username" required/>
+            <form id="login-form" class="login-form" method="POST" action="/login">
+                <input id="logusername" maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" value="{{ loginFormData.username }}" placeholder="username" required/>
                 <input maxlength="{{ constraints.lowMaxLength }}" type="password" name="password" placeholder="password" required/>
                 <button>login</button>
                 <p class="message">Not registered?
                     <a href="#">Create an account</a>
-                </p>
-                <p>Or
-                    <a href="/guest">Play as a Guest</a>
                 </p>
             </form>
         </div>
@@ -68,13 +67,64 @@
 
     <script>
 
+        let animSpeed = 185
+
+        function showLogin() {
+
+    		$(document).trigger('modalOpened')
+
+    		$('#login-modal').css('z-index', 3)
+    		$('#modal-background').css('z-index', 2)
+
+    		$('#login-modal').animate({
+    			opacity: 1
+    		}, {
+    			queue: false
+    		}, animSpeed)
+
+    		$('#modal-background').animate({
+    			opacity: 0.5
+    		}, {
+    			queue: false
+    		}, animSpeed)
+
+    	}
+
+    	function hideLogin() {
+
+    		$('#login-modal').animate({
+    			opacity: 0
+    		}, {
+    			queue: false,
+    			duration: animSpeed,
+    			done: function() {
+    				$('#login-modal').css('z-index', -1)
+    			}
+    		})
+
+    		$('#modal-background').animate({
+    			opacity: 0
+    		}, {
+    			queue: false,
+    			duration: animSpeed,
+    			done: function() {
+    				$('#modal-background').css('z-index', -1)
+    				$(document).trigger('modalClosed')
+    			}
+    		})
+    	}
+
+        // hide modal on click background
+		$('#modal-background').click(function() {
+			hideLogin()
+		})
+
+        showLogin()
+
         $('#register-form').submit(function(e) {
 
             let password = $('#pwd').val()
             let confirmPassword = $('#confirmPwd').val()
-
-            console.log(password)
-            console.log(confirmPassword)
 
             if (password !== confirmPassword) {
                 alert('Passwords do not match!')
@@ -85,8 +135,6 @@
 
         let errMessages = {
 
-            firstName: 'First name must use only letters.',
-            lastName: 'Last name must use only letters.',
             username: 'Username must use only letters, numbers, and underscores.',
             password: 'Password must be at least {{ constraints.minLength }} characters.'
 
@@ -96,6 +144,9 @@
 
             let target = e.target
             let validity = target.validity
+
+            if (!target.attributes.name) return
+
             let attrName = target.attributes.name.value
 
             if (validity.patternMismatch) {
@@ -107,7 +158,7 @@
         })
 
         function animateForm(speed) {
-            $('form').animate({
+            $('#login-forms form').animate({
                 height: 'toggle',
                 opacity: 'toggle'
             }, speed)

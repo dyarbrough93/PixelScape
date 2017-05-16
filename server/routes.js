@@ -13,17 +13,6 @@ let isAuthenticated = function(req, res, next) {
 
 module.exports = function(passport, devEnv, local) {
 
-	router.get('/login', function(req, res) {
-
-		res.render('login', {
-			dev: devEnv,
-			loginFormData: req.session.loginFormData,
-			signupFormData: req.session.signupFormData,
-			constraints: config.loginForm,
-			signup: req.session.signupFormData || req.query.signup
-		})
-	})
-
 	router.get('/guest', function(req, res) {
 		req.logout()
 		res.render('game', {guest: true})
@@ -33,7 +22,7 @@ module.exports = function(passport, devEnv, local) {
 		req.logout()
 		req.session.loginFormData = null
 		req.session.signupFormData = null
-		res.redirect('/login')
+		res.redirect('/')
 	})
 
 	router.get('/', isAuthenticated, function(req, res) {
@@ -62,7 +51,7 @@ module.exports = function(passport, devEnv, local) {
 
 		passport.authenticate('login', {
 			successRedirect: '/',
-			failureRedirect: '/login',
+			failureRedirect: '/',
 			failureFlash: true
 		})(req, res, next)
 
@@ -80,7 +69,7 @@ module.exports = function(passport, devEnv, local) {
 		passport.authenticate('signup', function(err, user, info) {
 
 			if (err) return next(err)
-			if (!user) return res.redirect('/login')
+			if (!user) return res.redirect('/')
 
 			req.logIn(user, function(err) {
 				if (err) return next(err)

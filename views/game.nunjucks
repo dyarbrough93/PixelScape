@@ -36,6 +36,19 @@
     <!-- game runner -->
     <script src="/js/Main.js"></script>
 
+    <style>
+
+        #modal-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            z-index: -1;
+        }
+
+    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -46,7 +59,10 @@
         {% endif %}
     </div>
 
+    <div id="modal-background"></div>
+    {% include './login.nunjucks' %}
     {% include './modal.nunjucks' %}
+
 
     <!-- game container -->
     <div id="container"></div>
