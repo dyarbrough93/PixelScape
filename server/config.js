@@ -2,10 +2,10 @@ const _ = require('lodash')
 
 const sharedConfig = {
     maxVoxelHeight: 75,
-    actionDelay: 225, // ms
-    guestActionDelay: 2500, // ms
-    deleteOtherDelay: 2500, // ms
-    guestDeleteOtherDelay: 5500, // ms
+    actionDelay: 50, // ms
+    guestActionDelay: 50, // ms
+    deleteOtherDelay: 1250, // ms
+    guestDeleteOtherDelay: 1250, // ms
     chatDelay: 3, // s
     maxGlobalBlocks: 1000000,
 }

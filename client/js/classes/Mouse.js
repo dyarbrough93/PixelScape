@@ -130,9 +130,7 @@ let Mouse = function(window, undefined) {
                                 }
                             })
                         }
-
                     }
-
                 }
 
             } else if (User.modeIsSelect()) {
@@ -149,9 +147,7 @@ let Mouse = function(window, undefined) {
                 User.setEditMode()
 
             }
-
         }
-
     }
 
     /**
