@@ -23,10 +23,9 @@ const passportSocketIo = require("passport.socketio")
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
-const nev = require('./server/emailVerification.js')(mongoose, port, devEnv, local)
 
 // my files
-const routes = require('./server/routes.js')(passport, nev, devEnv, local)
+const routes = require('./server/routes.js')(passport, devEnv, local)
 const initPassport = require('./server/passport/init.js')
 const mongoDB = require('./server/MongoDb.js')
 const worldData = require('./server/worldData.js')
@@ -63,7 +62,7 @@ app.use(expressSession({
 // passport
 app.use(passport.initialize())
 app.use(passport.session())
-initPassport(passport, nev)
+initPassport(passport)
 
 // messages
 app.use(flash())

@@ -2,7 +2,7 @@ const config = require('./config.js').server
 const responses = require('./socketResponses.js')
 const VoxelData = require('./models/VoxelData')
 const Operation = require('./models/Operation')
-const User = require('./models/User').user
+const User = require('./models//User')
 
 let numVoxels = 0
 

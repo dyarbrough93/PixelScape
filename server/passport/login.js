@@ -1,5 +1,5 @@
 const LocalStrategy   = require('passport-local').Strategy
-const User = require('../models/User').user
+const User = require('../models//User')
 const bCrypt = require('bcrypt-nodejs')
 
 let isValidPassword = function(user, password){

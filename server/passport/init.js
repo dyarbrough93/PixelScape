@@ -1,8 +1,8 @@
 const login = require('./login.js')
 const signup = require('./signup.js')
-const User = require('../models/User.js').user
+const User = require('../models//User')
 
-module.exports = function(passport, nev){
+module.exports = function(passport){
 
 	// Passport needs to be able to serialize and deserialize users to support persistent login sessions
     passport.serializeUser(function(user, done) {
@@ -19,6 +19,6 @@ module.exports = function(passport, nev){
 
     // Setting up Passport Strategies for Login and SignUp/Registration
     login(passport)
-    signup(passport, nev)
+    signup(passport)
 
 }

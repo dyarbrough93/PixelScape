@@ -27,10 +27,7 @@
 {% block body %}
     {% if not signupFormData %}
         {% set signupFormData = {
-            firstName: '',
-            lastName: '',
-            username: '',
-            email: ''
+            username: ''
         } %}
     {% endif %}
 
@@ -47,11 +44,9 @@
     <div class="login-page">
         <div class="form">
             <form class="register-form" id="register-form" method="POST" action="/signup">
-                <input maxlength="{{ constraints.lowMaxLength }}" type="text" name="firstName" pattern="[a-zA-Z]+" value="{{ signupFormData.firstName }}" placeholder="first name" required/>
-                <input maxlength="{{ constraints.lowMaxLength }}" type="text" name="lastName" pattern="[a-zA-Z]+" value="{{ signupFormData.lastName }}" placeholder="last name" required/>
                 <input maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" pattern="[\w_]+" value="{{ signupFormData.username }}" placeholder="username" required/>
-                <input pattern="{% raw %}.{{% endraw %}{{ constraints.minLength }},}" maxlength="20" type="password" name="password" placeholder="password" required/>
-                <input type="email" maxlength="{{ constraints.highMaxLength }}" name="email" value="{{ signupFormData.email }}" placeholder="email" required/>
+                <input id="pwd" pattern="{% raw %}.{{% endraw %}{{ constraints.minLength }},}" maxlength="20" type="password" name="password" placeholder="password" required/>
+                <input id="confirmPwd" maxlength="20" type="password" placeholder="confirm password" required/>
                 <button>create</button>
                 <p class="message">Already registered?
                     <a href="#">Sign In</a>
@@ -72,6 +67,21 @@
     </div>
 
     <script>
+
+        $('#register-form').submit(function(e) {
+
+            let password = $('#pwd').val()
+            let confirmPassword = $('#confirmPwd').val()
+
+            console.log(password)
+            console.log(confirmPassword)
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!')
+                e.preventDefault()
+            }
+
+        })
 
         let errMessages = {
 
