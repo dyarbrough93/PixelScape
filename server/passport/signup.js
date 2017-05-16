@@ -26,7 +26,7 @@ module.exports = function(passport) {
                     // already exists
                     if (user) {
                         console.log('User already exists with username: ' + username)
-                        return done(null, false, req.flash('message', 'User Already Exists'))
+                        return done(null, false, req.flash('message', 'User already exists'))
                     } else {
                         // if there is no user with that username
                         // create the user
@@ -41,7 +41,7 @@ module.exports = function(passport) {
                                 console.log('Error in Saving user: ' + err)
                                 throw err
                             }
-                            console.log('User Registration succesful')
+                            console.log('User registration succesful')
                             return done(null, newUser)
                         })
                     }

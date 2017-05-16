@@ -15,7 +15,17 @@ module.exports = function(passport, devEnv, local) {
 
 	router.get('/guest', function(req, res) {
 		req.logout()
-		res.render('game', {guest: true})
+		res.render('game', {
+			user: req.user,
+			dev: devEnv,
+			loginFormData: req.session.loginFormData,
+      		signupFormData: req.session.signupFormData,
+			showSignup: req.session.showSignup ? true : false,
+			showLogin: req.session.showLogin ? true : false
+		})
+
+		req.session.showSignup = false
+		req.session.showLogin = false
 	})
 
 	router.get('/signout', function(req, res) {
@@ -36,8 +46,15 @@ module.exports = function(passport, devEnv, local) {
 		res.render('game', {
 			user: req.user,
 			dev: devEnv,
-			admin: admin
+			admin: admin,
+			loginFormData: req.session.loginFormData,
+      		signupFormData: req.session.signupFormData,
+			showSignup: req.session.showSignup ? true : false,
+			showLogin: req.session.showLogin ? true : false
 		})
+
+		req.session.showSignup = false
+		req.session.showLogin = false
 	})
 
 	router.post('/login', function(req, res, next) {
@@ -49,10 +66,23 @@ module.exports = function(passport, devEnv, local) {
 			req.session.loginFormData[attr] = req.body[attr]
 		}
 
-		passport.authenticate('login', {
-			successRedirect: '/',
-			failureRedirect: '/',
-			failureFlash: true
+		passport.authenticate('login', function(err, user, info) {
+
+			if (err) {
+				console.log(err)
+				return res.redirect('/')
+			}
+			if (!user) {
+				req.session.showLogin = true
+				return res.redirect('/')
+			}
+
+			req.logIn(user, function(err) {
+				if (err) return next(err)
+				req.session.showLogin = false
+				return res.redirect('/')
+			})
+
 		})(req, res, next)
 
 	})
@@ -69,10 +99,14 @@ module.exports = function(passport, devEnv, local) {
 		passport.authenticate('signup', function(err, user, info) {
 
 			if (err) return next(err)
-			if (!user) return res.redirect('/')
+			if (!user) {
+				req.session.showSignup = true
+				return res.redirect('/')
+			}
 
 			req.logIn(user, function(err) {
 				if (err) return next(err)
+				req.session.showSignup = false
 				return res.redirect('/')
 			})
 

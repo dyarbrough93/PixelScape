@@ -1,24 +1,13 @@
 {% block head %}
     <style>
-        #flash_messages {
-            position: absolute;
-            background-color: #ffffff;
-            width: 100%;
-            bottom: 0;
-            opacity: 0.6;
-
+        #messages {
         }
-        #flash_messages .message {
+        #messages .message {
+            opacity: 0.6;
             list-style: none;
             padding: 0;
-            margin: 5px 0;
             font-weight: bold;
-            text-align: center;
-        }
-        #login-info {
             color: red;
-            margin-bottom: 10px;
-            display: none;
         }
     </style>
 {% endblock %}
@@ -34,17 +23,13 @@
 
     {% if not loginFormData %}
         {% set loginFormData = {
-    username: ''
-}%}
+            username: ''
+        }%}
     {% endif %}
-
-    <div id="flash_messages">
-        {{ messages() | safe }}
-    </div>
 
     <div id="login-modal" class="login-page">
         <div id="login-forms" class="form">
-            <p id="login-info">Create an account to save projects (your current changes will be maintained).</p>
+            {{ messages() | safe }}
             <form class="register-form" id="register-form" method="POST" action="/signup">
                 <input id="regusername" maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" pattern="[\w_]+" value="{{ signupFormData.username }}" placeholder="username" required/>
                 <input id="pwd" pattern="{% raw %}.{{% endraw %}{{ constraints.minLength }},}" maxlength="20" type="password" name="password" placeholder="password" required/>
@@ -67,109 +52,68 @@
 
     <script>
 
-        let animSpeed = 185
+        $(document).ready(function() {
 
-        function showLogin() {
-
-    		$(document).trigger('modalOpened')
-
-    		$('#login-modal').css('z-index', 3)
-    		$('#modal-background').css('z-index', 2)
-
-    		$('#login-modal').animate({
-    			opacity: 1
-    		}, {
-    			queue: false
-    		}, animSpeed)
-
-    		$('#modal-background').animate({
-    			opacity: 0.5
-    		}, {
-    			queue: false
-    		}, animSpeed)
-
-    	}
-
-    	function hideLogin() {
-
-    		$('#login-modal').animate({
-    			opacity: 0
-    		}, {
-    			queue: false,
-    			duration: animSpeed,
-    			done: function() {
-    				$('#login-modal').css('z-index', -1)
-    			}
-    		})
-
-    		$('#modal-background').animate({
-    			opacity: 0
-    		}, {
-    			queue: false,
-    			duration: animSpeed,
-    			done: function() {
-    				$('#modal-background').css('z-index', -1)
-    				$(document).trigger('modalClosed')
-    			}
-    		})
-    	}
-
-        // hide modal on click background
-		$('#modal-background').click(function() {
-			hideLogin()
-		})
-
-        showLogin()
-
-        $('#register-form').submit(function(e) {
-
-            let password = $('#pwd').val()
-            let confirmPassword = $('#confirmPwd').val()
-
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!')
-                e.preventDefault()
+            if({{ showLogin }}) {
+                GUI.showLogin()
+            }
+            if({{ showSignup }}) {
+                GUI.showLogin()
+                animateForm(0)
             }
 
-        })
+            $('#register-form').submit(function(e) {
 
-        let errMessages = {
+                let password = $('#pwd').val()
+                let confirmPassword = $('#confirmPwd').val()
 
-            username: 'Username must use only letters, numbers, and underscores.',
-            password: 'Password must be at least {{ constraints.minLength }} characters.'
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!')
+                    e.preventDefault()
+                }
 
-        }
+            })
 
-        $('#register-form input').on('invalid', function (e) {
+            let errMessages = {
 
-            let target = e.target
-            let validity = target.validity
+                username: 'Username must use only letters, numbers, and underscores.',
+                password: 'Password must be at least {{ constraints.minLength }} characters.'
 
-            if (!target.attributes.name) return
-
-            let attrName = target.attributes.name.value
-
-            if (validity.patternMismatch) {
-                return target.setCustomValidity(errMessages[attrName])
             }
 
-            target.setCustomValidity('')
+            $('#register-form input').on('invalid', function (e) {
+
+                let target = e.target
+                let validity = target.validity
+
+                if (!target.attributes.name) return
+
+                let attrName = target.attributes.name.value
+
+                if (validity.patternMismatch) {
+                    return target.setCustomValidity(errMessages[attrName])
+                }
+
+                target.setCustomValidity('')
+
+            })
+
+            function animateForm(speed) {
+                $('#login-forms form').animate({
+                    height: 'toggle',
+                    opacity: 'toggle'
+                }, speed)
+            }
+
+            $('.message a').click(function () {
+                animateForm(500)
+            })
+
+            {% if signup %}
+                animateForm(0)
+            {% endif %}
 
         })
 
-        function animateForm(speed) {
-            $('#login-forms form').animate({
-                height: 'toggle',
-                opacity: 'toggle'
-            }, speed)
-        }
-
-        $('.message a').click(function () {
-            animateForm(500)
-        })
-
-        {% if signup %}
-            animateForm(0)
-        {% endif %}
     </script>
 {% endblock %}
