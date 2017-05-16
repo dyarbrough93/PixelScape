@@ -13,6 +13,7 @@ let GUI = function(window, undefined) {
     let settings
     let controlKit
     let guiClicked
+    let animSpeed
 
     /*------------------------------------*
      :: Public Methods
@@ -65,11 +66,16 @@ let GUI = function(window, undefined) {
 
         controlKit = new ControlKit()
         guiClicked = false
+        animSpeed = 185
 
         initControlKit()
 
-        if (User.getUName() === 'Guest') showModal()
-        else $(document).trigger('modalClosed')
+        $('#button-login').click(function() {
+            showLogin()
+        })
+
+        /*if (User.getUName() === 'Guest') showModal()
+        else*/ $(document).trigger('modalClosed')
 
         $('#welcome-modal').on('hidden.bs.modal', function() {
             $(document).trigger('modalClosed')
@@ -346,6 +352,56 @@ let GUI = function(window, undefined) {
                 window.location = url + '/signout'
             })
 
+    }
+
+    function showLogin() {
+
+        $(document).trigger('modalOpened')
+
+        $('#login-modal').css('z-index', 3)
+        $('#modal-background').css('z-index', 2)
+
+        $('#login-modal').animate({
+            opacity: 1
+        }, {
+            queue: false
+        }, animSpeed)
+
+        $('#modal-background').animate({
+            opacity: 0.5
+        }, {
+            queue: false
+        }, animSpeed)
+
+        // hide modal on click background
+        $('#modal-background').click(hideLogin)
+
+    }
+
+    function hideLogin() {
+
+        $('#login-modal').animate({
+            opacity: 0
+        }, {
+            queue: false,
+            duration: animSpeed,
+            done: function() {
+                $('#login-modal').css('z-index', -1)
+            }
+        })
+
+        $('#modal-background').animate({
+            opacity: 0
+        }, {
+            queue: false,
+            duration: animSpeed,
+            done: function() {
+                $('#modal-background').css('z-index', -1)
+                $(document).trigger('modalClosed')
+            }
+        })
+
+        $('#modal-background').off('click')
     }
 
     function toggleHighlight() {

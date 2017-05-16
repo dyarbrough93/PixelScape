@@ -3,6 +3,14 @@
     width: 360px;
     padding: 8% 0 0;
     margin: auto;
+
+    opacity: 0;
+    z-index: -1;
+    /* absolute center positioning */
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .form {
@@ -10,7 +18,7 @@
     z-index: 1;
     background: #FFFFFF;
     max-width: 360px;
-    margin: 0 auto 100px;
+    margin: 0 auto 0 auto;
     padding: 45px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);

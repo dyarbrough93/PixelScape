@@ -29,7 +29,8 @@ let Keys = function(window, undefined) {
             ctrlDown: false
         }
 
-        addEventListeners()
+        $(document).on('modalClosed', addEventListeners)
+        $(document).on('modalOpened', removeEventListeners)
 
     }
 
