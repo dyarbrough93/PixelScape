@@ -120,7 +120,6 @@ let Mouse = function(window, undefined) {
                             })
                         } else { // create voxel
                             if (!User.canActOnOwn()) {
-                                GUI.popCircleTimer('#actOwnCircleTimer')
                                 return
                             }
                             VoxelActions.createVoxelAtIntersect(intersect, function(success) {
@@ -280,7 +279,6 @@ let Mouse = function(window, undefined) {
 
         if (voxelUName !== myUName && voxelUName !== 'Guest') {
             if (!User.canDeleteOther()) {
-                GUI.popCircleTimer('#actOtherCircleTimer')
                 return false
             }
             timerID = '#actOtherCircleTimer'
@@ -288,7 +286,6 @@ let Mouse = function(window, undefined) {
             actionDelay = User.getDeleteOtherDelay()
         } else {
             if (!User.canActOnOwn()) {
-                GUI.popCircleTimer('#actOwnCircleTimer')
                 return false
             }
             timerID = '#actOwnCircleTimer'
