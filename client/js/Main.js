@@ -17,11 +17,11 @@ var Main = function() {
 
         // initialize classes
         Mouse.init()
+        Keys.init()
         GUI.init()
         Raycast.init()
         GameScene.init()
         WorldData.init()
-        Keys.init()
         User.init()
         MapControls.init()
         PixVoxConversion.init()
