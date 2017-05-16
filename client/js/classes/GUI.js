@@ -90,10 +90,6 @@ let GUI = function(window, undefined) {
         /*if (User.getUName() === 'Guest') showModal()
         else*/ $(document).trigger('modalClosed')
 
-        $('#welcome-modal').on('hidden.bs.modal', function() {
-            $(document).trigger('modalClosed')
-        })
-
         // if it was the gui that was clicked,
         // save this fact so that we can prevent
         // world actions from taking place behind it

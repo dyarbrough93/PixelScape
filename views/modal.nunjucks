@@ -19,9 +19,11 @@
                 <p>
                     Welcome to PixelScape! In PixelScape, you can collaboratively edit a 3d environment of voxels with other players.
                 </p>
+                {% if not user %}
                 <p>
-                    You are currently playing as a guest, so your action delay will be quite long. <a href="/login?signup=true">Create an account</a> for significantly reduced action delays.
+                    You are currently playing as a guest, so any voxels you create will only persist for a few hours. <a id="modal-create-account" href="#">Create an account</a> and your voxels will be preserved indefinitely.
                 </p>
+                {% endif %}
                 <p>
                     You can display this dialog at any time by clicking the "Show Controls" button under the "Info" menu of the GUI.
                 </p>
@@ -76,8 +78,26 @@
 <!-- /.modal -->
 
 <script>
-    $('#welcome-modal').on('show.bs.modal', function () {
-        let height = $(window).height() - 300
-        $(this).find('.modal-body').css('max-height', height)
+    $(document).ready(function() {
+
+        let dontTriggerClosed = false
+        $('#modal-create-account').click(function() {
+            $('#welcome-modal').modal('hide')
+            GUI.showLogin()
+            dontTriggerClosed = true
+        })
+
+        $('#welcome-modal').on('show.bs.modal', function () {
+            let height = $(window).height() - 300
+            $(this).find('.modal-body').css('max-height', height)
+        })
+
+        $('#welcome-modal').on('hidden.bs.modal', function() {
+            if (dontTriggerClosed)
+                dontTriggerClosed = false
+            else
+                $(document).trigger('modalClosed')
+        })
+
     })
 </script>
