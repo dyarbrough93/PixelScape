@@ -107,6 +107,15 @@ let GUI = function(window, undefined) {
             $(this).blur()
         })
 
+        $('#circleTimerHelp').mousedown(function() {
+            guiClicked = true
+            $(document).trigger('modalOpened')
+        })
+
+        $('#timerHelpModal').on('hidden.bs.modal', function() {
+            $(document).trigger('modalClosed')
+        })
+
     }
 
     /**
@@ -229,6 +238,33 @@ let GUI = function(window, undefined) {
 
     }
 
+    function popCircleTimer(timerID) {
+
+        let strokeWidth = parseInt($(timerID + ' circle').attr('stroke-width'))
+        let strokeColor = $(timerID + ' circle').attr('stroke')
+        let newStrokeColor = '#7e2929'
+        let newStrokeWidth = strokeWidth + 1
+
+        let popSpeed = 125
+
+        $(timerID + ' .circle_animation').css({
+            'stroke': newStrokeColor,
+            transition: popSpeed
+        })
+        $(timerID + ' .circle_animation').animate({
+            'stroke-width': newStrokeWidth
+        }, popSpeed, function() {
+            $(timerID + ' .circle_animation').css({
+                'stroke': strokeColor,
+                transition: popSpeed
+            })
+            $(timerID + ' .circle_animation').animate({
+                'stroke-width': strokeWidth
+            }, popSpeed)
+        })
+
+    }
+
     function showModal() {
         $('#welcome-modal').modal()
     }
@@ -319,6 +355,10 @@ let GUI = function(window, undefined) {
                 },
                 step: 1,
                 dp: 0
+            })
+            .addButton('Log Out', function() {
+                let url = window.location.protocol + '//' + window.location.host
+                window.location = url + '/signout'
             })
 
     }
@@ -467,6 +507,7 @@ let GUI = function(window, undefined) {
         getHighlightColor: getHighlightColor,
         togglePickColor: togglePickColor,
         resetActionTimer: resetActionTimer,
+        popCircleTimer: popCircleTimer,
         getControlKit: getControlKit,
         setConnectedClients: setConnectedClients,
         getSSSP: getSSSP,
