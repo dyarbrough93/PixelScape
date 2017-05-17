@@ -66,21 +66,25 @@ module.exports = function(passport, devEnv, local) {
 			req.session.loginFormData[attr] = req.body[attr]
 		}
 
+		const errors = require('./errors.js').login
+
 		passport.authenticate('login', function(err, user, info) {
 
 			if (err) {
-				console.log(err)
-				return res.redirect('/')
+				if (err.name === errors.E_USERNOTFOUND.name ||
+					err.name === errors.E_BADCRED.name) {
+					return res.status(400).send(err)
+				} else {
+					return res.status(500).send(err)
+				}
 			}
 			if (!user) {
-				req.session.showLogin = true
-				return res.redirect('/')
+				return res.status(400).send(errors.E_USERNOTFOUND())
 			}
 
 			req.logIn(user, function(err) {
 				if (err) return next(err)
-				req.session.showLogin = false
-				return res.redirect('/')
+				return res.status(200).send()
 			})
 
 		})(req, res, next)
@@ -96,17 +100,19 @@ module.exports = function(passport, devEnv, local) {
 			req.session.signupFormData[attr] = req.body[attr]
 		}
 
+		const errors = require('./errors.js').signup
+
 		passport.authenticate('signup', function(err, user, info) {
 
-			if (err) return next(err)
-			if (!user) {
-				req.session.showSignup = true
-				return res.redirect('/')
+			if (err) {
+				if (err.name === errors.E_USEREXISTS.name)
+					return res.status(400).send(err)
+				else
+					return res.status(500).send(err)
 			}
 
 			req.logIn(user, function(err) {
 				if (err) return next(err)
-				req.session.showSignup = false
 				return res.redirect('/')
 			})
 
