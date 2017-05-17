@@ -84,6 +84,13 @@
         $('#modal-create-account').click(function() {
             $('#welcome-modal').modal('hide')
             GUI.showLogin()
+
+            // @TODO: this is bad
+            $('#login-forms form').animate({
+                height: 'toggle',
+                opacity: 'toggle'
+            }, 0)
+            
             dontTriggerClosed = true
         })
 
