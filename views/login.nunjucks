@@ -1,7 +1,5 @@
 {% block head %}
     <style>
-        #messages {
-        }
         #messages .message {
             opacity: 0.6;
             list-style: none;
@@ -29,17 +27,20 @@
 
     <div id="login-modal" class="login-page">
         <div id="login-forms" class="form">
-            {{ messages() | safe }}
+            <div id="messages">
+                <ul class="message">
+                </ul>
+            </div>
             <form class="register-form" id="register-form" method="POST" action="/signup">
                 <input id="regusername" maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" pattern="[\w_]+" value="{{ signupFormData.username }}" placeholder="username" required/>
-                <input id="pwd" pattern="{% raw %}.{{% endraw %}{{ constraints.minLength }},}" maxlength="20" type="password" name="password" placeholder="password" required/>
+                <input id="pwd" maxlength="20" type="password" name="password" placeholder="password" required/>
                 <input id="confirmPwd" maxlength="20" type="password" placeholder="confirm password" required/>
                 <button>create</button>
                 <p class="message">Already registered?
                     <a href="#">Sign In</a>
                 </p>
             </form>
-            <form id="login-form" class="login-form" method="POST" action="/login">
+            <form id="login-form" class="login-form">
                 <input id="logusername" maxlength="{{ constraints.lowMaxLength }}" type="text" name="username" value="{{ loginFormData.username }}" placeholder="username" required/>
                 <input maxlength="{{ constraints.lowMaxLength }}" type="password" name="password" placeholder="password" required/>
                 <button>login</button>
@@ -52,32 +53,68 @@
 
     <script>
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            if({{ showLogin }}) {
+            if ({{ showLogin }}) {
                 GUI.showLogin()
             }
-            if({{ showSignup }}) {
+            if ({{ showSignup }}) {
                 GUI.showLogin()
                 animateForm(0)
             }
 
-            $('#register-form').submit(function(e) {
+            let baseURL = window.location.protocol + '//' + window.location.host
 
+            function makeAjaxRequest(url, data) {
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    success: function (data) {
+                        window.location = baseURL
+                    },
+                    error: function (xhr) {
+
+                        $('#messages .message').children().remove()
+
+                        let li = $('<li>').html(xhr.responseJSON.message)
+                        $('#messages .message').append(li)
+
+                    }
+                })
+
+            }
+
+            $('#register-form').submit(function (e) {
+
+                e.preventDefault()
+
+                let uname = $('#regusername').val()
                 let password = $('#pwd').val()
                 let confirmPassword = $('#confirmPwd').val()
 
-                if (password !== confirmPassword) {
+                if (password !== confirmPassword)
                     alert('Passwords do not match!')
-                    e.preventDefault()
+                else {
+                    makeAjaxRequest(baseURL + '/signup', {
+                        username: uname,
+                        password: password
+                    })
                 }
+            })
+
+            $('#login-form').submit(function (e) {
+
+                e.preventDefault()
+
+                makeAjaxRequest(baseURL + '/login', $(this).serialize())
 
             })
 
             let errMessages = {
 
-                username: 'Username must use only letters, numbers, and underscores.',
-                password: 'Password must be at least {{ constraints.minLength }} characters.'
+                username: 'Username must use only letters, numbers, and underscores.'
 
             }
 
@@ -86,7 +123,8 @@
                 let target = e.target
                 let validity = target.validity
 
-                if (!target.attributes.name) return
+                if (!target.attributes.name)
+                    return
 
                 let attrName = target.attributes.name.value
 
@@ -114,6 +152,5 @@
             {% endif %}
 
         })
-
     </script>
 {% endblock %}
