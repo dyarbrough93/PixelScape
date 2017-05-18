@@ -59,6 +59,7 @@
         {% endif %}
     </div>
 
+    {% include './circleTimers.nunjucks' %}
     <div id="modal-background"></div>
     {% include './login.nunjucks' %}
     {% include './btn-group.nunjucks' %}
