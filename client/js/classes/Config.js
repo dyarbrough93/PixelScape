@@ -2,7 +2,7 @@
 
 let Config = function(window, undefined) {
 
-let settings = {"general":{"maxVoxelHeight":75,"actionDelay":50,"chatDelay":3,"deleteOtherDelay":1250,"aaOnByDefault":true,"guestActionDelay":50,"guestDeleteOtherDelay":1250,"maxGlobalBlocks":1000000},"convert":{"warnThreshold":15000,"errorThreshold":30000},"grid":{"blockSize":50,"sqPerSideOfSelectPlane":71,"sqPerSideOfSection":55,"sectionsPerSide":7,"sqPerSideOfGrid":384,"size":9600},"mapControls":{"minDistance":0,"maxDistance":1.7976931348623157e+308,"camMinxz":-17000,"camMaxxz":17000,"camMiny":100,"camMaxy":35000,"rotateSpeed":0.5,"zoomSpeed":1,"minPolarAngle":0.05,"maxPolarAngle":1.4959965017094252},"GUI":{"maxSavedColors":5}}
+let settings = {"general":{"maxVoxelHeight":75,"actionDelay":50,"chatDelay":3,"deleteOtherDelay":50,"aaOnByDefault":true,"guestActionDelay":50,"guestDeleteOtherDelay":1750,"maxGlobalBlocks":1000000},"convert":{"warnThreshold":15000,"errorThreshold":30000},"grid":{"blockSize":50,"sqPerSideOfSelectPlane":71,"sqPerSideOfSection":55,"sectionsPerSide":7,"sqPerSideOfGrid":384,"size":9600},"mapControls":{"minDistance":0,"maxDistance":1.7976931348623157e+308,"camMinxz":-17000,"camMaxxz":17000,"camMiny":100,"camMaxy":35000,"rotateSpeed":0.5,"zoomSpeed":1,"minPolarAngle":0.05,"maxPolarAngle":1.4959965017094252},"GUI":{"maxSavedColors":5}}
 
 function get() {
 return settings

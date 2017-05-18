@@ -4,8 +4,8 @@ const sharedConfig = {
     maxVoxelHeight: 75,
     actionDelay: 50, // ms
     guestActionDelay: 50, // ms
-    deleteOtherDelay: 1250, // ms
-    guestDeleteOtherDelay: 1250, // ms
+    deleteOtherDelay: 50, // ms
+    guestDeleteOtherDelay: 1750, // ms
     chatDelay: 3, // s
     maxGlobalBlocks: 1000000,
 }
