@@ -1,6 +1,7 @@
 <style>
     .btn-group {
         position: absolute;
+        left: 100px;
     }
 </style>
 

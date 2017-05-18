@@ -284,7 +284,6 @@ let Mouse = function(window, undefined) {
             actionDelay = User.getDeleteOtherDelay()
         } else {
             if (!User.canActOnOwn()) {
-                GUI.popCircleTimer('#actOwnCircleTimer')
                 return false
             }
             timerID = '#actOwnCircleTimer'

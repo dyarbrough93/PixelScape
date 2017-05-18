@@ -356,10 +356,6 @@ let GUI = function(window, undefined) {
                 step: 1,
                 dp: 0
             })
-            .addButton('Log Out', function() {
-                let url = window.location.protocol + '//' + window.location.host
-                window.location = url + '/signout'
-            })
 
     }
 
