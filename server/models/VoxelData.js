@@ -9,6 +9,6 @@ let dataSchema = new Schema({
         c: Number, // color
         username: String // creator
     }
-}, {collection: dev + 'worldData'})
+}, {collection: dev + 'worldDataV2'})
 
 module.exports = mongoose.model('VoxelData', dataSchema)

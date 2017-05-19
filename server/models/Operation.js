@@ -14,6 +14,6 @@ let opSchema = new Schema({
         },
         username: String
     }
-}, {collection: dev + 'ops'})
+}, {collection: dev + 'PixOpsV2'})
 
 module.exports = mongoose.model('Operation', opSchema)
