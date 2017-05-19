@@ -25,11 +25,24 @@ WorldData.count = function() {
     }
 }
 
+WorldData.removeOldGuestVoxels = function(cb) {
 
+    VoxelData.find({ 'data.username': 'Guest' }, function(err, guestVoxels) {
+        if (err) return cb(err)
 
+        let deleteVoxels = []
 
+        guestVoxels.forEach(function(guestVoxel) {
+            let ms = (new Date(new Date() - guestVoxel._id.getTimestamp()).getTime())
+            let minutes = (ms / (1000 * 60)) % 60
+            if (minutes >= config.guestVoxelTime) {
+                WorldData.remove(utils.coordStrParse(guestVoxel.key), 'Guest', function() {})
+                deleteVoxels.push(guestVoxel)
+            }
+        })
 
-
+        return cb(err, deleteVoxels)
+    })
 }
 
 /*

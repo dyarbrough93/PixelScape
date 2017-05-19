@@ -14,6 +14,7 @@ const serverConfig = {
     dataChunkSize: 15000, // keys
     chunkInterval: 50, // ms
     maxClients: 1000,
+    guestVoxelTime: 200, // minutes (time guest voxels will persist)
     loginForm: {
         lowMaxLength: 20,
         highMaxLength: 40,

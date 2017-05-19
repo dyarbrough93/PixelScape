@@ -39,7 +39,7 @@ function enoughTimePassed(socket, deleteOther) {
 
 }
 
-function handleBlockOperations(socket) {
+function handleBlockOperations(socket, io) {
 
     // handle block add
     socket.on('block added', function(block, callback) {
@@ -113,6 +113,23 @@ function handleBlockOperations(socket) {
         })
 
     })
+
+    setInterval(function() {
+
+        worldData.removeOldGuestVoxels(function(err, deletedVoxels) {
+            if (err) console.log(err)
+            else {
+
+                deletedVoxels.forEach(function(voxel) {
+                    let coordStr = utils.coordStrParse(voxel.key)
+                    io.sockets.emit('block removed', coordStr)
+                })
+
+                console.log('Removed ' + deletedVoxels.length + ' guest voxels.')
+            }
+        })
+
+    }, 1000 * 60 * 5) // every 5 minutes
 
 }
 
@@ -209,7 +226,7 @@ function IOHandler(io, _worldData) {
         // tell the clients there is a new connection
         io.sockets.emit('update clients', io.engine.clientsCount)
 
-        handleBlockOperations(socket)
+        handleBlockOperations(socket, io)
 
         handleChunking(socket)
 
