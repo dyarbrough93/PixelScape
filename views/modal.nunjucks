@@ -1,14 +1,14 @@
 <style>
-    .modal .modal-dialog {
+    .modal.modal-wide .modal-dialog {
         width: 75%;
     }
-    .modal .modal-body {
+    .modal-wide .modal-body {
         overflow-y: auto;
     }
 
 </style>
 
-<div id="welcome-modal" class="modal fade">
+<div id="welcome-modal" class="modal modal-wide fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -87,7 +87,7 @@
                 height: 'toggle',
                 opacity: 'toggle'
             }, 0)
-
+            
             dontTriggerClosed = true
         })
 
