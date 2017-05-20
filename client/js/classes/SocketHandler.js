@@ -82,7 +82,7 @@ let SocketHandler = function(window, undefined) {
      */
     function retrieveData(cb) {
 
-        socket.emit('start chunking')
+        socket.emit('start chunking', archiveMode)
 
         let numChunks
         let numChunksLoaded

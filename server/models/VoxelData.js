@@ -3,12 +3,18 @@ const Schema = mongoose.Schema
 
 const dev = (process.env.NODE_ENV === 'dev' && process.env.REAL_DATA !== 'y') ? 'test' : ''
 
-let dataSchema = new Schema({
+let voxelData = {
     key: String,
     data: {
         c: Number, // color
         username: String // creator
     }
-}, {collection: dev + 'worldDataV2'})
+}
 
-module.exports = mongoose.model('VoxelData', dataSchema)
+let dataSchema = new Schema(voxelData, { collection: dev + 'worldDataV2' })
+let archiveDataSchema = new Schema(voxelData, { collection: 'worldData' })
+
+module.exports = {
+    voxelData: mongoose.model('VoxelData', dataSchema),
+    archiveVoxelData: mongoose.model('ArchiveVoxelData', archiveDataSchema)
+}

@@ -1,0 +1,65 @@
+{% extends './base_layout.nunjucks' %}
+
+{% block head %}
+
+    <!-- libs -->
+    <script src="/js/lib/threejs-r85.min.js"></script>
+    <script src="/js/lib/Detector.min.js"></script>
+    <script src="/js/lib/socket.io-1.4.5.min.js"></script>
+    <!-- end libs -->
+
+    <!-- game classes -->
+    <script src="/js/classes/ArchiveConfig.js"></script>
+    <script src="/js/classes/WorldData.js"></script>
+    <script src="/js/classes/SocketHandler.js"></script>
+    <script src="/js/classes/GameScene.js"></script>
+    <script src="/js/classes/VoxelUtils.js"></script>
+    <script src="/js/classes/Config.js"></script>
+    <script src="/js/classes/MapControls.js"></script>
+    <script src="/js/classes/ParticleSystems.js"></script>
+    <!-- end game classes -->
+
+    <!-- game runner -->
+    <script src="/js/Main.js"></script>
+
+{% endblock %}
+
+{% block body %}
+
+    <style>
+        .btn-group {
+            position: absolute;
+        }
+    </style>
+
+    <div id="btn-group" class="btn-group">
+        <a id="button-return" class="btn btn-info" role="button">Return</a>
+    </div>
+
+
+    <script>
+        let archiveMode = true
+
+        let Mouse
+        let Keys
+        let GUI
+        let Raycast
+        let User
+        let PixVoxConversion
+        let BufMeshMgr
+
+        $(document).ready(function() {
+            $(document).trigger('modalClosed')
+
+            $('#button-return').click(function() {
+                let url = window.location.protocol + '//' + window.location.host
+    			window.location = url
+            })
+        })
+
+    </script>
+
+    <!-- game container -->
+    <div id="container"></div>
+
+{% endblock %}

@@ -35,6 +35,14 @@ module.exports = function(passport, devEnv, local) {
 		res.redirect('/')
 	})
 
+	router.get('/archive', function(req, res) {
+
+		res.render('archive', {
+			dev: devEnv
+		})
+
+	})
+
 	router.get('/', isAuthenticated, function(req, res) {
 
 		req.session.loginFormData = {}

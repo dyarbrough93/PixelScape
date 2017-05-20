@@ -137,15 +137,18 @@ function handleChunking(socket) {
 
     // the client told us its ready for the
     // data, so send it
-    socket.on('start chunking', function() {
+    socket.on('start chunking', function(archive) {
 
         console.log('chunking')
+        console.log(archive)
+
+        let voxels = archive ? worldData.archiveVoxels : worldData.voxels
 
         // prep for chunking by adding all
         // keys to an array
         let keys = []
-        for (let key in worldData.voxels) {
-            if (worldData.voxels.hasOwnProperty(key))
+        for (let key in voxels) {
+            if (voxels.hasOwnProperty(key))
                 keys.push(key)
         }
 
@@ -172,7 +175,7 @@ function handleChunking(socket) {
 
                 // format it in JSON so it can be
                 // parsed by JSON.parse
-                let obj = worldData.voxels[keys[i]]
+                let obj = voxels[keys[i]]
                 chunk += '"' + keys[i] + '"' + ':' + JSON.stringify(obj)
 
                 if (i !== kLen - 1) chunk += ','

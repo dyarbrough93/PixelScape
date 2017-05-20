@@ -187,10 +187,10 @@ let VoxelUtils = (function(window, undefined) {
      */
     function getSectionIndices(gPos) {
 
-        let gridConfig = Config.getGrid()
+        let gridConfig = archiveMode ? ArchiveConfig.get() : Config.getGrid()
 
         let sqPerSGrid = gridConfig.sqPerSideOfGrid
-        let sqPerSSect = gridConfig.sqPerSideOfSection
+        let sqPerSSect = archiveMode ? ArchiveConfig.get().sqPerSideOfSection : gridConfig.sqPerSideOfSection
 
         return new Tuple(
             Math.floor((gPos.x + sqPerSGrid / 2) / sqPerSSect),
@@ -257,7 +257,7 @@ let VoxelUtils = (function(window, undefined) {
 
     function withinGridBoundaries(gPos) {
 
-        let spsg = Config.getGrid().sqPerSideOfGrid
+        let spsg = archiveMode ? ArchiveConfig.get().sqPerSideOfGrid : Config.getGrid().sqPerSideOfGrid
 
         let minxz = -(spsg / 2)
         let maxxz = spsg / 2

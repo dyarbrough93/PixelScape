@@ -168,7 +168,7 @@ let PixVoxConversion = function(window, undefined) {
       */
      function constrainRegion(region) {
 
-         let spsg = Config.getGrid().sqPerSideOfGrid
+         let spsg = archiveMode ? ArchiveConfig.get().sqPerSideOfGrid : Config.getGrid().sqPerSideOfGrid
 
          let c1 = region.corner1
          let c2 = region.corner2

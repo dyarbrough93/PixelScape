@@ -59,6 +59,10 @@
         {% endif %}
     </div>
 
+    <script>
+        let archiveMode = false
+    </script>
+
     {% if not user %}
     {% include './circleTimers.nunjucks' %}
     {% endif %}

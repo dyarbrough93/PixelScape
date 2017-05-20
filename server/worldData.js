@@ -1,7 +1,8 @@
 const config = require('./config.js').server
 const utils = require('./utils.js')
 const responses = require('./socketResponses.js')
-const VoxelData = require('./models/VoxelData')
+const VoxelData = require('./models/VoxelData').voxelData
+const ArchiveVoxelData = require('./models/VoxelData').archiveVoxelData
 const Operation = require('./models/Operation')
 const User = require('./models//User')
 
@@ -11,19 +12,8 @@ let WorldData = {}
 module.exports = WorldData
 
 WorldData.voxels = {} // worldData
+WorldData.archiveVoxels = {} //
 WorldData.userData = {} // indexed by user, each attr holds an array of all voxels that user owns
-WorldData.count = function() {
-
-    if (!numVoxels) {
-        for (let vox in WorldData.voxels) {
-            if (WorldData.voxels.hasOwnProperty(vox))
-                numVoxels++
-        }
-        return numVoxels++
-    } else {
-        return numVoxels
-    }
-}
 
 WorldData.removeOldGuestVoxels = function(cb) {
 
@@ -214,9 +204,16 @@ WorldData.init = function(done) {
             process.exit()
         }
 
-        loadData(data)
-        done()
+        ArchiveVoxelData.find({}, function(err, archiveData) {
 
+            if (utils.dbErr(err)) {
+                process.exit()
+            }
+
+            loadData(data, archiveData)
+            done()
+
+        })
     })
 }
 
@@ -224,7 +221,7 @@ WorldData.init = function(done) {
  * Loads data at the specified path into coords
  * @param path The file's path, including file name
  */
-function loadData(data) {
+function loadData(data, archiveData) {
 
     console.log('loading world data from mongodb.worldData ...')
 
@@ -232,7 +229,10 @@ function loadData(data) {
         WorldData.voxels[item.key] = item.data
     })
 
-    WorldData.numVoxels = WorldData.count()
+    archiveData.forEach(function(item) {
+        WorldData.archiveVoxels[item.key] = item.data
+    })
+
     console.log('loaded worldData from mongodb')
 
 }

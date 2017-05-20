@@ -1,14 +1,15 @@
 <style>
     .btn-group {
         position: absolute;
-        left: 100px;
+        left: 70px;
     }
 </style>
 
-<div id="btn-group" class="btn-group-vertical btn-group">
+<div id="btn-group" class="btn-group">
     {% if user %}
     <a id="button-logout" class="btn btn-danger" role="button">Logout</a>
     {% else %}
     <a id="button-login" class="btn btn-success" role="button">Login</a>
     {% endif %}
+    <a id="button-archive" class="btn btn-info" role="button">Archive</a>
 </div>

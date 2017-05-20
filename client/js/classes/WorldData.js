@@ -97,7 +97,7 @@ let WorldData = function(window, undefined) {
      */
     function init() {
 
-        let secPerSide = Config.getGrid().sectionsPerSide
+        let secPerSide = archiveMode ? ArchiveConfig.get().sectionsPerSide : Config.getGrid().sectionsPerSide
 
         worldData = []
         userData = {}

@@ -83,6 +83,11 @@ let GUI = function(window, undefined) {
 
 		})
 
+        $('#button-archive').click(function() {
+            let url = window.location.protocol + '//' + window.location.host
+			window.location = url + '/archive'
+        })
+
         $(".btn").mouseup(function() {
 			$(this).blur()
 		})

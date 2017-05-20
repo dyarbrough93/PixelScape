@@ -57,7 +57,7 @@ let GameScene = function(window, undefined) {
         scene = new THREE.Scene()
         container = document.getElementById('container')
 
-        let gridConfig = Config.getGrid()
+        let gridConfig = archiveMode ? ArchiveConfig.get() : Config.getGrid()
 
         ;
         (function _initCamera() {
@@ -196,9 +196,11 @@ let GameScene = function(window, undefined) {
 
             // this is the transparent plane used to
             // select a region for editing
-            let bs = Config.getGrid().blockSize
-            let sssp = Config.getGrid().sqPerSideOfSelectPlane
-            setupRegionSelectPlane(bs * sssp)
+            if (!archiveMode) {
+                let bs = Config.getGrid().blockSize
+                let sssp = Config.getGrid().sqPerSideOfSelectPlane
+                setupRegionSelectPlane(bs * sssp)
+            }
 
         })()
 
@@ -251,7 +253,7 @@ let GameScene = function(window, undefined) {
         ;
         (function _initParticleSystems() {
 
-            let sps = Config.getGrid().sectionsPerSide
+            let sps = archiveMode ? ArchiveConfig.get().sectionsPerSide : Config.getGrid().sectionsPerSide
 
             particleSystem = new ParticleSystems.ParticleSystem(sps, scene)
             pSystemExpansion = new ParticleSystems.PSystemExpansion(100000, scene)

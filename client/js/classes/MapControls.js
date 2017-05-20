@@ -28,7 +28,7 @@
          target = new THREE.Vector3()
          raycastPlane = GameScene.getMapControlsPlane()
          camera = GameScene.getCamera()
-         config = Config.getMapControls()
+         config = archiveMode ? ArchiveConfig.getMapControls() : Config.getMapControls()
 
          camMinxz = config.camMinxz
          camMaxxz = config.camMaxxz
