@@ -88,7 +88,12 @@ let GUI = function(window, undefined) {
 			window.location = url + '/archive'
         })
 
-        $(".btn").mouseup(function() {
+        $('#button-controls').click(function() {
+            $(document).trigger('modalOpened')
+            showModal()
+        })
+
+        $('.btn').mouseup(function() {
 			$(this).blur()
 		})
 
@@ -332,10 +337,6 @@ let GUI = function(window, undefined) {
             })
             .addStringInput(settings.debug, 'userName', {
                 label: 'Username'
-            })
-            .addButton('Show Controls', function() {
-                $(document).trigger('modalOpened')
-                showModal()
             })
 
         mainPanel.addGroup({

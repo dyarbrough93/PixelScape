@@ -1,14 +1,14 @@
 <style>
-    .modal.modal-wide .modal-dialog {
+    .modal .modal-dialog {
         width: 75%;
     }
-    .modal-wide .modal-body {
+    .modal .modal-body {
         overflow-y: auto;
     }
 
 </style>
 
-<div id="welcome-modal" class="modal modal-wide fade">
+<div id="welcome-modal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -25,7 +25,7 @@
                 </p>
                 {% endif %}
                 <p>
-                    You can display this dialog at any time by clicking the "Show Controls" button under the "Info" menu of the GUI.
+                    You can display this dialog at any time by clicking the "Show Controls" button at the top of the screen.
                 </p>
                 <h3>Controls</h3>
                 <p>To allow for a larger number of possible voxels in the game at once, the voxels are rendered as square pixels in their default state. To switch to edit mode, hover the selection square over the region you wish to edit and left click. Controls for
@@ -67,9 +67,6 @@
                         <code>Settings:Antialiasing</code> &nbsp;Uncheck this to disable antialiasing if you are experiencing performance issues.</p>
                     <p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
         </div>
         <!-- /.modal-content -->
     </div>
@@ -90,7 +87,7 @@
                 height: 'toggle',
                 opacity: 'toggle'
             }, 0)
-            
+
             dontTriggerClosed = true
         })
 

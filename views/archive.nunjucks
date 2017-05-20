@@ -36,6 +36,20 @@
         <a id="button-return" class="btn btn-info" role="button">Return</a>
     </div>
 
+    <div id="archive-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>
+                        This is an <b>archive</b> of the state of the world on INSERT DATE HERE, when version 2 of PixelScape was released.
+                    </p>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
     <script>
         let archiveMode = true
@@ -55,6 +69,9 @@
                 let url = window.location.protocol + '//' + window.location.host
     			window.location = url
             })
+
+            $('#archive-modal').modal()
+
         })
 
     </script>
