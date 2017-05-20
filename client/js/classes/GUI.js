@@ -97,8 +97,10 @@ let GUI = function(window, undefined) {
 			$(this).blur()
 		})
 
-        /*if (User.getUName() === 'Guest') showModal()
-        else*/ $(document).trigger('modalClosed')
+        if (User.getUName() === 'Guest') {
+            setTimeout(showModal, 500)
+        }
+        else $(document).trigger('modalClosed')
 
         // if it was the gui that was clicked,
         // save this fact so that we can prevent

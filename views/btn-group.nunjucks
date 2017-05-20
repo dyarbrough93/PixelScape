@@ -1,7 +1,9 @@
 <style>
     .btn-group {
         position: absolute;
+        {% if not user %}
         left: 70px;
+        {% endif %}
     }
 </style>
 
@@ -9,7 +11,7 @@
     {% if user %}
     <a id="button-logout" class="btn btn-danger" role="button">Logout</a>
     {% else %}
-    <a id="button-login" class="btn btn-success" role="button">Login</a>
+    <a id="button-login" class="btn btn-success" role="button">Login / Register</a>
     {% endif %}
     <a id="button-controls" class="btn btn-info" role="button">Controls</a>
     <a id="button-archive" class="btn btn-default" role="button">Archive</a>
