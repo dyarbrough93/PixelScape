@@ -20,7 +20,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <p>
-                    This is your <code>Delete Other Timer</code>. This resets every time you delete a block that is neither your own nor a guests. It is only active for guests.
+                    This is your <code>Delete Other Timer</code>. This resets every time you delete a block that is neither your own nor a guests.
                 </p>
             </div>
         </div>

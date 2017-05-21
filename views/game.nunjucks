@@ -63,14 +63,12 @@
         let archiveMode = false
     </script>
 
-    {% if not user %}
-    {% include './circleTimers.nunjucks' %}
-    {% endif %}
     <div id="modal-background"></div>
+
+    {% include './circleTimers.nunjucks' %}
     {% include './login.nunjucks' %}
     {% include './btn-group.nunjucks' %}
     {% include './modal.nunjucks' %}
-
 
     <!-- game container -->
     <div id="container"></div>

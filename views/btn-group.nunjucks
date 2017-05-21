@@ -1,9 +1,7 @@
 <style>
     .btn-group {
         position: absolute;
-        {% if not user %}
         left: 70px;
-        {% endif %}
     }
 </style>
 

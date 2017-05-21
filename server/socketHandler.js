@@ -125,11 +125,13 @@ function handleBlockOperations(socket, io) {
                     io.sockets.emit('block removed', coordStr)
                 })
 
-                console.log('Removed ' + deletedVoxels.length + ' guest voxels.')
+                if (deletedVoxels.length > 0)
+                    console.log('Removed ' + deletedVoxels.length + ' guest voxels.')
+
             }
         })
 
-    }, 1000 * 60 * 5) // every 5 minutes
+    }, 1000 * 60 * 1) // every minute
 
 }
 
