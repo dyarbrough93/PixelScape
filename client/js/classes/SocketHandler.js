@@ -152,12 +152,14 @@ let SocketHandler = function(window, undefined) {
             let username = block.username
 
             if (User.modeIsEdit() && VoxelUtils.withinSelectionBounds(gPos)) {
-                VoxelActions.createVoxelAtGridPos(gPos, tColor.getHex(), username)
+                VoxelActions.createVoxelAtGridPos(gPos, tColor.getHashHexString(), username)
             } else {
                 let sid = VoxelUtils.getSectionIndices(gPos)
                 let coordStr = VoxelUtils.getCoordStr(gPos)
                 let pIdx = GameScene.getPSystemExpo().addPixel(gPos, tColor)
-                WorldData.addVoxel(sid, coordStr, tColor, username, pIdx, true)
+
+                let voxInfo = new WorldData.VoxelInfo(block.color, username, pIdx, null, true)
+                WorldData.addVoxel(sid, coordStr, voxInfo)
             }
 
             GameScene.render()
