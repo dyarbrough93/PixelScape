@@ -21,7 +21,7 @@
                 </p>
                 {% if not user %}
                 <p>
-                    You are currently playing as a guest, so any voxels you create will only persist for a few hours. <a id="modal-create-account" href="#">Create an account</a> and your voxels will be preserved indefinitely.
+                    You are currently playing as a guest, so any voxels you create will only persist for a few hours. <a id="modal-create-account" href="#">Create an account</a> and your voxels will be preserved indefinitely, plus your username will be attached to them.
                 </p>
                 {% endif %}
                 <p>
