@@ -32,7 +32,8 @@ module.exports = function(passport) {
                         // create the user
                         let newUser = new User({
 							username: username,
-							password: createHash(password)
+							password: createHash(password),
+                            active: true
 						})
 
                         // save the user

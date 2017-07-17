@@ -29,6 +29,12 @@ module.exports = function(passport){
                     if (!isValidPassword(user, password)) {
                         return done(errors.E_BADCRED, false) // redirect back to login page
                     }
+
+					// user exists but has been banned
+					if (!user.active) {
+						return done(errors.E_BANNED, false)
+					}
+
                     // User and password both match, return user from done method
                     // which will be treated like success
                     return done(null, user)

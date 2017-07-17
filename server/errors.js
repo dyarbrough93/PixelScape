@@ -9,6 +9,10 @@ module.exports = {
 		E_USERNOTFOUND: {
 			name: 'E_USERNOTFOUND',
 			message: 'Username or password is incorrect.'
+		},
+		E_BANNED: {
+			name: 'E_BANNED',
+			message: 'This account has been deactivated.'
 		}
 	},
 	signup: {
