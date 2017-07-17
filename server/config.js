@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
 const sharedConfig = {
-    maxVoxelHeight: 75,
+    maxVoxelHeight: 50,
     actionDelay: 50, // ms
     guestActionDelay: 50, // ms
     deleteOtherDelay: 1500, // ms
@@ -14,7 +14,7 @@ const serverConfig = {
     dataChunkSize: 15000, // keys
     chunkInterval: 50, // ms
     maxClients: 1000,
-    guestVoxelTime: 90, // minutes (time guest voxels will persist)
+    guestVoxelTime: 60, // minutes (time guest voxels will persist)
     loginForm: {
         lowMaxLength: 20,
         highMaxLength: 40,
